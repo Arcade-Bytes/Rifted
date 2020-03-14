@@ -7,7 +7,7 @@ Game::Game()
 
 Game::~Game()
 {
-    
+    delete this->state;
 }
 
 void Game::updateDelta()

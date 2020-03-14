@@ -2,6 +2,7 @@
 #define MOVEMENTCOMPONENT_H
 
 #include "Engine.h"
+#include "Hitbox.h"
 
 class MovementComponent {
 private:
@@ -21,6 +22,9 @@ public:
 
     void move(const float& xdir);
     void jump(const float& yforce);
+
+    void stop();
+    void undoMove();
 
     void update();
     void render();
