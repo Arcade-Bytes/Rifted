@@ -24,6 +24,8 @@ public:
     void jump(const float& yforce);
 
     void stop();
+    void stopX();
+    void stopY();
     void undoMove();
 
     void update();

@@ -45,6 +45,16 @@ void MovementComponent::stop()
     this->vf_speed = {0,0};
 }
 
+void MovementComponent::stopX()
+{
+    this->vf_speed.x = 0.0f;
+}
+
+void MovementComponent::stopY()
+{
+    this->vf_speed.y = 0.0f;
+}
+
 void MovementComponent::undoMove()
 {
     this->vf_position->x -= this->vf_speed.x;

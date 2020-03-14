@@ -46,6 +46,15 @@ void Entity::updateMovement()
         {
             std::cout << "Collision: (" << intersection.x <<", " << intersection.y << ")\n";
             this->vf_position += intersection;
+
+            if(abs(intersection.y) > abs(intersection.x))
+            {
+                this->movement->stopY();
+            }
+            else
+            {
+                this->movement->stopX();
+            }
             this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
         }
     }

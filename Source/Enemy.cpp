@@ -5,7 +5,7 @@ Enemy::Enemy(Player* playerRef)
 {
     this->player = playerRef;
     this->b_patrolLeft = false;
-    this->f_aggroDistance = 300;
+    this->f_aggroDistance = 1000;
     this->f_attackDistance = 50;
     this->b_mutexAttack = false;
 
