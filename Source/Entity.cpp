@@ -38,24 +38,29 @@ void Entity::updateMovement()
     this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
 
     // Platform Collision detection
-    std::vector<Hitbox*>* hitboxes = Hitbox::getPlatformHitboxes();
+    std::vector<Hitbox*>* hitboxes = Hitbox::getAllHitboxes();
     for(auto platform : *hitboxes)
     {
-        sf::Vector2f intersection = this->hitbox->checkCollision(platform);
-        if(intersection.x != 0.0f || intersection.y != 0.0f)
+        // Check platform collisions
+        if(platform->getType() == PLATFORM)
         {
-            std::cout << "Collision: (" << intersection.x <<", " << intersection.y << ")\n";
-            this->vf_position += intersection;
+            // Check how much they collided and push the entity out of the platform
+            sf::Vector2f intersection = this->hitbox->checkCollision(platform);
+            if(intersection.x != 0.0f || intersection.y != 0.0f)
+            {
+                printf("Collision -> (%f, %f)\n", intersection.x, intersection.y);
+                this->vf_position += intersection;
 
-            if(abs(intersection.y) > abs(intersection.x))
-            {
-                this->movement->stopY();
+                if(abs(intersection.y) > abs(intersection.x))
+                {
+                    this->movement->stopY();
+                }
+                else
+                {
+                    this->movement->stopX();
+                }
+                this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
             }
-            else
-            {
-                this->movement->stopX();
-            }
-            this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
         }
     }
 

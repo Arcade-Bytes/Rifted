@@ -1,10 +1,6 @@
 #include "Hitbox.h"
 
-std::vector<Hitbox*> Hitbox::platformHitboxes;
-std::vector<Hitbox*> Hitbox::playerHitboxes;
-std::vector<Hitbox*> Hitbox::enemyHitboxes;
-std::vector<Hitbox*> Hitbox::leverHitboxes;
-std::vector<Hitbox*> Hitbox::doorHitboxes;
+std::vector<Hitbox*> Hitbox::hitboxes;
 
 Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const float& xpos, const float& ypos)
 {
@@ -17,52 +13,52 @@ Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const fl
     this->shape.setOrigin(this->vf_size.x/2,this->vf_size.y/2);
     this->shape.setPosition(this->vf_position);
 
-    switch (type)
-    {
-    case PLATFORM:  platformHitboxes.push_back(this);   break;
-    case PLAYER:    playerHitboxes.push_back(this);     break;
-    case ENEMY:     enemyHitboxes.push_back(this);      break;
-    case LEVER:     leverHitboxes.push_back(this);      break;
-    case DOOR:      doorHitboxes.push_back(this);       break;
-    default: break;
-    }
+    hitboxes.push_back(this);
 }
 
 Hitbox::~Hitbox()
 {
-    switch (type)
-    {
-    case PLATFORM:
-        platformHitboxes.erase(
-            std::find(platformHitboxes.begin(), platformHitboxes.end(), this)
-        );
-        break;
-    case PLAYER:
-        playerHitboxes.erase(
-            std::find(playerHitboxes.begin(), playerHitboxes.end(), this)
-        );
-        break;
-    case ENEMY:
-        enemyHitboxes.erase(
-            std::find(enemyHitboxes.begin(), enemyHitboxes.end(), this)
-        );
-        break;
-    case LEVER:
-        leverHitboxes.erase(
-            std::find(leverHitboxes.begin(), leverHitboxes.end(), this)
-        );
-        break;
-    case DOOR:
-        doorHitboxes.erase(
-            std::find(doorHitboxes.begin(), doorHitboxes.end(), this)
-        );
-        break;
-    }
+    hitboxes.erase(
+        std::find(hitboxes.begin(), hitboxes.end(), this)
+    );
 }
 
+// Static list management
+void Hitbox::resetHitboxLists()
+{
+    hitboxes.clear();
+}
+
+std::vector<Hitbox*>* Hitbox::getAllHitboxes()
+{
+    return &hitboxes;
+}
+
+// Type related
+HitboxType Hitbox::getType()
+{
+    return this->type;
+}
+
+// Position related
+sf::Vector2f Hitbox::getPosition()
+{
+    return this->vf_position;
+}
+
+void Hitbox::setPosition(const float& x, const float& y)
+{
+    this->vf_position.x = x;
+    this->vf_position.y = y;
+    this->shape.setPosition(this->vf_position);
+}
+
+// Collision related
 sf::Vector2f Hitbox::checkCollision(Hitbox* other)
 {
     sf::Vector2f intersection = {0.0f, 0.0f};
+    if(this == other) return intersection;
+    
     if(this->shape.getGlobalBounds().intersects(other->getBounds()))
     {
         float thisHalfWidth = shape.getGlobalBounds().width / 2.0f;
@@ -76,8 +72,8 @@ sf::Vector2f Hitbox::checkCollision(Hitbox* other)
             abs(distance.y) - thisHalfHeight - otherHalfHeight
         };
 
-        // Checks for most important axis and nullifies the others offect
-        // Also corrects intersction sign for push direction
+        // Checks for most important axis and nullifies the other's effect
+        // Also corrects intersection sign for push direction
         if(intersection.x > intersection.y)
         {
             intersection.y = 0.0f;
@@ -95,33 +91,6 @@ sf::Vector2f Hitbox::checkCollision(Hitbox* other)
 sf::FloatRect Hitbox::getBounds()
 {
     return this->shape.getGlobalBounds();
-}
-
-void Hitbox::resetHitboxLists()
-{
-    platformHitboxes.clear();
-    playerHitboxes.clear();
-    enemyHitboxes.clear();
-    leverHitboxes.clear();
-    doorHitboxes.clear();
-}
-
-std::vector<Hitbox*>* Hitbox::getPlatformHitboxes() { return &platformHitboxes; }
-std::vector<Hitbox*>* Hitbox::getPlayerHitboxes()   { return &playerHitboxes; }
-std::vector<Hitbox*>* Hitbox::getEnemyHitboxes()    { return &enemyHitboxes; }
-std::vector<Hitbox*>* Hitbox::getLeverHitboxes()    { return &leverHitboxes; }
-std::vector<Hitbox*>* Hitbox::getDoorHitboxes()     { return &doorHitboxes; }
-
-sf::Vector2f Hitbox::getPosition()
-{
-    return this->vf_position;
-}
-
-void Hitbox::setPosition(const float& x, const float& y)
-{
-    this->vf_position.x = x;
-    this->vf_position.y = y;
-    this->shape.setPosition(this->vf_position);
 }
 
 void Hitbox::update()
