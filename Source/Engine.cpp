@@ -4,7 +4,7 @@ Engine* Engine::instance = 0;
 
 Engine::Engine()
 {
-    this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Pengo Alpha ver.");
+    this->window = new sf::RenderWindow(sf::VideoMode(720, 360), "Pengo Alpha ver.");
     delta = 0.0f;
 }
 

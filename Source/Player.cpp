@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "FileManager.h"
 
 Player::Player()
     : Entity()
@@ -73,7 +74,21 @@ void Player::update()
         this->sword->startAttack();
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::H))
         this->hammer->startAttack();
-
+    /***XML TEST***/
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+    {
+        
+        std::cout << ftl::LoadByKey("name") <<'\n';
+        std::cout << ftl::LoadByKey("level") <<'\n';
+        std::cout << ftl::LoadByKey("secret") <<'\n';
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::O))
+    {
+       ftl::ModifyByKey("name","DOOM SLAYER");
+       ftl::ModifyByKey("level","YES");
+       ftl::ModifyByKey("secret","NO SECRET LMAO");   
+    }
+    /*****/
     // Update the attacks
     this->updateWeapon(sword);
     this->updateWeapon(hammer);

@@ -15,6 +15,8 @@ target_sources(libModulos PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Weapon.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Shield.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/MovementComponent.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../Source/FileManager.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../Source/tinyxml2.cpp"
 )
 
 #Y donde se encuentran los .h

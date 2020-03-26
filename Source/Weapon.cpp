@@ -57,7 +57,7 @@ void Weapon::updateAttack()
 
 void Weapon::attack()
 {
-    std::cout<<"Attack!\n";
+   // std::cout<<"Attack!\n";
 }
 
 void Weapon::update()
