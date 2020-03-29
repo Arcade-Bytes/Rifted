@@ -55,10 +55,10 @@ void MovementComponent::stopY()
     this->vf_speed.y = 0.0f;
 }
 
-void MovementComponent::undoMove()
+void MovementComponent::undoMove(const float& x, const float& y)
 {
-    this->vf_position->x -= this->vf_speed.x;
-    this->vf_position->y -= this->vf_speed.y;
+    this->vf_position->x -= this->vf_speed.x * x;
+    this->vf_position->y -= this->vf_speed.y * y;
 }
 
 void MovementComponent::update()

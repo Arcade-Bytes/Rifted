@@ -48,15 +48,14 @@ void Entity::updateMovement()
             sf::Vector2f intersection = this->hitbox->checkCollision(platform);
             if(intersection.x != 0.0f || intersection.y != 0.0f)
             {
-                printf("Collision -> (%f, %f)\n", intersection.x, intersection.y);
-                this->vf_position += intersection;
-
                 if(abs(intersection.y) > abs(intersection.x))
                 {
+                    this->movement->undoMove(0,1);
                     this->movement->stopY();
                 }
                 else
                 {
+                    this->movement->undoMove(1,0);
                     this->movement->stopX();
                 }
                 this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);

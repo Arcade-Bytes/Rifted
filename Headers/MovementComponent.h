@@ -26,7 +26,7 @@ public:
     void stop();
     void stopX();
     void stopY();
-    void undoMove();
+    void undoMove(const float& x, const float& y);
 
     void update();
     void render();
