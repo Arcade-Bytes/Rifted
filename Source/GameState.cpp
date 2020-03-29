@@ -3,7 +3,7 @@
 GameState::GameState()
 {
     this->player = new Player();
-    this->level = new Level(player, "maps/Prueba_Beta.tmx", 0);
+    this->level = new Level(player, "Prueba_Beta", 0);
 }
 
 GameState::~GameState()

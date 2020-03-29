@@ -2,7 +2,7 @@
 
 LevelExit::LevelExit(std::string destination, const int& entranceIndex)
 {
-    this->s_destination = "maps/"+destination+".tmx";
+    this->s_destination = destination;
     this->i_entranceIndex = entranceIndex;
 
     this->hitbox = new Hitbox(NO_COLLISION, 0,0, 0,0);
