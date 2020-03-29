@@ -12,6 +12,8 @@ protected:
     float f_currentHealth;
     float f_maxHealth;
 
+    bool b_isGrounded;
+
     Hitbox* hitbox;
 
     sf::Vector2f vf_position;

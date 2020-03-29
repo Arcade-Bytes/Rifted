@@ -29,7 +29,11 @@ void Entity::move(const float& xdir)
 
 void Entity::jump(const float& yforce)
 {
-    this->movement->jump(yforce);
+    if(this->b_isGrounded)
+    {
+        this->movement->jump(yforce);
+        this->b_isGrounded = false;
+    }
 }
 
 void Entity::updateMovement()
@@ -52,6 +56,8 @@ void Entity::updateMovement()
                 {
                     this->movement->undoMove(0,1);
                     this->movement->stopY();
+
+                    if(intersection.y < 0) this->b_isGrounded = true;
                 }
                 else
                 {

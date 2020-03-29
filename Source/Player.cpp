@@ -64,8 +64,7 @@ void Player::update()
         this->move(1);
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         this->move(-1);
-    if(this->movement->isYStopped() &&
-    (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
+    if((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
     sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
         this->jump(50);
 
