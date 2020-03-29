@@ -56,11 +56,6 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
     this->background->setPosition(0,0);
     this->background->setScale(this->scaleFactor);
 
-    printf("Estos son los datos: width: %i  height: %i tilewidth: %i tileheigth: %i fichero tileset: %s \n",
-        this->v_gridSize.x, this->v_gridSize.y, this->v_tileSize.x, this->v_tileSize.y, textureFich);
-    printf("Estos son más datos: tilesetTilewidth: %i  tilesetTileheight: %i tilesetGridwidth: %i  tilesetGridheight: %i \n",
-        this->v_tilesetTileSize.x, this->v_tilesetTileSize.y, this->v_tilesetGridSize.x, this->v_tilesetGridSize.y);
-
     // Map reading
     layer = mapdata->FirstChildElement("layer");
     XMLElement* tile = NULL;

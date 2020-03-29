@@ -124,7 +124,6 @@ void Level::update()
         {
             this->b_playerLeaves = true;
             this->i_exitIndex = i;
-            printf("Hey me voy\n");
         }
     }
 
