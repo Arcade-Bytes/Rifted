@@ -3,43 +3,31 @@
 GameState::GameState()
 {
     this->player = new Player();
-    this->enemy = new Enemy(player);
-    this->door = new Door();
-    this->lever = new Lever();
-    this->lever->addDoor(door);
-
-    this->platform = new Hitbox(PLATFORM, 200,100, 500,400);
-    this->platformGround = new Hitbox(PLATFORM, 1500,50, 150,700);
-    this->platformWall = new Hitbox(PLATFORM, 50,1500, 50,30);
+    this->level = new Level(player, "Prueba_Beta", 0);
 }
 
 GameState::~GameState()
 {
     delete this->player;
-    delete this->enemy;
-    delete this->door;
-    delete this->lever;
-    delete this->platform;
-    delete this->platformGround;
-    delete this->platformWall;
+    delete this->level;
 }
 
 void GameState::update()
 {
-    this->player->update();
-    this->enemy->update();
+    this->level->update();
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-        this->lever->interact();
+    // Check level change
+    if(this->level->didPlayerLeave())
+    {
+        LevelExit* exit = this->level->getActiveExit();
+        std::string mapFile = exit->getDestination();
+        int entranceIndex = exit->getEntranceIndex();
+        delete this->level;
+        this->level = new Level(this->player, mapFile, entranceIndex);
+    }
 }
 
 void GameState::render()
 {
-    this->player->render();
-    this->enemy->render();
-    this->lever->render();
-    this->door->render();
-    this->platform->render();
-    this->platformGround->render();
-    this->platformWall->render();
+    this->level->render();
 }

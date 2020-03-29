@@ -13,6 +13,12 @@ public:
     Lever();
     ~Lever();
 
+    // Accesors
+    sf::Vector2f getPosition();
+    void setPosition(const float&x, const float& y);
+    void setPosition(sf::Vector2f pos);
+    void setSize(sf::Vector2f size);
+
     void addDoor(Door* door);
     void interact();
 

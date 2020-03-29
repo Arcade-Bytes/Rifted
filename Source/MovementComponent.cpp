@@ -88,16 +88,6 @@ void MovementComponent::update()
 
     this->vf_position->x += this->vf_speed.x;
     this->vf_position->y += this->vf_speed.y;
-
-    // FALSE COLLISION DELETE LATER!!!
-    if (this->vf_position->x <= 0.0f) 
-        {this->vf_position->x = 0.0f; vf_speed.x = 0.0f;}
-    if (this->vf_position->x >= 1720.0f)
-        {this->vf_position->x = 1720.0f; vf_speed.x = 0.0f;}
-    if (this->vf_position->y <= 20.0f) 
-        {this->vf_position->y = 20.0f; vf_speed.y = 0.0f;}
-    if (this->vf_position->y >= 1000.0f)
-        {this->vf_position->y = 1000.0f; vf_speed.y = 0.0f;}
 }
 
 void MovementComponent::render()

@@ -96,5 +96,5 @@ void Shield::update()
 void Shield::render()
 {
     if(b_isActive)
-        Engine::getInstance()->RenderShape(&shape);
+        Engine::getInstance()->renderDrawable(&shape);
 }

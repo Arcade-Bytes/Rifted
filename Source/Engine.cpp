@@ -4,8 +4,11 @@ Engine* Engine::instance = 0;
 
 Engine::Engine()
 {
-    this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Pengo Alpha ver.");
+    this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Rifted Beta version");
     delta = 0.0f;
+
+    this->view.setViewport(sf::FloatRect(0.0f,0.0f,1.0f,1.0f));
+    this->view.setSize(this->window->getSize().x, this->window->getSize().y);
 }
 
 Engine::~Engine()
@@ -22,6 +25,13 @@ bool Engine::isWindowOpen()
 const float& Engine::getDelta()
 {
     return this->delta;
+}
+
+// Views
+void Engine::setViewCenter(sf::Vector2f center)
+{
+    this->view.setCenter(center);
+    this->window->setView(view);
 }
 
 // Updates
@@ -51,22 +61,17 @@ void Engine::updateInput()
 }
 
 // Renders
-void Engine::RenderSprite(sf::Sprite* sprite)
+void Engine::renderDrawable(sf::Drawable* drawable)
 {
-    this->window->draw(*sprite);
+    this->window->draw(*drawable);
 }
 
-void Engine::RenderShape(sf::Shape* shape)
-{
-    this->window->draw(*shape);
-}
-
-void Engine::WindowClear()
+void Engine::windowClear()
 {
     this->window->clear();
 }
 
-void Engine::WindowDisplay()
+void Engine::windowDisplay()
 {
     this->window->display();
 }

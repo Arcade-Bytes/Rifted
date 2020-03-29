@@ -18,8 +18,9 @@ private:
     sf::RenderWindow* window;
     sf::Clock clock;
 
+    sf::View view;
+
     float delta;
-    
 public:
     Engine(const Engine&) = delete;
     Engine &operator= (const Engine&) = delete;
@@ -28,16 +29,18 @@ public:
     bool isWindowOpen();
     const float& getDelta();
 
+    // Views
+    void setViewCenter(sf::Vector2f center);
+
     // Updates
     void updateDelta();
     void updateSFMLEvents();
     void updateInput();
 
     // Renders
-    void RenderSprite(sf::Sprite* sprite);
-    void RenderShape(sf::Shape* shape);
-    void WindowClear();
-    void WindowDisplay();
+    void renderDrawable(sf::Drawable* drawable);
+    void windowClear();
+    void windowDisplay();
 
     static Engine* getInstance();
 };
