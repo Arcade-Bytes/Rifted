@@ -51,22 +51,17 @@ void Engine::updateInput()
 }
 
 // Renders
-void Engine::RenderSprite(sf::Sprite* sprite)
+void Engine::renderDrawable(sf::Drawable* drawable)
 {
-    this->window->draw(*sprite);
+    this->window->draw(*drawable);
 }
 
-void Engine::RenderShape(sf::Shape* shape)
-{
-    this->window->draw(*shape);
-}
-
-void Engine::WindowClear()
+void Engine::windowClear()
 {
     this->window->clear();
 }
 
-void Engine::WindowDisplay()
+void Engine::windowDisplay()
 {
     this->window->display();
 }

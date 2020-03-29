@@ -42,5 +42,5 @@ void Lever::update()
 
 void Lever::render()
 {
-    Engine::getInstance()->RenderShape(&shape);
+    Engine::getInstance()->renderDrawable(&shape);
 }

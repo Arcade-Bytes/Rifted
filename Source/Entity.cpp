@@ -22,6 +22,24 @@ sf::Vector2f Entity::getPosition()
     return this->vf_position;
 }
 
+void Entity::setPosition(const float&x, const float& y)
+{
+    this->vf_position = {x, y};
+    this->shape.setPosition(this->vf_position);
+}
+
+void Entity::setPosition(sf::Vector2f pos)
+{
+    this->vf_position = pos;
+    this->shape.setPosition(this->vf_position);
+}
+
+void Entity::setSize(sf::Vector2f size)
+{
+    this->shape.setSize(size);
+    this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
+}
+
 void Entity::move(const float& xdir)
 {
     this->movement->move(xdir);
@@ -86,5 +104,5 @@ void Entity::update()
 
 void Entity::render()
 {
-    Engine::getInstance()->RenderShape(&shape);
+    Engine::getInstance()->renderDrawable(&shape);
 }

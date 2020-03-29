@@ -79,6 +79,6 @@ void Enemy::update()
 
 void Enemy::render()
 {
-    Engine::getInstance()->RenderShape(&shape);
+    Engine::getInstance()->renderDrawable(&shape);
     this->weapon->render();
 }

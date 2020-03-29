@@ -30,5 +30,5 @@ void Door::update()
 
 void Door::render()
 {
-    Engine::getInstance()->RenderShape(&shape);
+    Engine::getInstance()->renderDrawable(&shape);
 }

@@ -2,32 +2,48 @@
 
 GameState::GameState()
 {
+    this->map = new Map("maps/cementerio.tmx");
+
     this->player = new Player();
-    this->enemy = new Enemy(player);
+    this->player->setPosition(
+        this->map->getPlayerPosition()
+    );
+
+    std::vector<sf::Vector2f> enemyPositions = this->map->getEnemyPositions();
+    std::vector<sf::Vector2f> enemySizes = this->map->getEnemySizes();
+    std::vector<int> enemyTypes = this->map->getEnemyTypes();
+    for(unsigned int i=0; i<enemyPositions.size(); i++)
+    {
+        Enemy* enemy = new Enemy(this->player);
+        enemy->setPosition(enemyPositions[i]);
+        enemy->setSize(enemySizes[i]);
+        this->enemies.push_back(enemy);
+    }
+
     this->door = new Door();
     this->lever = new Lever();
     this->lever->addDoor(door);
-
-    this->platform = new Hitbox(PLATFORM, 200,100, 500,400);
-    this->platformGround = new Hitbox(PLATFORM, 1500,50, 150,700);
-    this->platformWall = new Hitbox(PLATFORM, 50,1500, 50,30);
 }
 
 GameState::~GameState()
 {
     delete this->player;
-    delete this->enemy;
+    for(auto enemy : enemies)
+    {
+        delete enemy;
+        enemy = NULL;
+    }
+    enemies.clear();
     delete this->door;
     delete this->lever;
-    delete this->platform;
-    delete this->platformGround;
-    delete this->platformWall;
 }
 
 void GameState::update()
 {
     this->player->update();
-    this->enemy->update();
+
+    for(auto enemy: enemies)
+        enemy->update();
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
         this->lever->interact();
@@ -35,11 +51,12 @@ void GameState::update()
 
 void GameState::render()
 {
+    this->map->render();
     this->player->render();
-    this->enemy->render();
+
+    for(auto enemy: enemies)
+        enemy->render();
+
     this->lever->render();
     this->door->render();
-    this->platform->render();
-    this->platformGround->render();
-    this->platformWall->render();
 }

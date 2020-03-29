@@ -100,5 +100,5 @@ void Hitbox::update()
 
 void Hitbox::render()
 {
-    Engine::getInstance()->RenderShape(&shape);
+    Engine::getInstance()->renderDrawable(&shape);
 }

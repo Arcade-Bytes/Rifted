@@ -34,10 +34,9 @@ public:
     void updateInput();
 
     // Renders
-    void RenderSprite(sf::Sprite* sprite);
-    void RenderShape(sf::Shape* shape);
-    void WindowClear();
-    void WindowDisplay();
+    void renderDrawable(sf::Drawable* drawable);
+    void windowClear();
+    void windowDisplay();
 
     static Engine* getInstance();
 };

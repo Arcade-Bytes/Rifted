@@ -3,7 +3,6 @@
 
 #include "State.h"
 #include "Map.h"
-#include "Hitbox.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Lever.h"
@@ -13,12 +12,11 @@
 class GameState : public State {
 private:
     Player* player;
-    Enemy* enemy;
+    std::vector<Enemy*> enemies;
     Lever *lever;
     Door* door;
-    Hitbox* platform;
-    Hitbox* platformGround;
-    Hitbox* platformWall;
+
+    Map* map;
 public:
     GameState();
     ~GameState();
