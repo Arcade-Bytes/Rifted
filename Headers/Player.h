@@ -3,7 +3,6 @@
 
 #include "Engine.h"
 #include "Entity.h"
-#include "MovementComponent.h"
 #include "Weapon.h"
 #include "Shield.h"
 

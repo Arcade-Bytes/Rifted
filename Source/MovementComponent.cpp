@@ -40,6 +40,27 @@ void MovementComponent::jump(const float& yforce)
     this->vf_speed.y += f_acceleration * -yforce * delta;
 }
 
+void MovementComponent::stop()
+{
+    this->vf_speed = {0,0};
+}
+
+void MovementComponent::stopX()
+{
+    this->vf_speed.x = 0.0f;
+}
+
+void MovementComponent::stopY()
+{
+    this->vf_speed.y = 0.0f;
+}
+
+void MovementComponent::undoMove(const float& x, const float& y)
+{
+    this->vf_position->x -= this->vf_speed.x * x;
+    this->vf_position->y -= this->vf_speed.y * y;
+}
+
 void MovementComponent::update()
 {
     // Get delta value

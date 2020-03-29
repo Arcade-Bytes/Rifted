@@ -3,6 +3,7 @@
 
 #include "State.h"
 #include "Map.h"
+#include "Hitbox.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Lever.h"
@@ -15,6 +16,9 @@ private:
     Enemy* enemy;
     Lever *lever;
     Door* door;
+    Hitbox* platform;
+    Hitbox* platformGround;
+    Hitbox* platformWall;
 public:
     GameState();
     ~GameState();

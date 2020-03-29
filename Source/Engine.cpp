@@ -32,6 +32,7 @@ void Engine::updateDelta()
 
 void Engine::updateSFMLEvents()
 {
+    //std::cout << "Update SFML" << std::endl;
     sf::Event event;
     while (window->pollEvent(event)) {
         switch (event.type) {
