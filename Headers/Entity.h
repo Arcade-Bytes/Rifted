@@ -29,6 +29,8 @@ public:
     void setPosition(sf::Vector2f pos);
     void setSize(sf::Vector2f size);
 
+    Hitbox* getHitbox();
+
     void move(const float& xdir);
     void jump(const float& yforce);
 

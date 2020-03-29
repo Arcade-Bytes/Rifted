@@ -90,7 +90,7 @@ void Player::update()
 
 void Player::render()
 {
-    //Engine::getInstance()->RenderShape(&shape);
+    Engine::getInstance()->renderDrawable(&shape);
     this->sword->render();
     this->hammer->render();
     this->shield->render();

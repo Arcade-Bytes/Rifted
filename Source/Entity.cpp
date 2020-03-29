@@ -3,13 +3,11 @@
 Entity::Entity()
 {
     this->movement = new MovementComponent(&this->vf_position, 25.0f, 10.33f, 5.0f);
-    this->vf_position = {350,350};
     this->shape.setFillColor(sf::Color::White);
-    this->shape.setSize(sf::Vector2f(50,50));
-    this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
-    this->shape.setPosition(this->vf_position);
 
-    this->hitbox = new Hitbox(PLAYER, 50,50, 350,350);
+    this->hitbox = new Hitbox(PLAYER, 0,0, 0,0);
+    this->setSize(sf::Vector2f(50,50));
+    this->setPosition(350,350);
 }
 
 Entity::~Entity()
@@ -24,20 +22,26 @@ sf::Vector2f Entity::getPosition()
 
 void Entity::setPosition(const float&x, const float& y)
 {
-    this->vf_position = {x, y};
-    this->shape.setPosition(this->vf_position);
+    this->setPosition(sf::Vector2f(x,y));
 }
 
 void Entity::setPosition(sf::Vector2f pos)
 {
     this->vf_position = pos;
     this->shape.setPosition(this->vf_position);
+    this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
 }
 
 void Entity::setSize(sf::Vector2f size)
 {
     this->shape.setSize(size);
     this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
+    this->hitbox->setSize(size.x, size.y);
+}
+
+Hitbox* Entity::getHitbox()
+{
+    return this->hitbox;
 }
 
 void Entity::move(const float& xdir)
@@ -57,7 +61,7 @@ void Entity::jump(const float& yforce)
 void Entity::updateMovement()
 {
     this->movement->update();
-    this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
+    this->setPosition(this->vf_position);
 
     // Platform Collision detection
     std::vector<Hitbox*>* hitboxes = Hitbox::getAllHitboxes();
@@ -82,12 +86,11 @@ void Entity::updateMovement()
                     this->movement->undoMove(1,0);
                     this->movement->stopX();
                 }
-                this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
             }
         }
     }
 
-    this->shape.setPosition(this->vf_position);
+    this->setPosition(this->vf_position);
 }
 
 bool Entity::updateWeapon(Weapon* weapon)

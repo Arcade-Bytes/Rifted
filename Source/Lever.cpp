@@ -17,6 +17,29 @@ Lever::~Lever()
     v_doorPointers.clear();
 }
 
+sf::Vector2f Lever::getPosition()
+{
+    return this->vf_position;
+}
+
+void Lever::setPosition(const float&x, const float& y)
+{
+    this->vf_position = {x, y};
+    this->shape.setPosition(this->vf_position);
+}
+
+void Lever::setPosition(sf::Vector2f pos)
+{
+    this->vf_position = pos;
+    this->shape.setPosition(this->vf_position);
+}
+
+void Lever::setSize(sf::Vector2f size)
+{
+    this->shape.setSize(size);
+    this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
+}
+
 void Lever::addDoor(Door* door)
 {
     v_doorPointers.push_back(door);

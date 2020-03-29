@@ -2,21 +2,12 @@
 #define GAMESTATE_H
 
 #include "State.h"
-#include "Map.h"
-#include "Player.h"
-#include "Enemy.h"
-#include "Lever.h"
-#include "Door.h"
-#include "BreakableDoor.h"
+#include "Level.h"
 
 class GameState : public State {
 private:
     Player* player;
-    std::vector<Enemy*> enemies;
-    Lever *lever;
-    Door* door;
-
-    Map* map;
+    Level* level;
 public:
     GameState();
     ~GameState();

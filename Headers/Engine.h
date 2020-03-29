@@ -18,8 +18,9 @@ private:
     sf::RenderWindow* window;
     sf::Clock clock;
 
+    sf::View view;
+
     float delta;
-    
 public:
     Engine(const Engine&) = delete;
     Engine &operator= (const Engine&) = delete;
@@ -27,6 +28,9 @@ public:
     // Accessors
     bool isWindowOpen();
     const float& getDelta();
+
+    // Views
+    void setViewCenter(sf::Vector2f center);
 
     // Updates
     void updateDelta();

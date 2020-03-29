@@ -3,7 +3,7 @@
 
 #include "Engine.h"
 
-enum HitboxType {PLATFORM = 0, PLAYER, ENEMY, LEVER, BREAKABLE_DOOR, ARROW};
+enum HitboxType {NO_COLLISION = 0, PLATFORM, PLAYER, ENEMY, LEVER, BREAKABLE_DOOR, PROJECTILE};
 
 class Hitbox {
 private:
@@ -28,6 +28,8 @@ public:
     // Position related
     sf::Vector2f getPosition();
     void setPosition(const float& x, const float& y);
+    sf::Vector2f getSize();
+    void setSize(const float& x, const float& y);
 
     // Collision related
     sf::Vector2f checkCollision(Hitbox* other);

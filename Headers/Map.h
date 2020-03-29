@@ -2,9 +2,17 @@
 #define MAP_H
 
 #include "Engine.h"
+#include "Hitbox.h"
 #include "../tinyxml2-master/tinyxml2.h"
 
 using namespace tinyxml2;
+
+struct MapObject{
+    sf::Vector2f positon;
+    sf::Vector2f size;
+    int type;
+    std::string name;
+};
 
 class Map {
 private:
@@ -25,20 +33,24 @@ private:
 
     // Starting positions
     sf::Vector2f playerStartingPosition;
-    std::vector<sf::Vector2f> enemiesStartingPositions;
-    std::vector<sf::Vector2f> enemiesSizes;
-    std::vector<int> enemiesTypes;
+    std::vector<MapObject> enemyData;
+    std::vector<MapObject> leverData;
+    std::vector<MapObject> doorData;
+    std::vector<MapObject> exitData;
 
     std::vector<std::vector<std::vector<sf::Sprite*>>> map;
+    sf::Sprite* background;
+    std::vector<Hitbox*> v_mapHitboxes;
 public:
-    Map(const char* filename);
+    Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranceIndex);
     ~Map();
 
     // Starting position getters
     sf::Vector2f getPlayerPosition();
-    std::vector<sf::Vector2f> getEnemyPositions();
-    std::vector<sf::Vector2f> getEnemySizes();
-    std::vector<int> getEnemyTypes();
+    std::vector<MapObject> getEnemyData();
+    std::vector<MapObject> getLeverData();
+    std::vector<MapObject> getDoorData();
+    std::vector<MapObject> getExitData();
 
     void render();
 };
