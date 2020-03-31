@@ -7,8 +7,7 @@ Lever::Lever()
 
     this->vf_position = {300,750};
     this->shape.setFillColor(sf::Color::Yellow);
-    this->shape.setSize(sf::Vector2f(70,70));
-    this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
+    this->setSize(sf::Vector2f(70,70));
     this->shape.setPosition(this->vf_position);
 }
 
@@ -54,7 +53,7 @@ void Lever::interact()
     }
 
     this->shape.setFillColor(
-        b_isActive ? sf::Color::Yellow : sf::Color::Blue
+        b_isActive ? sf::Color::Blue : sf::Color::Yellow
     );
 }
 

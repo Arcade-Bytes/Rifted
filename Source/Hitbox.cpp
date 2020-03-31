@@ -65,6 +65,13 @@ void Hitbox::setSize(const float& x, const float& y)
     this->shape.setOrigin(this->vf_size.x/2,this->vf_size.y/2);
 }
 
+void Hitbox::scale(sf::Vector2f scaleRatio)
+{
+    this->vf_size.x *= scaleRatio.x;
+    this->vf_size.y *= scaleRatio.y;
+    this->setSize(vf_size.x, vf_size.y);
+}
+
 // Collision related
 sf::Vector2f Hitbox::checkCollision(Hitbox* other)
 {
@@ -88,12 +95,10 @@ sf::Vector2f Hitbox::checkCollision(Hitbox* other)
         // Also corrects intersection sign for push direction
         if(intersection.x > intersection.y)
         {
-            intersection.y = 0.0f;
             if(distance.x > 0) intersection.x *= -1;
         }
         else
         {
-            intersection.x = 0.0f;
             if(distance.y > 0) intersection.y *= -1;
         }
     }
@@ -103,6 +108,12 @@ sf::Vector2f Hitbox::checkCollision(Hitbox* other)
 sf::FloatRect Hitbox::getBounds()
 {
     return this->shape.getGlobalBounds();
+}
+
+// Visual related
+void Hitbox::setColor(sf::Color color)
+{
+    this->shape.setFillColor(color);
 }
 
 void Hitbox::update()

@@ -2,6 +2,7 @@
 #define SHIELD_H
 
 #include "Engine.h"
+#include "Hitbox.h"
 
 class Shield {
 private:
@@ -24,6 +25,8 @@ public:
     void Parry(float& damageMultiplier); 
 
     void setPosition(const float& xpos, const float& ypos, bool facingRight);
+
+    void scale(sf::Vector2f scaleRatio);
 
     void update();
     void render();

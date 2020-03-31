@@ -81,6 +81,11 @@ void Shield::setPosition(const float& xpos, const float& ypos, bool facingRight)
     );
 }
 
+void Shield::scale(sf::Vector2f scaleRatio)
+{
+    this->shape.scale(scaleRatio);
+}
+
 void Shield::update()
 {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))

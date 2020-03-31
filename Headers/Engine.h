@@ -18,7 +18,11 @@ private:
     sf::RenderWindow* window;
     sf::Clock clock;
 
+    // Views
     sf::View view;
+
+    // Input
+    std::map<sf::Keyboard::Key, bool> pressedKeys;
 
     float delta;
 public:
@@ -31,6 +35,10 @@ public:
 
     // Views
     void setViewCenter(sf::Vector2f center);
+
+    // Input related
+    void resetPressedKeys();
+    bool getKeyPressed(sf::Keyboard::Key key);
 
     // Updates
     void updateDelta();

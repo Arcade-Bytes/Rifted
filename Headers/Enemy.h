@@ -35,6 +35,9 @@ public:
     bool isOnPlatform(const float& posx, const float& posy);
     bool nextMoveLeavesPlatform(const float& x, const float& y);
 
+    // Virtual override
+    void resizeItems(sf::Vector2f scaleRatio);
+
     void update();
     void render();
 };

@@ -24,6 +24,7 @@ void Player::getHurt(float& damage)
         //f_currentHealth = 0.001f;
     }
     f_regenerationDelta = 0.0f;
+    debugCounter = 0;
 }
 
 void Player::getHealed(float& healing)
@@ -57,6 +58,13 @@ void Player::regenerate()
     }
 }
 
+void Player::resizeItems(sf::Vector2f scaleRatio)
+{
+    this->sword->scale(scaleRatio);
+    this->hammer->scale(scaleRatio);
+    this->shield->scale(scaleRatio);
+}
+
 void Player::update()
 {
     // Update input
@@ -66,7 +74,7 @@ void Player::update()
         this->move(-1);
     if((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
     sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
-        this->jump(50);
+        this->jump(2000);
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::G))
         this->sword->startAttack();
@@ -81,7 +89,7 @@ void Player::update()
     this->updateMovement();
 
     // Update shield state
-    this->shield->setPosition(this->vf_position.x, this->vf_position.y, true);
+    this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);
     this->shield->update();
 
     // Update life regeneration

@@ -4,7 +4,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 {
     this->b_playerLeaves = false;
 
-    this->map = new Map(mapName, {16,16}, entranceIndex);
+    this->map = new Map(mapName, {32,32}, entranceIndex);
 
     // Player init
     this->player = player;
@@ -111,7 +111,7 @@ void Level::update()
     for(auto enemy: enemies)
         enemy->update();
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Z))
     {
         for(auto lever : levers)
             lever->interact();

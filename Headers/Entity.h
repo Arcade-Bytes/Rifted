@@ -13,15 +13,19 @@ protected:
     float f_maxHealth;
 
     bool b_isGrounded;
+    bool b_facingRight;
 
     Hitbox* hitbox;
 
     sf::Vector2f vf_position;
     MovementComponent* movement;
     sf::RectangleShape shape;
+    int debugCounter;
 public:
     Entity();
-    ~Entity();
+    virtual ~Entity();
+
+    void initSize(sf::Vector2f size);
 
     // Accesors
     sf::Vector2f getPosition();
@@ -34,8 +38,12 @@ public:
     void move(const float& xdir);
     void jump(const float& yforce);
 
+    void checkCollisions();
+
     void updateMovement();
     bool updateWeapon(Weapon* weapon);
+
+    virtual void resizeItems(sf::Vector2f scaleRatio) = 0;
 
     void update();
     void render();

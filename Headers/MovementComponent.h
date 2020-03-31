@@ -8,13 +8,13 @@ class MovementComponent {
 private:
     float f_acceleration;
     float f_deceleration;
-    float f_maxSpeed;
     float f_gravity;
     float f_gravityModifier;
+    sf::Vector2f vf_maxSpeed;
     sf::Vector2f vf_speed;
     sf::Vector2f* vf_position;
 public:
-    MovementComponent(sf::Vector2f* positionRef, const float& acceleration, const float& deceleration, const float& maxSpeed);
+    MovementComponent(sf::Vector2f* positionRef, const float& acceleration, const float& deceleration, sf::Vector2f maxSpeed);
     ~MovementComponent();
 
     bool isXStopped();
@@ -26,6 +26,7 @@ public:
     void stop();
     void stopX();
     void stopY();
+    void invertSpeed();
     void undoMove(const float& x, const float& y);
 
     void update();

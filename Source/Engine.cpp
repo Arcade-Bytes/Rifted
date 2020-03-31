@@ -34,6 +34,17 @@ void Engine::setViewCenter(sf::Vector2f center)
     this->window->setView(view);
 }
 
+// Input related
+void Engine::resetPressedKeys()
+{
+    this->pressedKeys.clear();
+}
+
+bool Engine::getKeyPressed(sf::Keyboard::Key key)
+{
+    return this->pressedKeys[key];
+}
+
 // Updates
 void Engine::updateDelta()
 {
@@ -42,6 +53,8 @@ void Engine::updateDelta()
 
 void Engine::updateSFMLEvents()
 {
+    this->resetPressedKeys();
+
     //std::cout << "Update SFML" << std::endl;
     sf::Event event;
     while (window->pollEvent(event)) {
@@ -49,6 +62,8 @@ void Engine::updateSFMLEvents()
             case sf::Event::Closed:
                 window->close();
                 break;
+            case sf::Event::KeyPressed:
+                this->pressedKeys[event.key.code] = true;
 
             default: break;
         }

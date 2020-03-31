@@ -34,7 +34,7 @@ void Enemy::updateAI()
 
     switch(state) {
         case EnemyAttacking:
-            //std::cout << "Attack Attack Attack!!!!" << std::endl;ç
+            //std::cout << "Attack Attack Attack!!!!" << std::endl;
             attack();
             break;
         case EnemyChasing:
@@ -68,6 +68,13 @@ void Enemy::updateAIState(const float& distance)
 bool Enemy::isOnPlatform(){}
 bool Enemy::isOnPlatform(const float& posx, const float& posy){}
 bool Enemy::nextMoveLeavesPlatform(const float& x, const float& y){}
+
+void Enemy::resizeItems(sf::Vector2f scaleRatio)
+{
+    this->weapon->scale(scaleRatio);
+    this->f_aggroDistance *= scaleRatio.x;
+    this->f_attackDistance *= scaleRatio.x;
+}
 
 void Enemy::update()
 {
