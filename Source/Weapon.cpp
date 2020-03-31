@@ -68,5 +68,5 @@ void Weapon::update()
 void Weapon::render()
 {
     if(b_isAttacking)
-        Engine::getInstance()->RenderShape(&shape);
+        Engine::getInstance()->renderDrawable(&shape);
 }

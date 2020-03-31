@@ -7,7 +7,7 @@ Game::Game()
 
 Game::~Game()
 {
-    
+    delete this->state;
 }
 
 void Game::updateDelta()
@@ -28,11 +28,11 @@ void Game::update()
 void Game::render()
 {
     Engine* engine = Engine::getInstance();
-    engine->WindowClear();
+    engine->windowClear();
 
 	this->state->render();
 
-    engine->WindowDisplay();
+    engine->windowDisplay();
 }
 
 void Game::run()

@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include "Engine.h"
+#include "Hitbox.h"
 #include "Weapon.h"
 #include "MovementComponent.h"
 
@@ -10,6 +11,10 @@ private:
 protected:
     float f_currentHealth;
     float f_maxHealth;
+
+    bool b_isGrounded;
+
+    Hitbox* hitbox;
 
     sf::Vector2f vf_position;
     MovementComponent* movement;
@@ -20,6 +25,11 @@ public:
 
     // Accesors
     sf::Vector2f getPosition();
+    void setPosition(const float&x, const float& y);
+    void setPosition(sf::Vector2f pos);
+    void setSize(sf::Vector2f size);
+
+    Hitbox* getHitbox();
 
     void move(const float& xdir);
     void jump(const float& yforce);

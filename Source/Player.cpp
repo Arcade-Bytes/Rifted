@@ -65,8 +65,7 @@ void Player::update()
         this->move(1);
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         this->move(-1);
-    if(this->movement->isYStopped() &&
-    (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
+    if((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
     sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
         this->jump(50);
 
@@ -109,8 +108,9 @@ void Player::update()
 
 void Player::render()
 {
-    Engine::getInstance()->RenderShape(&shape);
+    Engine::getInstance()->renderDrawable(&shape);
     this->sword->render();
     this->hammer->render();
     this->shield->render();
+    this->hitbox->render();
 }
