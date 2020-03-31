@@ -1,1 +1,42 @@
-<name>DOOM SLAYER</name><level>YES</level><secret>NO SECRET LMAO</secret>
+<player>
+    <maxhealth>100.000</maxhealth>
+    <health>100.000</health>
+    <coin>0</coin>
+    <kills>0</kills>
+    <score>0</score>
+    <deaths>0</deaths>
+    <upgrades>  
+        <health>0</health>
+    </upgrades>
+</player>
+<weapons>
+    <sword>
+        <upgrades>0</upgrades>
+    </sword>
+    <hammr>
+        <upgrades>-1</upgrades>
+    </hammr>
+    <shield>
+        <upgrades>-1</upgrades>
+    </shield>
+    <bow>
+        <upgrades>-1</upgrades>
+    </bow>
+</weapons>
+<level>
+    <name>DefaultName</name>
+    <door>0</door>
+</level>
+<secrets>
+    <1></1>
+</secrets>
+<level1>
+    <coins>
+        <1></1>
+        <2></2>
+    </coins>
+    <levers>
+        <1></1>
+        <2></2>
+    </levers>
+</level1>

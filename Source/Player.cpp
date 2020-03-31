@@ -75,12 +75,15 @@ void Player::update()
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::H))
         this->hammer->startAttack();
     /***XML TEST***/
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F6))
     {
-        
+        /*
         std::cout << ftl::LoadByKey("name") <<'\n';
         std::cout << ftl::LoadByKey("level") <<'\n';
         std::cout << ftl::LoadByKey("secret") <<'\n';
+        */
+       std::string bully[] = {"player","upgrades","health"};
+       std::cout << ftl::LoadByKey(bully) << '\n';
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::O))
     {
