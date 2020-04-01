@@ -4,10 +4,11 @@ Weapon::Weapon(const float& cooldown, const float& timeToAttack, const float& xs
     : f_attackCooldown(cooldown), f_attackTime(timeToAttack)
 {
     b_isAttacking = false;
-
+    
     this->shape.setFillColor(sf::Color(55,55,55));
     this->shape.setSize(sf::Vector2f(xsize,ysize));
     this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
+    this->i_upgradeLevel = -1;
 }
 
 Weapon::~Weapon()
@@ -69,4 +70,14 @@ void Weapon::render()
 {
     if(b_isAttacking)
         Engine::getInstance()->renderDrawable(&shape);
+}
+
+int Weapon::getUpgradeLvl()
+{
+    return this->i_upgradeLevel;
+}
+
+void Weapon::setUpgradeLvl(int i_lvl)
+{
+    this->i_upgradeLevel = i_lvl;
 }

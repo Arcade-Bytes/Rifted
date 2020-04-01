@@ -12,6 +12,8 @@ private:
     float f_drawn;
     float f_parryHeal;
 
+    int i_upgradeLvl;
+
     // FALSE FACADE!!!!
     sf::RectangleShape shape;
 public:
@@ -24,6 +26,15 @@ public:
     void Parry(float& damageMultiplier); 
 
     void setPosition(const float& xpos, const float& ypos, bool facingRight);
+
+    /**
+     * Returns de upgrade level (int) of the shield
+     **/
+    int getUpgradeLvl();
+    /**
+     * Sets the upgrade level of the shield
+     **/
+    void setUpgradeLvl(int i_lvl);
 
     void update();
     void render();

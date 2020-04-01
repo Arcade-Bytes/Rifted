@@ -1,10 +1,29 @@
+#include <unistd.h>
+#include <limits.h>
 #include <iostream>
 #include <string.h>
-#include "tinyxml2.h"
+#include "../tinyxml2-master/tinyxml2.h"
 #include "Player.h"
 
-#define SAVE_FILE   "../Rifted/ds000002.sl"
+#define SAVE_FILE   "ds000002.sl"
 #define EXTRA_FILE  "ds000003.sl"
+
+#define SAVE "savefile"
+#define PLAYER "player"
+#define HEALTH "health"
+#define MAXHEALTH "maxhealth"
+#define COINS "coin"
+#define DEATHS "deaths"
+#define KILLS "kills"
+#define UPG "upgrades"
+#define LVL "level"
+#define LVLNAME "name"
+#define DOOR "door"
+#define SHIELD "shield"
+#define HMMR "hammr"
+#define BOW "bow"
+#define SWD "sword"
+#define WPN "weapons"
 
 #define LEVEL1  ""
 
@@ -49,25 +68,24 @@ namespace ftl{
      **/
     std::string LoadByKey(std::string s_key[]);
     /**
-     * NOT IMPLEMENTED
-     * 
+     * Sets to true (1) a picked up coin given the level and
+     * the coin ID 
      * 
      **/
     void PickedCoin(std::string s_level, int i_CoinId);
     /**
-     * NOT IMPLEMENTED
-     * 
+     * Switches a lever, given the level and the lever ID 
      * 
      **/
-    void ActivatedLever(std::string s_level, int i_LeverId);    
+    void LeverSwitch(std::string s_level, int i_LeverId);    
     /**
-     * NOT IMPLEMENTED
+     * ADD DESCRIPTION
      * 
      * 
      **/ 
     void SaveGame(Player &player);
     /**
-     * NOT IMPLEMENTED
+     * ADD DESCRIPTION
      * 
      * 
      **/

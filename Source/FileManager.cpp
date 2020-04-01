@@ -1,5 +1,3 @@
-
-#include <array>
 #include "FileManager.h"
 
 using namespace tinyxml2;   
@@ -60,21 +58,110 @@ namespace ftl{
         return tag->ToElement()->GetText();
     }
 
-    void SaveGame()
+    void PickedCoin(std::string s_level, int i_CoinId)
     {
+        XMLDocument xml_doc;
+        OpenSaveFile(xml_doc);       
+        xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement(std::to_string(i_CoinId).c_str())->SetText("1");
+        CloseSaveFile(xml_doc);
+    }
+
+    void LeverSwitch(std::string s_level, int i_LeverId)
+    {
+        XMLDocument xml_doc;
+        OpenSaveFile(xml_doc);       
+        std::string s_prev = xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( std::to_string(i_LeverId).c_str())->GetText();
+        if(std::atoi(s_prev.c_str()))
+            xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( std::to_string(i_LeverId).c_str())->SetText("1");
+        else
+            xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( std::to_string(i_LeverId).c_str())->SetText("0");
+        CloseSaveFile(xml_doc);  
+    }
+
+    void SaveGame(Player &player)
+    {
+        //coins
+        XMLDocument xml_doc;
+        OpenSaveFile(xml_doc);
+        //coins
+        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(COINS)->SetText(player.getMony().c_str());
+        xml_doc.PrintError();
+        //health
+        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(HEALTH)->SetText(player.getHealth().c_str());
+        //maxhealth
+        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(MAXHEALTH)->SetText(player.getMaxHealth().c_str());
+        //kills
+        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(KILLS)->SetText(player.getKills().c_str());
+        //deaths?
+        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(DEATHS)->SetText(player.getDeaths().c_str());
+        //score?
+        //  xml_doc.FirstChildElement(PLAYER)->FirstChildElement()->SetText();
+        //upgrades
+        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(UPG)->FirstChildElement(HEALTH)->SetText(player.getHealthUpg().c_str());
+        //level
+        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(LVL)->FirstChildElement(LVLNAME)->SetText(player.getLevel().c_str());
+        //door
+        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(LVL)->FirstChildElement(DOOR)->SetText(player.getDoor().c_str());
+        //weapons
+        //shield
+        xml_doc.FirstChildElement(WPN)->FirstChildElement(SHIELD)->FirstChildElement(UPG)->SetText(player.getShieldLvl().c_str());
+        //hammr
+        xml_doc.FirstChildElement(WPN)->FirstChildElement(HMMR)->FirstChildElement(UPG)->SetText(player.getHammrLvl().c_str());
+        //bow
+        xml_doc.FirstChildElement(WPN)->FirstChildElement(BOW)->FirstChildElement(UPG)->SetText(player.getBowLvl().c_str());
+        //sword?
+        xml_doc.FirstChildElement(WPN)->FirstChildElement(SWD)->FirstChildElement(UPG)->SetText(player.getSwordLvl().c_str());
+
+        CloseSaveFile(xml_doc);
+
 
     }
 
-    void LoadGame()
+    void LoadGame(Player &player)
     {
+        XMLDocument xml_doc;
+        OpenSaveFile(xml_doc);
+        //coins
+        player.setMony(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(COINS)->GetText()));
+        //health
+        player.setHealth(std::stof(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(HEALTH)->GetText()));
+        //maxhealth
+        player.setMaxHealth(std::stof(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(MAXHEALTH)->GetText()));        
+        //kills
+        player.setKills(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(KILLS)->GetText()));        
+        //deaths?
+        player.setDeaths(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(DEATHS)->GetText()));        
+        //upgrades
+        player.setHealthUpg(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(UPG)->FirstChildElement(HEALTH)->GetText()));        
+        //level
+        player.setLevel(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(LVL)->FirstChildElement(LVLNAME)->GetText());        
+        //door
+        player.setDoor(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(LVL)->FirstChildElement(DOOR)->GetText()));        
+        //weapons
+        //shield
+        player.setShieldLvl(std::stoi(xml_doc.FirstChildElement(WPN)->FirstChildElement(SHIELD)->FirstChildElement(UPG)->GetText()));
+        //hammr
+        player.setHammrLvl(std::stoi(xml_doc.FirstChildElement(WPN)->FirstChildElement(HMMR)->FirstChildElement(UPG)->GetText()));
+        //bow
+        player.setBowLvl(std::stoi(xml_doc.FirstChildElement(WPN)->FirstChildElement(BOW)->FirstChildElement(UPG)->GetText()));
+        //sword?
+        player.setSwordLvl(std::stoi(xml_doc.FirstChildElement(WPN)->FirstChildElement(SWD)->FirstChildElement(UPG)->GetText()));
+        CloseSaveFile(xml_doc);
         
     }
 
 
     void OpenSaveFile(XMLDocument& xml_saveFile){
-        if(xml_saveFile.LoadFile(SAVE_FILE) != 0)
+        char cwd[PATH_MAX];
+        if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Current working dir: %s\n", cwd);
+        }
+        int i_error = xml_saveFile.LoadFile("ds000002.sl");
+        
+        if( i_error != 0)
         {
             std::cerr<< "error opening save file\n";
+            xml_saveFile.PrintError();
             exit(EXIT_FAILURE);
         }
 

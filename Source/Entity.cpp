@@ -8,6 +8,7 @@ Entity::Entity()
     this->hitbox = new Hitbox(PLAYER, 0,0, 0,0);
     this->setSize(sf::Vector2f(50,50));
     this->setPosition(350,350);
+
 }
 
 Entity::~Entity()
@@ -108,4 +109,24 @@ void Entity::update()
 void Entity::render()
 {
     Engine::getInstance()->renderDrawable(&shape);
+}
+
+std::string Entity::getMaxHealth()
+{
+    return std::to_string(this->f_maxHealth).c_str();
+}
+
+std::string Entity::getHealth()
+{
+    return std::to_string(this->f_currentHealth).c_str();
+}
+
+void Entity::setHealth(float f_health)
+{
+    this->f_currentHealth = f_health;
+}
+
+void Entity::setMaxHealth(float f_maxHealth)
+{
+    this->f_maxHealth = f_maxHealth;
 }
