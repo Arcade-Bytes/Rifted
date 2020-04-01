@@ -16,6 +16,9 @@ protected:
     bool b_isGrounded;
     bool b_facingRight;
 
+    int i_wallCollision;
+    int i_nearPlatformEnd;
+
     float f_jumpForce;
 
     std::string s_currentAnimation;

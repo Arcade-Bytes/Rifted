@@ -4,10 +4,13 @@ Entity::Entity()
 {
     this->shape.setSize(sf::Vector2f(50,50)); // Default / Base size
 
+    this->i_wallCollision = this->i_nearPlatformEnd = 0;
     this->b_isGrounded = false;
     this->b_facingRight = true;
+
     this->f_jumpForce = 500.0f;
-    this->movement = new MovementComponent(&this->vf_position, 400.0f, 370.33f, sf::Vector2f(400.0f, 900.0f));
+    
+    this->movement = new MovementComponent(&this->vf_position, 400.0f, 450.33f, sf::Vector2f(400.0f, 900.0f));
     this->hitbox = new Hitbox(PLAYER, 0,0, 0,0);
     this->animation = NULL;
 
@@ -90,8 +93,8 @@ void Entity::jump(const float& xnormalized, const float& ynormalized)
 
 void Entity::checkCollisions()
 {
-    // Status info
-    bool fallingLeft = false, fallingRight = false, collidingLeft = false, collidingRight = false;
+    // Status info reset
+    this->i_wallCollision = this->i_nearPlatformEnd = 0;
 
     this->b_isGrounded = false;
     std::vector<Hitbox*>* hitboxes = Hitbox::getAllHitboxes();
@@ -125,8 +128,8 @@ void Entity::checkCollisions()
                         // Stepping near the platform corner
                         if(abs(intersection.x) <= this->getSize().x)
                         {
-                            if(intersection.x < 0) fallingLeft = true;
-                            else                   fallingRight = true;
+                            if(intersection.x < 0) i_nearPlatformEnd = -1;
+                            else                   i_nearPlatformEnd = 1;
                         } 
                     }
                     // Colliding with the roof
@@ -140,17 +143,17 @@ void Entity::checkCollisions()
                     this->movement->undoMove(1,0);
                     this->movement->stopX();
 
-                    if(intersection.x > 0) collidingLeft = true;
-                    else                   collidingRight = true;
+                    if(intersection.x > 0) i_wallCollision = -1;
+                    else                   i_wallCollision = 1;
                 }
             }
         }
-        //printf("Status is %d, %d, %d, %d\n", fallingLeft, fallingRight, collidingLeft, collidingRight);
     }
 }
 
 void Entity::updateAnimation()
 {
+    this->s_currentAnimation = "idle";
     if(abs(this->movement->getSpeed().x) > 0)
     {
         if(this->b_facingRight) this->s_currentAnimation = "walking_right";
@@ -158,7 +161,8 @@ void Entity::updateAnimation()
     }
     else
     {
-        this->s_currentAnimation = "idle";
+        if(this->b_facingRight) this->s_currentAnimation = "idle";
+        else                    this->s_currentAnimation = "idle";
     }
 
     this->animation->playAnimation(this->s_currentAnimation);

@@ -18,11 +18,10 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     std::vector<MapObject> enemyData = this->map->getEnemyData();
     for(auto data : enemyData)
     {
-        /*
         Enemy* enemy = new Enemy(this->player);
         enemy->setSize(data.size);
         enemy->setPosition(data.positon);
-        this->enemies.push_back(enemy);*/
+        this->enemies.push_back(enemy);
     }
 
     // Doors init

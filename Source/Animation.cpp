@@ -15,6 +15,7 @@ Animation::Animation(sf::RectangleShape& shape, std::vector<Frame*> frames, bool
 
 Animation::~Animation()
 {
+    
 }
 
 bool Animation::getLooped()

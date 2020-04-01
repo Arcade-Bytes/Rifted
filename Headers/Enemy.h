@@ -31,10 +31,6 @@ public:
     void updateAI();
     void updateAIState(const float& distance);
 
-    bool isOnPlatform();
-    bool isOnPlatform(const float& posx, const float& posy);
-    bool nextMoveLeavesPlatform(const float& x, const float& y);
-
     // Virtual override
     void resizeItems(sf::Vector2f scaleRatio);
 

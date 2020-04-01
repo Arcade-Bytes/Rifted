@@ -55,7 +55,6 @@ void Engine::updateSFMLEvents()
 {
     this->resetPressedKeys();
 
-    //std::cout << "Update SFML" << std::endl;
     sf::Event event;
     while (window->pollEvent(event)) {
         switch (event.type) {
@@ -64,6 +63,7 @@ void Engine::updateSFMLEvents()
                 break;
             case sf::Event::KeyPressed:
                 this->pressedKeys[event.key.code] = true;
+                break;
 
             default: break;
         }

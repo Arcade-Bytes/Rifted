@@ -5,7 +5,7 @@ Enemy::Enemy(Player* playerRef)
 {
     this->player = playerRef;
     this->b_patrolLeft = false;
-    this->f_aggroDistance = 300;
+    this->f_aggroDistance = 150;
     this->f_attackDistance = 50;
     this->b_mutexAttack = false;
 
@@ -34,17 +34,18 @@ void Enemy::updateAI()
 
     switch(state) {
         case EnemyAttacking:
-            //std::cout << "Attack Attack Attack!!!!" << std::endl;
             attack();
             break;
         case EnemyChasing:
-            //std::cout << "Hey youuuuu!!!" << std::endl;
-            this->move(diff.x>0 ? 1 : -1);
+            // Move only if there is no
+            if((diff.x>0 && this->i_nearPlatformEnd <= 0) || (diff.x<0 && this->i_nearPlatformEnd >= 0))
+                this->move(diff.x>0 ? 1 : -1);
             break;
         case EnemyPatrolling:
-            //std::cout << "Patrolling... ()" << std::endl;
+            if(this->i_nearPlatformEnd > 0 || this->i_wallCollision > 0) b_patrolLeft = true;
+            if(this->i_nearPlatformEnd < 0 || this->i_wallCollision < 0) b_patrolLeft = false;
+
             this->move(b_patrolLeft ? -1 : 1);
-            //if(this->movement->isXStopped()) b_patrolLeft = !b_patrolLeft;
             break;
     }
 }
@@ -65,10 +66,6 @@ void Enemy::updateAIState(const float& distance)
     }
 }
 
-bool Enemy::isOnPlatform(){}
-bool Enemy::isOnPlatform(const float& posx, const float& posy){}
-bool Enemy::nextMoveLeavesPlatform(const float& x, const float& y){}
-
 void Enemy::resizeItems(sf::Vector2f scaleRatio)
 {
     this->weapon->scale(scaleRatio);
@@ -88,4 +85,25 @@ void Enemy::render()
 {
     Engine::getInstance()->renderDrawable(&shape);
     this->weapon->render();
+
+    if(false)
+    {
+        sf::CircleShape aggroArea(this->f_aggroDistance);
+        aggroArea.setFillColor(sf::Color(0, 0, 0, 0));
+        aggroArea.setOutlineThickness(5);
+        aggroArea.setOutlineColor(sf::Color(170, 50, 0));
+        aggroArea.setPosition(this->getPosition());
+        aggroArea.setOrigin(this->f_aggroDistance,this->f_aggroDistance);
+
+        sf::CircleShape attackArea(this->f_attackDistance);
+        attackArea.setFillColor(sf::Color(0, 0, 0, 0));
+        attackArea.setOutlineThickness(5);
+        attackArea.setOutlineColor(sf::Color(230, 0, 0));
+        attackArea.setPosition(this->getPosition());
+        attackArea.setOrigin(this->f_attackDistance,this->f_attackDistance);
+
+        Engine* engine = Engine::getInstance();
+        engine->renderDrawable(&aggroArea);
+        engine->renderDrawable(&attackArea);
+    }
 }
