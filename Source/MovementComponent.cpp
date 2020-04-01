@@ -18,6 +18,11 @@ MovementComponent::~MovementComponent()
 
 }
 
+sf::Vector2f MovementComponent::getSpeed()
+{
+    return this->vf_speed;
+}
+
 bool MovementComponent::isXStopped()
 {
     return (this->vf_speed.x == 0.0f);

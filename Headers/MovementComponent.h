@@ -17,6 +17,7 @@ public:
     MovementComponent(sf::Vector2f* positionRef, const float& acceleration, const float& deceleration, sf::Vector2f maxSpeed);
     ~MovementComponent();
 
+    sf::Vector2f getSpeed();
     bool isXStopped();
     bool isYStopped();
 

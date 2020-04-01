@@ -5,6 +5,7 @@
 #include "Hitbox.h"
 #include "Weapon.h"
 #include "MovementComponent.h"
+#include "AnimationComponent.h"
 
 class Entity {
 private:
@@ -17,10 +18,15 @@ protected:
 
     float f_jumpForce;
 
-    Hitbox* hitbox;
+    std::string s_currentAnimation;
 
     sf::Vector2f vf_position;
+
+    Hitbox* hitbox;
     MovementComponent* movement;
+    AnimationComponent* animation;
+
+    sf::Texture* spriteTexture;
     sf::RectangleShape shape;
 public:
     Entity();
@@ -42,6 +48,7 @@ public:
 
     void checkCollisions();
 
+    void updateAnimation();
     void updateMovement();
     bool updateWeapon(Weapon* weapon);
 

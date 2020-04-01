@@ -2,7 +2,6 @@
 target_sources(libModulos PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Engine.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Game.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Hitbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/State.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/GameState.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/MainMenuState.cpp"
@@ -15,9 +14,12 @@ target_sources(libModulos PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/BreakableDoor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/LevelExit.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Map.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Animation.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Weapon.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Shield.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/MovementComponent.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../Source/AnimationComponent.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Hitbox.cpp"
 )
 
 #Y donde se encuentran los .h

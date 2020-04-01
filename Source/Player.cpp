@@ -6,6 +6,9 @@ Player::Player()
     this->sword = new Weapon(0.3f, 0.1f, 40, 60);
     this->hammer = new Weapon(1.0f, 0.8f, 60, 70);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
+
+    this->animation = new AnimationComponent(this->shape);
+    this->animation->loadAnimationsFromJSON("animations/pengo.json");
 }
 
 Player::~Player()
@@ -93,6 +96,9 @@ void Player::update()
 
     // Update life regeneration
     this->regenerate();
+
+    // Update animation
+    this->updateAnimation();
 }
 
 void Player::render()
@@ -101,5 +107,5 @@ void Player::render()
     this->sword->render();
     this->hammer->render();
     this->shield->render();
-    this->hitbox->render();
+    //this->hitbox->render();
 }

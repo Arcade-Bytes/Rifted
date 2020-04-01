@@ -8,7 +8,7 @@ Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const fl
     this->vf_position = {xpos,ypos};
     this->vf_size = {xsize,ysize};
 
-    this->shape.setFillColor(sf::Color(200,200,200,150));
+    this->shape.setFillColor(sf::Color(200,200,200,100));
     this->shape.setSize(this->vf_size);
     this->shape.setOrigin(this->vf_size.x/2,this->vf_size.y/2);
     this->shape.setPosition(this->vf_position);

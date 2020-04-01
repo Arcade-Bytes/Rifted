@@ -9,15 +9,20 @@ Entity::Entity()
     this->f_jumpForce = 500.0f;
     this->movement = new MovementComponent(&this->vf_position, 400.0f, 370.33f, sf::Vector2f(400.0f, 900.0f));
     this->hitbox = new Hitbox(PLAYER, 0,0, 0,0);
+    this->animation = NULL;
 
-    this->shape.setFillColor(sf::Color::White);
+    this->spriteTexture = new sf::Texture();
+    this->spriteTexture->loadFromFile("resources/snobees.png");
+    this->shape.setTexture(spriteTexture);
     this->initSize(sf::Vector2f(50,50));
     this->setPosition(350,350);
 }
 
 Entity::~Entity()
 {
-    
+    delete this->movement;
+    if(this->animation) delete this->animation;
+    delete this->spriteTexture;
 }
 
 void Entity::initSize(sf::Vector2f size)
@@ -56,6 +61,7 @@ void Entity::setSize(sf::Vector2f size)
         size.y / this->shape.getSize().y
     };
     this->initSize(size);
+
     this->movement->resize(ratio);
     this->f_jumpForce *= ratio.y;
     this->resizeItems(ratio);
@@ -141,6 +147,21 @@ void Entity::checkCollisions()
         }
         //printf("Status is %d, %d, %d, %d\n", fallingLeft, fallingRight, collidingLeft, collidingRight);
     }
+}
+
+void Entity::updateAnimation()
+{
+    if(abs(this->movement->getSpeed().x) > 0)
+    {
+        if(this->b_facingRight) this->s_currentAnimation = "walking_right";
+        else                    this->s_currentAnimation = "walking_left";
+    }
+    else
+    {
+        this->s_currentAnimation = "idle";
+    }
+
+    this->animation->playAnimation(this->s_currentAnimation);
 }
 
 void Entity::updateMovement()
