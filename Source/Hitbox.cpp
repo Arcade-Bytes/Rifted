@@ -91,16 +91,9 @@ sf::Vector2f Hitbox::checkCollision(Hitbox* other)
             abs(distance.y) - thisHalfHeight - otherHalfHeight
         };
 
-        // Checks for most important axis and nullifies the other's effect
-        // Also corrects intersection sign for push direction
-        if(intersection.x > intersection.y)
-        {
-            if(distance.x > 0) intersection.x *= -1;
-        }
-        else
-        {
-            if(distance.y > 0) intersection.y *= -1;
-        }
+        // Corrects intersection sign for push direction
+        if(distance.x > 0) intersection.x *= -1;
+        if(distance.y > 0) intersection.y *= -1;
     }
     return intersection;
 }

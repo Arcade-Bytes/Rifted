@@ -6,7 +6,8 @@ Entity::Entity()
 
     this->b_isGrounded = false;
     this->b_facingRight = true;
-    this->movement = new MovementComponent(&this->vf_position, 400.0f, 300.33f, sf::Vector2f(300.0f, 800.0f));
+    this->f_jumpForce = 500.0f;
+    this->movement = new MovementComponent(&this->vf_position, 400.0f, 370.33f, sf::Vector2f(400.0f, 900.0f));
     this->hitbox = new Hitbox(PLAYER, 0,0, 0,0);
 
     this->shape.setFillColor(sf::Color::White);
@@ -43,6 +44,11 @@ void Entity::setPosition(sf::Vector2f pos)
     this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
 }
 
+sf::Vector2f Entity::getSize()
+{
+    return this->hitbox->getSize();
+}
+
 void Entity::setSize(sf::Vector2f size)
 {
     sf::Vector2f ratio = {
@@ -50,6 +56,8 @@ void Entity::setSize(sf::Vector2f size)
         size.y / this->shape.getSize().y
     };
     this->initSize(size);
+    this->movement->resize(ratio);
+    this->f_jumpForce *= ratio.y;
     this->resizeItems(ratio);
 }
 
@@ -64,18 +72,21 @@ void Entity::move(const float& xdir)
     this->b_facingRight = (xdir >= 0);
 }
 
-void Entity::jump(const float& yforce)
+void Entity::jump(const float& xnormalized, const float& ynormalized)
 {
     if(this->b_isGrounded)
     {
         this->movement->stopY();
-        this->movement->jump(yforce);
+        this->movement->jump(f_jumpForce*xnormalized, f_jumpForce*ynormalized);
         this->b_isGrounded = false;
     }
 }
 
 void Entity::checkCollisions()
 {
+    // Status info
+    bool fallingLeft = false, fallingRight = false, collidingLeft = false, collidingRight = false;
+
     this->b_isGrounded = false;
     std::vector<Hitbox*>* hitboxes = Hitbox::getAllHitboxes();
     for(auto platform : *hitboxes)
@@ -88,26 +99,47 @@ void Entity::checkCollisions()
             if(intersection.x != 0.0f || intersection.y != 0.0f)
             {
                 float difference = abs(intersection.x - intersection.y);
-                if(difference <= 5)
+                //if(difference <= 50) printf("Oh no there is %f difference (%f - %f)\n", difference, intersection.x, intersection.y);
+                if(difference <= 10)
                 {
-                    this->movement->undoMove(1,1);
+                    /*this->movement->undoMove(1,1);
+                    this->movement->stop();
                     this->vf_position.x += intersection.x;
-                    this->vf_position.y += intersection.y;
+                    this->vf_position.y += intersection.y;*/
+                    printf("Corner!\n");
                 }
-                if(intersection.y > intersection.x)
+                if(abs(intersection.y) < abs(intersection.x))
                 {
                     this->movement->undoMove(0,1);
                     this->movement->stopY();
 
-                    if(intersection.y < 0) this->b_isGrounded = true;
+                    // Stepping on a platform
+                    if(intersection.y < 0) {
+                        this->b_isGrounded = true;
+                        // Stepping near the platform corner
+                        if(abs(intersection.x) <= this->getSize().x)
+                        {
+                            if(intersection.x < 0) fallingLeft = true;
+                            else                   fallingRight = true;
+                        } 
+                    }
+                    // Colliding with the roof
+                    else
+                    {
+                        this->vf_position.y += intersection.y*0.1;
+                    }
                 }
                 else
                 {
                     this->movement->undoMove(1,0);
                     this->movement->stopX();
+
+                    if(intersection.x > 0) collidingLeft = true;
+                    else                   collidingRight = true;
                 }
             }
         }
+        //printf("Status is %d, %d, %d, %d\n", fallingLeft, fallingRight, collidingLeft, collidingRight);
     }
 }
 

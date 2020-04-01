@@ -24,7 +24,6 @@ void Player::getHurt(float& damage)
         //f_currentHealth = 0.001f;
     }
     f_regenerationDelta = 0.0f;
-    debugCounter = 0;
 }
 
 void Player::getHealed(float& healing)
@@ -74,7 +73,7 @@ void Player::update()
         this->move(-1);
     if((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
     sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
-        this->jump(2000);
+        this->jump(0,1);
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::G))
         this->sword->startAttack();

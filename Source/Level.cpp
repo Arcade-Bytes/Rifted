@@ -4,10 +4,12 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 {
     this->b_playerLeaves = false;
 
-    this->map = new Map(mapName, {32,32}, entranceIndex);
+    sf::Vector2i tileSize = {32,32};
+    this->map = new Map(mapName, tileSize, entranceIndex);
 
     // Player init
     this->player = player;
+    this->player->setSize(sf::Vector2f(tileSize.x*2,tileSize.y*2));
     this->player->setPosition(
         this->map->getPlayerPosition()
     );
@@ -17,8 +19,8 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     for(auto data : enemyData)
     {
         Enemy* enemy = new Enemy(this->player);
-        enemy->setPosition(data.positon);
         enemy->setSize(data.size);
+        enemy->setPosition(data.positon);
         this->enemies.push_back(enemy);
     }
 
@@ -27,8 +29,8 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     for(auto data : doorData)
     {
         Door* door = new Door();
-        door->setPosition(data.positon);
         door->setSize(data.size);
+        door->setPosition(data.positon);
         door->setVinculationId(data.name);
         this->doors.push_back(door);
     }
@@ -38,8 +40,8 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     for(auto data : leverData)
     {
         Lever* lever = new Lever();
-        lever->setPosition(data.positon);
         lever->setSize(data.size);
+        lever->setPosition(data.positon);
 
         // Vinculate to doors
         for(auto door : doors)
@@ -59,8 +61,8 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
         int entrance = atoi(index.c_str());
         
         LevelExit* exit = new LevelExit(mapFile, entrance);
-        exit->setPosition(data.positon);
         exit->setSize(data.size);
+        exit->setPosition(data.positon);
         this->exits.push_back(exit);
     }
 }

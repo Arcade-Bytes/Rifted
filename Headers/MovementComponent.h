@@ -21,13 +21,15 @@ public:
     bool isYStopped();
 
     void move(const float& xdir);
-    void jump(const float& yforce);
+    void jump(const float& xforce, const float& yforce);
 
     void stop();
     void stopX();
     void stopY();
     void invertSpeed();
     void undoMove(const float& x, const float& y);
+
+    void resize(sf::Vector2f scaleRatio);
 
     void update();
     void render();

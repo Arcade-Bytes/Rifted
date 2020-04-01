@@ -15,12 +15,13 @@ protected:
     bool b_isGrounded;
     bool b_facingRight;
 
+    float f_jumpForce;
+
     Hitbox* hitbox;
 
     sf::Vector2f vf_position;
     MovementComponent* movement;
     sf::RectangleShape shape;
-    int debugCounter;
 public:
     Entity();
     virtual ~Entity();
@@ -31,12 +32,13 @@ public:
     sf::Vector2f getPosition();
     void setPosition(const float&x, const float& y);
     void setPosition(sf::Vector2f pos);
+    sf::Vector2f getSize();
     void setSize(sf::Vector2f size);
 
     Hitbox* getHitbox();
 
     void move(const float& xdir);
-    void jump(const float& yforce);
+    void jump(const float& xnormalized, const float& ynormalized);
 
     void checkCollisions();
 
