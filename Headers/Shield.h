@@ -2,6 +2,7 @@
 #define SHIELD_H
 
 #include "Engine.h"
+#include "Hitbox.h"
 
 class Shield {
 private:
@@ -27,13 +28,9 @@ public:
 
     void setPosition(const float& xpos, const float& ypos, bool facingRight);
 
-    /**
-     * Returns de upgrade level (int) of the shield
-     **/
+    void scale(sf::Vector2f scaleRatio);
+    
     int getUpgradeLvl();
-    /**
-     * Sets the upgrade level of the shield
-     **/
     void setUpgradeLvl(int i_lvl);
 
     void update();

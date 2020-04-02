@@ -156,7 +156,7 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
             }
             else if(strcmp(name, "ZonasLetales") == 0)
             {
-                Hitbox* hitbox = new Hitbox(PLATFORM, size.x, size.y, position.x, position.y);
+                Hitbox* hitbox = new Hitbox(LETHAL, size.x, size.y, position.x, position.y, 1000);
                 this->v_mapHitboxes.push_back(hitbox);
             }
             else if(strcmp(name, "Palancas") == 0)

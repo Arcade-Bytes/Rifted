@@ -27,92 +27,38 @@ private:
     Weapon* bow;
     Shield* shield;
 public:
-    Player();
+    Player(const float& maxHealth);
     ~Player();
 
     void getHurt(float& damage);
     void getHealed(float& healing);
     void regenerate();
 
-    /**
-     * Returns how much money the player has
-     **/
+    // Virtual override
+    bool checkObstacle(Hitbox* hitbox);
+    bool checkInteraction(Hitbox* hitbox);
+    void resizeItems(sf::Vector2f scaleRatio);
+
+    // Save data getters and setters
     std::string getMony();
-    /**
-     * Returns how many souls the player has reaped
-     **/
     std::string getKills();
-    /**
-     * Returns how many times the player has DIED
-     **/
     std::string getDeaths();
-    /**
-     * Returns how much the health has been upgraded
-     **/
     std::string getHealthUpg();
-    /**
-     * Returns the current level the player is in
-     **/
-    std::string getLevel();
-    /**
-     * Returns the door the player entered the level from
-     **/
-    std::string getDoor();
-    /**
-     * Returns the upgrade level of the HÄMMRR
-     **/
+    std::string getLevel(); // Level name
+    std::string getDoor();  // Level door
     std::string getHammrLvl();
-    /**
-     * Returns the upgrade level of the sword
-     **/
     std::string getSwordLvl();
-    /**
-     * Returns the upgrade level of the shield
-     **/
     std::string getShieldLvl();
-    /**
-     * Returns the upgrade level of the bow
-     **/
     std::string getBowLvl();
-    /**
-     * Sets how much money the player has
-     **/
     void setMony(int i_money);
-    /**
-     * Sets how many souls the player has reaped
-     **/
     void setKills(int i_kills);
-    /**
-     * Sets how many times the player has DIED
-     **/
     void setDeaths(int i_deaths);
-    /**
-     * Sets how much the health has been upgraded
-     **/
     void setHealthUpg(int i_healthupg);
-    /**
-     * Sets the current level the player is in
-     **/
     void setLevel(std::string s_levelName);
-    /**
-     * Sets the door the player entered the level from
-     **/
     void setDoor(int i_door);
-    /**
-     * Sets the upgrade level of the HÄMMRR
-     **/
     void setHammrLvl(int i_lvl);
-    /**
-     * Sets the upgrade level of the sword
-     **/
     void setSwordLvl(int i_lvl);
-    /**
-     * Sets the upgrade level of the shield
-     **/
     void setShieldLvl(int i_lvl);
-    /**
-     * Sets the upgrade level of the bow
-     **/
     void setBowLvl(int i_lvl);
 
     void update();

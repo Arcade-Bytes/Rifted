@@ -1,15 +1,15 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Player* playerRef)
-    : Entity()
+Enemy::Enemy(const float& maxHealth, Player* playerRef)
+    : Entity(maxHealth)
 {
     this->player = playerRef;
     this->b_patrolLeft = false;
-    this->f_aggroDistance = 300;
+    this->f_aggroDistance = 150;
     this->f_attackDistance = 50;
     this->b_mutexAttack = false;
 
-    this->weapon = new Weapon(0.3f, 0.1f, 40, 60);
+    this->weapon = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 10, false);
 
     this->shape.setFillColor(sf::Color::Red);
 }
@@ -34,17 +34,18 @@ void Enemy::updateAI()
 
     switch(state) {
         case EnemyAttacking:
-            //std::cout << "Attack Attack Attack!!!!" << std::endl;ç
             attack();
             break;
         case EnemyChasing:
-            //std::cout << "Hey youuuuu!!!" << std::endl;
-            this->move(diff.x>0 ? 1 : -1);
+            // Move only if there is no
+            if((diff.x>0 && this->i_nearPlatformEnd <= 0) || (diff.x<0 && this->i_nearPlatformEnd >= 0))
+                this->move(diff.x>0 ? 1 : -1);
             break;
         case EnemyPatrolling:
-            //std::cout << "Patrolling... ()" << std::endl;
+            if(this->i_nearPlatformEnd > 0 || this->i_wallCollision > 0) b_patrolLeft = true;
+            if(this->i_nearPlatformEnd < 0 || this->i_wallCollision < 0) b_patrolLeft = false;
+
             this->move(b_patrolLeft ? -1 : 1);
-            //if(this->movement->isXStopped()) b_patrolLeft = !b_patrolLeft;
             break;
     }
 }
@@ -65,20 +66,82 @@ void Enemy::updateAIState(const float& distance)
     }
 }
 
-bool Enemy::isOnPlatform(){}
-bool Enemy::isOnPlatform(const float& posx, const float& posy){}
-bool Enemy::nextMoveLeavesPlatform(const float& x, const float& y){}
+void Enemy::die()
+{
+    this->b_isDead = true;
+}
+
+bool Enemy::checkObstacle(Hitbox* hitbox)
+{
+    HitboxType type = hitbox->getType();
+    bool result = false;
+    switch(type)
+    {
+        case PLATFORM:
+        case BREAKABLE_DOOR:
+        case EXIT:
+        result = true; break;
+        default: break;
+    }
+
+    return result;
+}
+
+bool Enemy::checkInteraction(Hitbox* hitbox)
+{
+    HitboxType type = hitbox->getType();
+    bool result = false;
+    switch(type)
+    {
+        case PLAYER_ATTACK:
+        case LETHAL:
+        result = true; break;
+        default: break;
+    }
+
+    return result;
+}
+
+void Enemy::resizeItems(sf::Vector2f scaleRatio)
+{
+    this->weapon->scale(scaleRatio);
+    this->f_aggroDistance *= scaleRatio.x;
+    this->f_attackDistance *= scaleRatio.x;
+}
 
 void Enemy::update()
 {
     this->updateAI();
-    this->updateMovement();
     bool finsihedAttacking = this->updateWeapon(this->weapon);
     this->b_mutexAttack = finsihedAttacking;
+
+    // Update general stuff
+    this->Entity::update();
 }
 
 void Enemy::render()
 {
     Engine::getInstance()->renderDrawable(&shape);
     this->weapon->render();
+
+    if(false)
+    {
+        sf::CircleShape aggroArea(this->f_aggroDistance);
+        aggroArea.setFillColor(sf::Color(0, 0, 0, 0));
+        aggroArea.setOutlineThickness(5);
+        aggroArea.setOutlineColor(sf::Color(170, 50, 0));
+        aggroArea.setPosition(this->getPosition());
+        aggroArea.setOrigin(this->f_aggroDistance,this->f_aggroDistance);
+
+        sf::CircleShape attackArea(this->f_attackDistance);
+        attackArea.setFillColor(sf::Color(0, 0, 0, 0));
+        attackArea.setOutlineThickness(5);
+        attackArea.setOutlineColor(sf::Color(230, 0, 0));
+        attackArea.setPosition(this->getPosition());
+        attackArea.setOrigin(this->f_attackDistance,this->f_attackDistance);
+
+        Engine* engine = Engine::getInstance();
+        engine->renderDrawable(&aggroArea);
+        engine->renderDrawable(&attackArea);
+    }
 }

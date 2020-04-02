@@ -4,10 +4,12 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 {
     this->b_playerLeaves = false;
 
-    this->map = new Map(mapName, {16,16}, entranceIndex);
+    sf::Vector2i tileSize = {32,32};
+    this->map = new Map(mapName, tileSize, entranceIndex);
 
     // Player init
     this->player = player;
+    this->player->setSize(sf::Vector2f(tileSize.x*2,tileSize.y*2));
     this->player->setPosition(
         this->map->getPlayerPosition()
     );
@@ -16,9 +18,9 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     std::vector<MapObject> enemyData = this->map->getEnemyData();
     for(auto data : enemyData)
     {
-        Enemy* enemy = new Enemy(this->player);
-        enemy->setPosition(data.positon);
+        Enemy* enemy = new Enemy(100.0f, this->player);
         enemy->setSize(data.size);
+        enemy->setPosition(data.positon);
         this->enemies.push_back(enemy);
     }
 
@@ -27,8 +29,8 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     for(auto data : doorData)
     {
         Door* door = new Door();
-        door->setPosition(data.positon);
         door->setSize(data.size);
+        door->setPosition(data.positon);
         door->setVinculationId(data.name);
         this->doors.push_back(door);
     }
@@ -38,8 +40,8 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     for(auto data : leverData)
     {
         Lever* lever = new Lever();
-        lever->setPosition(data.positon);
         lever->setSize(data.size);
+        lever->setPosition(data.positon);
 
         // Vinculate to doors
         for(auto door : doors)
@@ -59,8 +61,8 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
         int entrance = atoi(index.c_str());
         
         LevelExit* exit = new LevelExit(mapFile, entrance);
-        exit->setPosition(data.positon);
         exit->setSize(data.size);
+        exit->setPosition(data.positon);
         this->exits.push_back(exit);
     }
 }
@@ -94,6 +96,41 @@ Level::~Level()
     delete this->map;
 }
 
+// Checks
+void Level::checkLevelExitReached()
+{
+    for(unsigned int i=0; i<exits.size(); i++)
+    {
+        if(exits[i]->checkPlayerCollision(this->player))
+        {
+            this->b_playerLeaves = true;
+            this->i_exitIndex = i;
+        }
+    }
+}
+
+void Level::checkEnemyDeaths()
+{
+    std::vector<Enemy*> deadEnemies;
+
+    // Search dead enemies
+    for(auto enemy : enemies)
+    {
+        if(enemy->isDead())
+        {
+            deadEnemies.push_back(enemy);
+        }
+    }
+    // Kill / Remove dead enemies
+    for(auto enemy: deadEnemies)
+    {
+        enemies.erase(std::find(enemies.begin(), enemies.end(), enemy));
+        delete enemy;
+        enemy = NULL;
+    }
+}
+
+// Level exit related
 bool Level::didPlayerLeave()
 {
     return this->b_playerLeaves;
@@ -106,26 +143,21 @@ LevelExit* Level::getActiveExit()
 
 void Level::update()
 {
+    // Entity updates
     this->player->update();
-
     for(auto enemy: enemies)
         enemy->update();
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-    {
+    // Lever testing
+    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Z))
         for(auto lever : levers)
             lever->interact();
-    }
+
+    // Check deaths
+    this->checkEnemyDeaths();
 
     // Check level exit reached
-    for(unsigned int i=0; i<exits.size(); i++)
-    {
-        if(exits[i]->checkPlayerCollision(this->player))
-        {
-            this->b_playerLeaves = true;
-            this->i_exitIndex = i;
-        }
-    }
+    this->checkLevelExitReached();
 
     // Adjust view
     Engine::getInstance()->setViewCenter(this->player->getPosition());

@@ -4,12 +4,11 @@ Door::Door()
 {
     this->b_isOpen = false;
     this->vf_position = {0,0};
-    this->shape.setFillColor(sf::Color::Green);
-    this->shape.setSize(sf::Vector2f(70,100));
-    this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
-    this->shape.setPosition(this->vf_position);
-
     this->hitbox = new Hitbox(PLATFORM, 70,100, vf_position.x, vf_position.y);
+
+    this->shape.setFillColor(sf::Color::Green);
+    this->setSize(sf::Vector2f(70,100));
+    this->shape.setPosition(this->vf_position);
 }
 
 Door::~Door()
@@ -40,7 +39,9 @@ void Door::setSize(sf::Vector2f size)
 {
     this->shape.setSize(size);
     this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
-    this->hitbox->setSize(this->shape.getSize().x, this->shape.getSize().y);
+
+    if(b_isOpen)    this->hitbox->setSize(0,0);
+    else            this->hitbox->setSize(this->shape.getSize().x, this->shape.getSize().y);
 }
 
 void Door::setVinculationId(std::string id)
@@ -57,12 +58,12 @@ void Door::toggleOpenState()
 {
     this->b_isOpen = !this->b_isOpen;
     this->shape.setFillColor(
-        b_isOpen ? sf::Color::Green : sf::Color(0,150,50)
+        b_isOpen ? sf::Color(0,150,50) : sf::Color::Green
     );
 
     this->hitbox->setSize(
-        b_isOpen ? this->shape.getSize().x : 0,
-        b_isOpen ? this->shape.getSize().y : 0
+        b_isOpen ? 0 : this->shape.getSize().x,
+        b_isOpen ? 0 : this->shape.getSize().y
     );
 }
 

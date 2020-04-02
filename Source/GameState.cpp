@@ -2,7 +2,7 @@
 
 GameState::GameState()
 {
-    this->player = new Player();
+    this->player = new Player(100.0f);
     this->level = new Level(player, "Prueba_Beta", 0);
 }
 

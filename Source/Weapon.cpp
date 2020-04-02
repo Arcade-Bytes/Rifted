@@ -1,19 +1,22 @@
 #include "Weapon.h"
 
-Weapon::Weapon(const float& cooldown, const float& timeToAttack, const float& xsize, const float& ysize)
-    : f_attackCooldown(cooldown), f_attackTime(timeToAttack)
+Weapon::Weapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize, float damage, bool isPlayer)
+    : f_attackCooldown(cooldown), f_attackTime(timeToAttack), f_attackWindow(window)
 {
+    this->vf_size = {xsize, ysize};
+    this->b_isAttacking = false;
+    this->f_reach = 30.0f;
+
+    this->hitbox = new Hitbox(isPlayer ? PLAYER_ATTACK : ENEMY_ATTACK, 0,0, 0,0, damage);
+    this->hitbox->setColor(sf::Color(55,55,55,200));
     b_isAttacking = false;
     
-    this->shape.setFillColor(sf::Color(55,55,55));
-    this->shape.setSize(sf::Vector2f(xsize,ysize));
-    this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
     this->i_upgradeLevel = -1;
 }
 
 Weapon::~Weapon()
 {
-
+    delete this->hitbox;
 }
 
 bool Weapon::isAttacking()
@@ -23,8 +26,8 @@ bool Weapon::isAttacking()
 
 void Weapon::setPosition(const float& xpos, const float& ypos, bool facingRight)
 {
-    this->shape.setPosition(
-        xpos + 30 * (facingRight ? 1 : -1),
+    this->hitbox->setPosition(
+        xpos + this->f_reach * (facingRight ? 1 : -1),
         ypos
     );
 }
@@ -48,17 +51,22 @@ void Weapon::updateAttack()
     if(!b_alreadyAttacked && f_attackDelta >= f_attackTime)
     {
         b_alreadyAttacked = true;
-        attack();
+        this->hitbox->setSize(vf_size.x, vf_size.y);
     }
 
     // If the attack finished
     if(f_attackDelta >= f_attackCooldown)
+    {
         b_isAttacking = false;
+        this->hitbox->setSize(0.0f, 0.0f);
+    }
 }
 
-void Weapon::attack()
+void Weapon::scale(sf::Vector2f scaleRatio)
 {
-   // std::cout<<"Attack!\n";
+    this->vf_size.x *= scaleRatio.x;
+    this->vf_size.y *= scaleRatio.y;
+    this->f_reach *= scaleRatio.x;
 }
 
 void Weapon::update()
@@ -69,7 +77,9 @@ void Weapon::update()
 void Weapon::render()
 {
     if(b_isAttacking)
-        Engine::getInstance()->renderDrawable(&shape);
+    {
+        this->hitbox->render();
+    }
 }
 
 int Weapon::getUpgradeLvl()

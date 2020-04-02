@@ -3,6 +3,7 @@
 Game::Game()
 {
     this->state = new GameState();
+    this->updateStartTime = 0.0f;
 }
 
 Game::~Game()
@@ -40,9 +41,13 @@ void Game::run()
     Engine* engine = Engine::getInstance();
     while(engine->isWindowOpen())
     {
-        this->updateDelta();
-        this->updateSFMLEvents();
-        this->update();
+        if((engine->getUpdateTime() - updateStartTime) > UPDATE_TIME)
+        {
+		    this->updateDelta();
+            this->updateSFMLEvents();
+            this->update();
+            updateStartTime = engine->getUpdateTime();
+        }
         this->render();
     }
 }

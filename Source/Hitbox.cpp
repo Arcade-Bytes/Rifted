@@ -5,15 +5,22 @@ std::vector<Hitbox*> Hitbox::hitboxes;
 Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const float& xpos, const float& ypos)
 {
     this->type = type;
+    this->f_damage = 0.0f;
     this->vf_position = {xpos,ypos};
     this->vf_size = {xsize,ysize};
 
-    this->shape.setFillColor(sf::Color(200,200,200,150));
+    this->shape.setFillColor(sf::Color(200,200,200,100));
     this->shape.setSize(this->vf_size);
     this->shape.setOrigin(this->vf_size.x/2,this->vf_size.y/2);
     this->shape.setPosition(this->vf_position);
 
     hitboxes.push_back(this);
+}
+
+Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const float& xpos, const float& ypos, float damage)
+    : Hitbox(type, xsize, ysize, xpos, ypos)
+{
+    this->f_damage = damage;
 }
 
 Hitbox::~Hitbox()
@@ -65,6 +72,13 @@ void Hitbox::setSize(const float& x, const float& y)
     this->shape.setOrigin(this->vf_size.x/2,this->vf_size.y/2);
 }
 
+void Hitbox::scale(sf::Vector2f scaleRatio)
+{
+    this->vf_size.x *= scaleRatio.x;
+    this->vf_size.y *= scaleRatio.y;
+    this->setSize(vf_size.x, vf_size.y);
+}
+
 // Collision related
 sf::Vector2f Hitbox::checkCollision(Hitbox* other)
 {
@@ -84,25 +98,32 @@ sf::Vector2f Hitbox::checkCollision(Hitbox* other)
             abs(distance.y) - thisHalfHeight - otherHalfHeight
         };
 
-        // Checks for most important axis and nullifies the other's effect
-        // Also corrects intersection sign for push direction
-        if(intersection.x > intersection.y)
-        {
-            intersection.y = 0.0f;
-            if(distance.x > 0) intersection.x *= -1;
-        }
-        else
-        {
-            intersection.x = 0.0f;
-            if(distance.y > 0) intersection.y *= -1;
-        }
+        // Corrects intersection sign for push direction
+        if(distance.x > 0) intersection.x *= -1;
+        if(distance.y > 0) intersection.y *= -1;
     }
     return intersection;
+}
+
+void Hitbox::setDamage(float damage)
+{
+    this->f_damage = damage;
+}
+
+float Hitbox::getDamage()
+{
+    return this->f_damage;
 }
 
 sf::FloatRect Hitbox::getBounds()
 {
     return this->shape.getGlobalBounds();
+}
+
+// Visual related
+void Hitbox::setColor(sf::Color color)
+{
+    this->shape.setFillColor(color);
 }
 
 void Hitbox::update()
