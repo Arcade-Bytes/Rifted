@@ -3,6 +3,7 @@
 Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 {
     this->b_playerLeaves = false;
+    this->resetNextState();
 
     sf::Vector2i tileSize = {32,32};
     this->map = new Map(mapName, tileSize, entranceIndex);
@@ -23,6 +24,10 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
         enemy->setPosition(data.positon);
         this->enemies.push_back(enemy);
     }
+
+    // NPC init
+    npcs.push_back(new NPC("cleric.png", 150,2688, true,"Hola buenos dias compañero como estas\nen este gran dia"));
+    npcs.push_back(new NPC("cleric.png", 700,2688, true,"Hey tú de qué vas payaso\nimbécil te parto la cara"));
 
     // Doors init
     std::vector<MapObject> doorData = this->map->getDoorData();
@@ -75,6 +80,12 @@ Level::~Level()
         enemy = NULL;
     }
     enemies.clear();
+    for(auto npc : npcs)
+    {
+        delete npc;
+        npc = NULL;
+    }
+    npcs.clear();
     for(auto lever : levers)
     {
         delete lever;
@@ -141,6 +152,17 @@ LevelExit* Level::getActiveExit()
     return this->exits[this->i_exitIndex];
 }
 
+// State change
+StateType Level::getNextState()
+{
+    return this->nextState;
+}
+
+void Level::resetNextState()
+{
+    this->nextState = GAME_STATE;
+}
+
 void Level::update()
 {
     // Entity updates
@@ -152,6 +174,17 @@ void Level::update()
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Z))
         for(auto lever : levers)
             lever->interact();
+
+    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
+        for(unsigned int i = 0; i< npcs.size(); i++){
+            if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 50)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 50))){
+                if(this->npcs[i]->getImShop() == true)
+                    this->nextState = SHOP_STATE;
+                else
+                    this->nextState = TEXT_STATE;
+            }
+        }
+    }
 
     // Check deaths
     this->checkEnemyDeaths();
@@ -165,7 +198,12 @@ void Level::update()
 
 void Level::render()
 {
+    Engine::getInstance()->setFollowView(true);
     this->map->render();
+
+    for(auto npc: npcs)
+        npc->render();
+
     this->player->render();
 
     for(auto enemy: enemies)

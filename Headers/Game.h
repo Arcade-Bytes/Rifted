@@ -5,13 +5,17 @@
 
 #include "Engine.h"
 #include "GameState.h"
+#include "ShopState.h"
 #include "MainMenuState.h"
+#include "MenuState.h"
+#include "TextState.h"
+#include "PauseState.h"
 
 class Game {
 private:
     float updateStartTime;
-
-    State* state;
+    Player* player;
+    std::stack<State*> states;
 public:
     Game();
     ~Game();

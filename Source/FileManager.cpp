@@ -60,22 +60,48 @@ namespace ftl{
 
     void PickedCoin(std::string s_level, int i_CoinId)
     {
+        std::string s_coinId = "a"+std::to_string(i_CoinId);
         XMLDocument xml_doc;
         OpenSaveFile(xml_doc);       
-        xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement(std::to_string(i_CoinId).c_str())->SetText("1");
+        xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement(s_coinId.c_str())->SetText("1");
         CloseSaveFile(xml_doc);
     }
 
     void LeverSwitch(std::string s_level, int i_LeverId)
     {
+        std::string s_LeverId = "a"+std::to_string(i_LeverId);
         XMLDocument xml_doc;
         OpenSaveFile(xml_doc);       
-        std::string s_prev = xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( std::to_string(i_LeverId).c_str())->GetText();
+        std::string s_prev = xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( s_LeverId.c_str())->GetText();
         if(std::atoi(s_prev.c_str()))
-            xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( std::to_string(i_LeverId).c_str())->SetText("1");
+            xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( s_LeverId.c_str())->SetText("1");
         else
-            xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( std::to_string(i_LeverId).c_str())->SetText("0");
+            xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( s_LeverId.c_str())->SetText("0");
         CloseSaveFile(xml_doc);  
+    }
+
+    bool GetCoinState(std::string s_level, int i_CoinId)
+    {
+        std::string s_coinId = "a"+std::to_string(i_CoinId);
+        XMLDocument xml_doc;
+        OpenSaveFile(xml_doc);       
+        std::string s_prev = xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( s_coinId.c_str())->GetText();
+        int state = std::atoi(s_prev.c_str());
+        CloseSaveFile(xml_doc); 
+
+        return state == 0 ? false : true;
+    }
+
+    bool GetLeverState(std::string s_level, int i_LeverId)
+    {
+        std::string s_LeverId = "a"+std::to_string(i_LeverId);
+        XMLDocument xml_doc;
+        OpenSaveFile(xml_doc);       
+        std::string s_prev = xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( s_LeverId.c_str())->GetText();
+        int state = std::atoi(s_prev.c_str());
+        CloseSaveFile(xml_doc); 
+
+        return state == 0 ? false : true;
     }
 
     void SaveGame(Player &player)

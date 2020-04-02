@@ -38,6 +38,7 @@
         "typeinfo": "cpp",
         "string": "cpp",
         "cstddef": "cpp",
-        "cstring": "cpp"
+        "cstring": "cpp",
+        "cinttypes": "cpp"
     }
 }

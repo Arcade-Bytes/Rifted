@@ -1,14 +1,14 @@
 #include "GameState.h"
 
-GameState::GameState()
+GameState::GameState(std::stack<State*>* states, Player* player)
+    :State(states, player)
 {
-    this->player = new Player(100.0f);
+    this->Iam = GAME_STATE;
     this->level = new Level(player, "Prueba_Beta", 0);
 }
 
 GameState::~GameState()
 {
-    delete this->player;
     delete this->level;
 }
 
@@ -24,6 +24,18 @@ void GameState::update()
         int entranceIndex = exit->getEntranceIndex();
         delete this->level;
         this->level = new Level(this->player, mapFile, entranceIndex);
+    }
+
+    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::P))
+    {
+        this->changeState(PAUSE_STATE);
+    }
+
+    StateType nextState = this->level->getNextState();
+    if(nextState != GAME_STATE)
+    {
+        this->level->resetNextState();
+        this->changeState(nextState);
     }
 }
 

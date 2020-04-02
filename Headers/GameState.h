@@ -6,10 +6,9 @@
 
 class GameState : public State {
 private:
-    Player* player;
     Level* level;
 public:
-    GameState();
+    GameState(std::stack<State*>* states, Player* player);
     ~GameState();
 
     void update();
