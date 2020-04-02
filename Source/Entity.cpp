@@ -11,8 +11,12 @@ Entity::Entity(const float& maxHealth)
     this->i_wallCollision = this->i_nearPlatformEnd = 0;
     this->b_isGrounded = false;
     this->b_facingRight = true;
+
     this->b_isInvulnerable = false;
     this->f_invulnerabilityTime = 0.0f;
+    this->f_invulnerableBlinkDelta = 0.0f;
+    this->f_invulnerableBlinkTime = 0.1f;
+    this->b_isBlinking = false;
 
     this->f_jumpForce = 1200.0f;
     
@@ -86,7 +90,6 @@ void Entity::getHurt(float& damage)
     f_currentHealth -= damage;
     if(f_currentHealth <= 0.0f)
     {
-        if(!this->b_isDead)printf("Oh I died :D\n");
         this->die();
     }
 }
@@ -253,7 +256,16 @@ void Entity::updateInvulnerability()
     {
         float delta = Engine::getInstance()->getDelta();
         this->f_invulnerabilityTime -= delta;
-        this->shape.setFillColor(sf::Color::Transparent);
+
+        // Blinking
+        this->f_invulnerableBlinkDelta += delta;
+        if(this->f_invulnerableBlinkDelta >= this->f_invulnerableBlinkTime)
+        {
+            this->f_invulnerableBlinkDelta -= this->f_invulnerableBlinkTime;
+            this->b_isBlinking = !this->b_isBlinking;
+            this->shape.setFillColor(this->b_isBlinking ? sf::Color::Transparent : sf::Color::White);
+        }
+
         if(this->f_invulnerabilityTime <= 0.0f)
         {
             this->b_isInvulnerable = false;

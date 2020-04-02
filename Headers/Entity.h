@@ -19,6 +19,9 @@ protected:
 
     bool b_isInvulnerable;
     float f_invulnerabilityTime;
+    float f_invulnerableBlinkDelta;
+    float f_invulnerableBlinkTime;
+    bool b_isBlinking;
 
     int i_wallCollision;
     int i_nearPlatformEnd;
