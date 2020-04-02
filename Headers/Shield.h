@@ -13,6 +13,8 @@ private:
     float f_drawn;
     float f_parryHeal;
 
+    int i_upgradeLvl;
+
     // FALSE FACADE!!!!
     sf::RectangleShape shape;
 public:
@@ -27,6 +29,9 @@ public:
     void setPosition(const float& xpos, const float& ypos, bool facingRight);
 
     void scale(sf::Vector2f scaleRatio);
+    
+    int getUpgradeLvl();
+    void setUpgradeLvl(int i_lvl);
 
     void update();
     void render();

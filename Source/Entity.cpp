@@ -280,3 +280,23 @@ void Entity::render()
 {
     Engine::getInstance()->renderDrawable(&shape);
 }
+
+std::string Entity::getMaxHealth()
+{
+    return std::to_string(this->f_maxHealth).c_str();
+}
+
+std::string Entity::getHealth()
+{
+    return std::to_string(this->f_currentHealth).c_str();
+}
+
+void Entity::setHealth(float f_health)
+{
+    this->f_currentHealth = f_health;
+}
+
+void Entity::setMaxHealth(float f_maxHealth)
+{
+    this->f_maxHealth = f_maxHealth;
+}

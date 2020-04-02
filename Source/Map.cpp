@@ -1,3 +1,6 @@
+#include <unistd.h>
+#include <limits.h>
+#include <iostream>
 #include "Map.h"
 
 struct MapObject;
@@ -7,7 +10,11 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
     // Init map data
     XMLDocument doc;
     std::string filenameComplete = "maps/"+filename+".tmx";
-    doc.LoadFile(filenameComplete.c_str());
+    if(doc.LoadFile(filenameComplete.c_str())!=0)
+    {
+        filenameComplete = "../maps/"+filename+".tmx";
+        doc.LoadFile(filenameComplete.c_str());
+    }
     XMLElement * mapdata = doc.FirstChildElement("map");
     mapdata->QueryIntAttribute("width", &this->v_gridSize.x);
     mapdata->QueryIntAttribute("height", &this->v_gridSize.y);

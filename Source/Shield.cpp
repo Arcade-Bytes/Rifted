@@ -10,6 +10,7 @@ Shield::Shield(const float& activationTime, const float& recoveryTime, const flo
     this->shape.setFillColor(sf::Color(155,155,155));
     this->shape.setSize(sf::Vector2f(40,40));
     this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
+    this->i_upgradeLvl = -1;
 }
 
 Shield::~Shield()
@@ -102,4 +103,14 @@ void Shield::render()
 {
     if(b_isActive)
         Engine::getInstance()->renderDrawable(&shape);
+}
+
+int Shield::getUpgradeLvl()
+{
+    return this->i_upgradeLvl;
+}
+
+void Shield::setUpgradeLvl(int i_lvl)
+{
+    this->i_upgradeLvl = i_lvl;
 }

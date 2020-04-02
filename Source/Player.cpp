@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "FileManager.h"
 
 Player::Player(const float& maxHealth)
     : Entity(maxHealth)
@@ -9,12 +10,16 @@ Player::Player(const float& maxHealth)
 
     this->animation = new AnimationComponent(this->shape);
     this->animation->loadAnimationsFromJSON("animations/pengo.json");
+
+    this->bow = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 20, true); //testing grounds, melee bow cha cha cha
+    ftl::LoadGame(*this);
 }
 
 Player::~Player()
 {
     delete this->sword;
     delete this->hammer;
+    delete this->bow;
     delete this->shield;
 }
 
@@ -105,7 +110,17 @@ void Player::update()
         this->sword->startAttack();
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::H))
         this->hammer->startAttack();
-
+    /***XML TEST***/
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+    {
+        ftl::SaveGame(*this);
+       
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F7))
+    {
+        ftl::LoadGame(*this);
+    }
+    /*****/
     // Update the attacks
     this->updateWeapon(sword);
     this->updateWeapon(hammer);
@@ -129,3 +144,105 @@ void Player::render()
     this->shield->render();
     //this->hitbox->render();
 }
+
+//GET DATA TO SAVE
+std::string Player::getDeaths()
+{
+    return std::to_string(this->i_deaths).c_str();
+}
+
+std::string Player::getKills()
+{
+    return std::to_string(this->i_kills).c_str();
+}
+
+std::string Player::getMony()
+{
+    return std::to_string(this->i_coins).c_str();
+}
+
+std::string Player::getLevel()
+{
+    return this->s_levelName.c_str();
+}
+
+std::string Player::getDoor()
+{
+    return std::to_string(this->i_door).c_str();
+}
+
+std::string Player::getHealthUpg()
+{
+    return std::to_string(this->i_healthUpg).c_str();
+}
+
+std::string Player::getHammrLvl()
+{
+    return std::to_string(this->hammer->getUpgradeLvl()).c_str();
+}
+
+std::string Player::getSwordLvl()
+{
+    return std::to_string(this->sword->getUpgradeLvl()).c_str();
+}
+
+std::string Player::getShieldLvl()
+{
+    return std::to_string(this->shield->getUpgradeLvl()).c_str();
+}
+
+std::string Player::getBowLvl()
+{
+    return std::to_string(this->bow->getUpgradeLvl()).c_str();
+}
+//SET DATA SAVED
+
+    void Player::setMony(int i_money)
+    {
+        this->i_coins = i_money;
+    }
+    
+    void Player::setKills(int i_kills)
+    {
+        this->i_kills = i_kills;
+    }
+    
+    void Player::setDeaths(int i_deaths)
+    {
+        this->i_deaths = i_deaths;
+    }
+    
+    void Player::setHealthUpg(int i_healthupg)
+    {
+        this->i_healthUpg = i_healthupg;
+    }
+    
+    void Player::setLevel(std::string s_levelName)
+    {
+        this->s_levelName = s_levelName;
+    }
+    
+    void Player::setDoor(int i_door)
+    {
+        this->i_door = i_door;
+    }
+    
+    void Player::setHammrLvl(int i_lvl)
+    {
+        this->hammer->setUpgradeLvl(i_lvl);
+    }
+    
+    void Player::setSwordLvl(int i_lvl)
+    {
+        this->sword->setUpgradeLvl(i_lvl);
+    }
+    
+    void Player::setShieldLvl(int i_lvl)
+    {
+        this->shield->setUpgradeLvl(i_lvl);
+    }
+    
+    void Player::setBowLvl(int i_lvl)
+    {
+        this->bow->setUpgradeLvl(i_lvl);
+    }

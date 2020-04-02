@@ -9,6 +9,9 @@ Weapon::Weapon(const float& cooldown, const float& timeToAttack, const float& wi
 
     this->hitbox = new Hitbox(isPlayer ? PLAYER_ATTACK : ENEMY_ATTACK, 0,0, 0,0, damage);
     this->hitbox->setColor(sf::Color(55,55,55,200));
+    b_isAttacking = false;
+    
+    this->i_upgradeLevel = -1;
 }
 
 Weapon::~Weapon()
@@ -77,4 +80,14 @@ void Weapon::render()
     {
         this->hitbox->render();
     }
+}
+
+int Weapon::getUpgradeLvl()
+{
+    return this->i_upgradeLevel;
+}
+
+void Weapon::setUpgradeLvl(int i_lvl)
+{
+    this->i_upgradeLevel = i_lvl;
 }
