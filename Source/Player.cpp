@@ -108,7 +108,6 @@ void Player::render()
     this->hammer->render();
     this->shield->render();
     this->hitbox->render();
-<<<<<<< HEAD
 }
 
 //GET DATA TO SAVE
@@ -160,8 +159,6 @@ std::string Player::getShieldLvl()
 std::string Player::getBowLvl()
 {
     return std::to_string(this->bow->getUpgradeLvl()).c_str();
-=======
->>>>>>> d0f482223e1cd0fa998853caf699f2ef19fe23ae
 }
 //SET DATA SAVED
 
