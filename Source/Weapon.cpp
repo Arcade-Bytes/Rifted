@@ -70,6 +70,7 @@ void Weapon::render()
 {
     if(b_isAttacking)
         Engine::getInstance()->renderDrawable(&shape);
+<<<<<<< HEAD
 }
 
 int Weapon::getUpgradeLvl()
@@ -80,4 +81,6 @@ int Weapon::getUpgradeLvl()
 void Weapon::setUpgradeLvl(int i_lvl)
 {
     this->i_upgradeLevel = i_lvl;
+=======
+>>>>>>> d0f482223e1cd0fa998853caf699f2ef19fe23ae
 }

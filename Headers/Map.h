@@ -38,7 +38,11 @@ private:
     std::vector<MapObject> doorData;
     std::vector<MapObject> exitData;
 
+<<<<<<< HEAD
     std::vector<std::vector<std::vector<sf::Sprite*> > > map;
+=======
+    std::vector<std::vector<std::vector<sf::Sprite*>>> map;
+>>>>>>> d0f482223e1cd0fa998853caf699f2ef19fe23ae
     sf::Sprite* background;
     std::vector<Hitbox*> v_mapHitboxes;
 public:

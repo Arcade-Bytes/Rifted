@@ -10,11 +10,15 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
     // Init map data
     XMLDocument doc;
     std::string filenameComplete = "maps/"+filename+".tmx";
+<<<<<<< HEAD
     if(doc.LoadFile(filenameComplete.c_str())!=0)
     {
         filenameComplete = "../maps/"+filename+".tmx";
         doc.LoadFile(filenameComplete.c_str());
     }
+=======
+    doc.LoadFile(filenameComplete.c_str());
+>>>>>>> d0f482223e1cd0fa998853caf699f2ef19fe23ae
     XMLElement * mapdata = doc.FirstChildElement("map");
     mapdata->QueryIntAttribute("width", &this->v_gridSize.x);
     mapdata->QueryIntAttribute("height", &this->v_gridSize.y);

@@ -98,6 +98,7 @@ void Shield::render()
 {
     if(b_isActive)
         Engine::getInstance()->renderDrawable(&shape);
+<<<<<<< HEAD
 }
 
 int Shield::getUpgradeLvl()
@@ -108,4 +109,6 @@ int Shield::getUpgradeLvl()
 void Shield::setUpgradeLvl(int i_lvl)
 {
     this->i_upgradeLvl = i_lvl;
+=======
+>>>>>>> d0f482223e1cd0fa998853caf699f2ef19fe23ae
 }
