@@ -16,6 +16,9 @@ protected:
     bool b_isGrounded;
     bool b_facingRight;
 
+    bool b_isInvulnerable;
+    float f_invulnerabilityTime;
+
     int i_wallCollision;
     int i_nearPlatformEnd;
 
@@ -32,30 +35,41 @@ protected:
     sf::Texture* spriteTexture;
     sf::RectangleShape shape;
 public:
-    Entity();
+    Entity(const float& maxHealth);
     virtual ~Entity();
 
-    void initSize(sf::Vector2f size);
 
-    // Accesors
+    // Position
     sf::Vector2f getPosition();
     void setPosition(const float&x, const float& y);
     void setPosition(sf::Vector2f pos);
+
+    // Size
+    void initSize(sf::Vector2f size);
     sf::Vector2f getSize();
     void setSize(sf::Vector2f size);
+    virtual void resizeItems(sf::Vector2f scaleRatio) = 0;
 
-    Hitbox* getHitbox();
+    // Damage
+    void getHurt(float& damage);
+    void getHealed(float& healing);
 
+    // Movement
     void move(const float& xdir);
     void jump(const float& xnormalized, const float& ynormalized);
+    void knockback(const float& xforce, const float& yforce);
 
+    // Collisions
+    Hitbox* getHitbox();
     void checkCollisions();
+    virtual bool checkObstacle(Hitbox* hitbox) = 0;
+    virtual bool checkInteraction(Hitbox* hitbox) = 0;
 
+    // Updates
     void updateAnimation();
     void updateMovement();
+    void updateInvulnerability();
     bool updateWeapon(Weapon* weapon);
-
-    virtual void resizeItems(sf::Vector2f scaleRatio) = 0;
 
     void update();
     void render();

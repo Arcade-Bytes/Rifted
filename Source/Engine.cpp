@@ -70,9 +70,9 @@ void Engine::updateSFMLEvents()
     }
 }
 
-void Engine::updateInput()
+float Engine::getUpdateTime()
 {
-    
+    return this->updateClock.getElapsedTime().asSeconds();
 }
 
 // Renders

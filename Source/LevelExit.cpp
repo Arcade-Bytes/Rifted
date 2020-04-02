@@ -5,7 +5,7 @@ LevelExit::LevelExit(std::string destination, const int& entranceIndex)
     this->s_destination = destination;
     this->i_entranceIndex = entranceIndex;
 
-    this->hitbox = new Hitbox(NO_COLLISION, 0,0, 0,0);
+    this->hitbox = new Hitbox(EXIT, 0,0, 0,0);
 }
 
 LevelExit::~LevelExit()

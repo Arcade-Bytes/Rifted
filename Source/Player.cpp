@@ -1,10 +1,10 @@
 #include "Player.h"
 
-Player::Player()
-    : Entity()
+Player::Player(const float& maxHealth)
+    : Entity(maxHealth)
 {
-    this->sword = new Weapon(0.3f, 0.1f, 40, 60);
-    this->hammer = new Weapon(1.0f, 0.8f, 60, 70);
+    this->sword = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 30, true);
+    this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 60, 70, 60, true);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
 
     this->animation = new AnimationComponent(this->shape);
@@ -21,21 +21,13 @@ Player::~Player()
 void Player::getHurt(float& damage)
 {
     damage *= this->shield->DamageBlock();
-    f_currentHealth -= damage;
-    if(f_currentHealth <= 0.0f)
-    {
-        //f_currentHealth = 0.001f;
-    }
+    this->Entity::getHurt(damage);
     f_regenerationDelta = 0.0f;
 }
 
 void Player::getHealed(float& healing)
 {
-    f_currentHealth += healing;
-    if(f_currentHealth >= f_maxHealth)
-    {
-        f_currentHealth = f_maxHealth;
-    }
+    this->Entity::getHealed(healing);
     f_regenerationDelta = 0.0f;
 }
 
@@ -58,6 +50,37 @@ void Player::regenerate()
         if(f_currentHealth >= i_currentChunk * chunkSize)
             f_currentHealth = i_currentChunk * chunkSize;
     }
+}
+
+bool Player::checkObstacle(Hitbox* hitbox)
+{
+    HitboxType type = hitbox->getType();
+    bool result = false;
+    switch(type)
+    {
+        case PLATFORM:
+        case ENEMY:
+        case BREAKABLE_DOOR:
+        result = true; break;
+        default: break;
+    }
+
+    return result;
+}
+
+bool Player::checkInteraction(Hitbox* hitbox)
+{
+    HitboxType type = hitbox->getType();
+    bool result = false;
+    switch(type)
+    {
+        case ENEMY_ATTACK:
+        case LETHAL:
+        result = true; break;
+        default: break;
+    }
+
+    return result;
 }
 
 void Player::resizeItems(sf::Vector2f scaleRatio)
@@ -87,9 +110,6 @@ void Player::update()
     this->updateWeapon(sword);
     this->updateWeapon(hammer);
 
-    // Update movement state
-    this->updateMovement();
-
     // Update shield state
     this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);
     this->shield->update();
@@ -97,8 +117,8 @@ void Player::update()
     // Update life regeneration
     this->regenerate();
 
-    // Update animation
-    this->updateAnimation();
+    // Update general stuff
+    this->Entity::update();
 }
 
 void Player::render()
@@ -107,5 +127,5 @@ void Player::render()
     this->sword->render();
     this->hammer->render();
     this->shield->render();
-    //this->hitbox->render();
+    this->hitbox->render();
 }

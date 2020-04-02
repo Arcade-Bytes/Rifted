@@ -23,7 +23,7 @@ private:
     // AI data
     bool b_patrolLeft;
 public:
-    Enemy(Player* playerRef);
+    Enemy(const float& maxHealth, Player* playerRef);
     ~Enemy();
 
     void attack();
@@ -32,6 +32,8 @@ public:
     void updateAIState(const float& distance);
 
     // Virtual override
+    bool checkObstacle(Hitbox* hitbox);
+    bool checkInteraction(Hitbox* hitbox);
     void resizeItems(sf::Vector2f scaleRatio);
 
     void update();

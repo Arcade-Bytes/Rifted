@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Player* playerRef)
-    : Entity()
+Enemy::Enemy(const float& maxHealth, Player* playerRef)
+    : Entity(maxHealth)
 {
     this->player = playerRef;
     this->b_patrolLeft = false;
@@ -9,7 +9,7 @@ Enemy::Enemy(Player* playerRef)
     this->f_attackDistance = 50;
     this->b_mutexAttack = false;
 
-    this->weapon = new Weapon(0.3f, 0.1f, 40, 60);
+    this->weapon = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 10, false);
 
     this->shape.setFillColor(sf::Color::Red);
 }
@@ -66,6 +66,37 @@ void Enemy::updateAIState(const float& distance)
     }
 }
 
+bool Enemy::checkObstacle(Hitbox* hitbox)
+{
+    HitboxType type = hitbox->getType();
+    bool result = false;
+    switch(type)
+    {
+        case PLATFORM:
+        case BREAKABLE_DOOR:
+        case EXIT:
+        result = true; break;
+        default: break;
+    }
+
+    return result;
+}
+
+bool Enemy::checkInteraction(Hitbox* hitbox)
+{
+    HitboxType type = hitbox->getType();
+    bool result = false;
+    switch(type)
+    {
+        case PLAYER_ATTACK:
+        case LETHAL:
+        result = true; break;
+        default: break;
+    }
+
+    return result;
+}
+
 void Enemy::resizeItems(sf::Vector2f scaleRatio)
 {
     this->weapon->scale(scaleRatio);
@@ -76,9 +107,11 @@ void Enemy::resizeItems(sf::Vector2f scaleRatio)
 void Enemy::update()
 {
     this->updateAI();
-    this->updateMovement();
     bool finsihedAttacking = this->updateWeapon(this->weapon);
     this->b_mutexAttack = finsihedAttacking;
+
+    // Update general stuff
+    this->Entity::update();
 }
 
 void Enemy::render()

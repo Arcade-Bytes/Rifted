@@ -1,16 +1,21 @@
 #include "Entity.h"
 
-Entity::Entity()
+Entity::Entity(const float& maxHealth)
 {
     this->shape.setSize(sf::Vector2f(50,50)); // Default / Base size
 
     this->i_wallCollision = this->i_nearPlatformEnd = 0;
     this->b_isGrounded = false;
     this->b_facingRight = true;
+    this->b_isInvulnerable = false;
+    this->f_invulnerabilityTime = 0.0f;
 
-    this->f_jumpForce = 500.0f;
+    this->f_jumpForce = 1200.0f;
+
+    this->f_maxHealth = maxHealth;
+    this->f_currentHealth = this->f_maxHealth;
     
-    this->movement = new MovementComponent(&this->vf_position, 400.0f, 450.33f, sf::Vector2f(400.0f, 900.0f));
+    this->movement = new MovementComponent(&this->vf_position, 400.0f, 450.33f, sf::Vector2f(400.0f, 800.0f));
     this->hitbox = new Hitbox(PLAYER, 0,0, 0,0);
     this->animation = NULL;
 
@@ -75,6 +80,25 @@ Hitbox* Entity::getHitbox()
     return this->hitbox;
 }
 
+void Entity::getHurt(float& damage)
+{
+    f_currentHealth -= damage;
+    if(f_currentHealth <= 0.0f)
+    {
+        printf("Oh I died :D\n");
+        //f_currentHealth = 0.001f;
+    }
+}
+
+void Entity::getHealed(float& healing)
+{
+    f_currentHealth += healing;
+    if(f_currentHealth >= f_maxHealth)
+    {
+        f_currentHealth = f_maxHealth;
+    }
+}
+
 void Entity::move(const float& xdir)
 {
     this->movement->move(xdir);
@@ -91,6 +115,11 @@ void Entity::jump(const float& xnormalized, const float& ynormalized)
     }
 }
 
+void Entity::knockback(const float& xforce, const float& yforce)
+{
+    this->movement->jump(xforce, yforce);
+}
+
 void Entity::checkCollisions()
 {
     // Status info reset
@@ -98,32 +127,30 @@ void Entity::checkCollisions()
 
     this->b_isGrounded = false;
     std::vector<Hitbox*>* hitboxes = Hitbox::getAllHitboxes();
-    for(auto platform : *hitboxes)
+    for(auto hitbox : *hitboxes)
     {
         // Check platform collisions
-        if(platform->getType() == PLATFORM)
+        if(this->checkObstacle(hitbox))
         {
             // Check how much they collided and push the entity out of the platform
-            sf::Vector2f intersection = this->hitbox->checkCollision(platform);
+            sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
             if(intersection.x != 0.0f || intersection.y != 0.0f)
             {
                 float difference = abs(intersection.x - intersection.y);
-                //if(difference <= 50) printf("Oh no there is %f difference (%f - %f)\n", difference, intersection.x, intersection.y);
                 if(difference <= 10)
                 {
-                    /*this->movement->undoMove(1,1);
+                    this->movement->undoMove(1,1);
                     this->movement->stop();
                     this->vf_position.x += intersection.x;
-                    this->vf_position.y += intersection.y;*/
-                    printf("Corner!\n");
+                    this->vf_position.y += intersection.y;
+                    printf("Corner (%f)!\n", difference);
                 }
                 if(abs(intersection.y) < abs(intersection.x))
                 {
-                    this->movement->undoMove(0,1);
-                    this->movement->stopY();
-
                     // Stepping on a platform
                     if(intersection.y < 0) {
+                        this->movement->undoMove(0,1);
+                        this->movement->stopY();
                         this->b_isGrounded = true;
                         // Stepping near the platform corner
                         if(abs(intersection.x) <= this->getSize().x)
@@ -135,7 +162,8 @@ void Entity::checkCollisions()
                     // Colliding with the roof
                     else
                     {
-                        this->vf_position.y += intersection.y*0.1;
+                        this->vf_position.y += intersection.y;
+                        this->movement->stopY();
                     }
                 }
                 else
@@ -146,6 +174,32 @@ void Entity::checkCollisions()
                     if(intersection.x > 0) i_wallCollision = -1;
                     else                   i_wallCollision = 1;
                 }
+                this->setPosition(this->vf_position);
+            }
+        }
+
+        // Check damage areas
+        if(this->checkInteraction(hitbox))
+        {
+            sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
+            if(!this->b_isInvulnerable && (intersection.x != 0.0f || intersection.y != 0.0f))
+            {
+                float damage = hitbox->getDamage();
+                this->getHurt(damage);
+
+                sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
+                this->knockback(
+                    500.0f * (diff.x < 0 ? 1 : -1),
+                    200.0f
+                );
+
+                this->b_isInvulnerable = true;
+                this->f_invulnerabilityTime = 1.0f;
+
+                if(hitbox->getType() == LETHAL)
+                {
+                    printf("Oh me caí we\n");
+                }
             }
         }
     }
@@ -153,19 +207,22 @@ void Entity::checkCollisions()
 
 void Entity::updateAnimation()
 {
-    this->s_currentAnimation = "idle";
-    if(abs(this->movement->getSpeed().x) > 0)
+    if(this->animation)
     {
-        if(this->b_facingRight) this->s_currentAnimation = "walking_right";
-        else                    this->s_currentAnimation = "walking_left";
-    }
-    else
-    {
-        if(this->b_facingRight) this->s_currentAnimation = "idle";
-        else                    this->s_currentAnimation = "idle";
-    }
+        this->s_currentAnimation = "idle";
+        if(abs(this->movement->getSpeed().x) > 0)
+        {
+            if(this->b_facingRight) this->s_currentAnimation = "walking_right";
+            else                    this->s_currentAnimation = "walking_left";
+        }
+        else
+        {
+            if(this->b_facingRight) this->s_currentAnimation = "idle";
+            else                    this->s_currentAnimation = "idle";
+        }
 
-    this->animation->playAnimation(this->s_currentAnimation);
+        this->animation->playAnimation(this->s_currentAnimation);
+    }
 }
 
 void Entity::updateMovement()
@@ -179,6 +236,21 @@ void Entity::updateMovement()
     this->setPosition(this->vf_position);
 }
 
+void Entity::updateInvulnerability()
+{
+    if(this->b_isInvulnerable)
+    {
+        float delta = Engine::getInstance()->getDelta();
+        this->f_invulnerabilityTime -= delta;
+        this->shape.setFillColor(sf::Color::Transparent);
+        if(this->f_invulnerabilityTime <= 0.0f)
+        {
+            this->b_isInvulnerable = false;
+            this->shape.setFillColor(sf::Color::White);
+        }
+    }
+}
+
 bool Entity::updateWeapon(Weapon* weapon)
 {
     weapon->setPosition(this->vf_position.x, this->vf_position.y, b_facingRight);
@@ -189,6 +261,8 @@ bool Entity::updateWeapon(Weapon* weapon)
 void Entity::update()
 {
     this->updateMovement();
+    this->updateAnimation();
+    this->updateInvulnerability();
 }
 
 void Entity::render()

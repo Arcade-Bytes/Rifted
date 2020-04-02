@@ -40,8 +40,8 @@ void MovementComponent::move(const float& xdir)
 
 void MovementComponent::jump(const float& xforce, const float& yforce)
 {
-    this->vf_speed.x += f_acceleration * -xforce;
-    this->vf_speed.y += f_acceleration * -yforce;
+    this->vf_speed.x += -xforce;
+    this->vf_speed.y += -yforce;
 }
 
 void MovementComponent::stop()

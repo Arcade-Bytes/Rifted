@@ -1,12 +1,13 @@
 #include "Weapon.h"
 
-Weapon::Weapon(const float& cooldown, const float& timeToAttack, const float& xsize, const float& ysize)
-    : f_attackCooldown(cooldown), f_attackTime(timeToAttack)
+Weapon::Weapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize, float damage, bool isPlayer)
+    : f_attackCooldown(cooldown), f_attackTime(timeToAttack), f_attackWindow(window)
 {
+    this->vf_size = {xsize, ysize};
     this->b_isAttacking = false;
     this->f_reach = 30.0f;
 
-    this->hitbox = new Hitbox(WEAPON, xsize, ysize, 0,0);
+    this->hitbox = new Hitbox(isPlayer ? PLAYER_ATTACK : ENEMY_ATTACK, 0,0, 0,0, damage);
     this->hitbox->setColor(sf::Color(55,55,55,200));
 }
 
@@ -47,22 +48,21 @@ void Weapon::updateAttack()
     if(!b_alreadyAttacked && f_attackDelta >= f_attackTime)
     {
         b_alreadyAttacked = true;
-        attack();
+        this->hitbox->setSize(vf_size.x, vf_size.y);
     }
 
     // If the attack finished
     if(f_attackDelta >= f_attackCooldown)
+    {
         b_isAttacking = false;
-}
-
-void Weapon::attack()
-{
-    std::cout<<"Attack!\n";
+        this->hitbox->setSize(0.0f, 0.0f);
+    }
 }
 
 void Weapon::scale(sf::Vector2f scaleRatio)
 {
-    this->hitbox->scale(scaleRatio);
+    this->vf_size.x *= scaleRatio.x;
+    this->vf_size.y *= scaleRatio.y;
     this->f_reach *= scaleRatio.x;
 }
 

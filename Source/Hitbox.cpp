@@ -5,6 +5,7 @@ std::vector<Hitbox*> Hitbox::hitboxes;
 Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const float& xpos, const float& ypos)
 {
     this->type = type;
+    this->f_damage = 0.0f;
     this->vf_position = {xpos,ypos};
     this->vf_size = {xsize,ysize};
 
@@ -14,6 +15,12 @@ Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const fl
     this->shape.setPosition(this->vf_position);
 
     hitboxes.push_back(this);
+}
+
+Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const float& xpos, const float& ypos, float damage)
+    : Hitbox(type, xsize, ysize, xpos, ypos)
+{
+    this->f_damage = damage;
 }
 
 Hitbox::~Hitbox()
@@ -96,6 +103,16 @@ sf::Vector2f Hitbox::checkCollision(Hitbox* other)
         if(distance.y > 0) intersection.y *= -1;
     }
     return intersection;
+}
+
+void Hitbox::setDamage(float damage)
+{
+    this->f_damage = damage;
+}
+
+float Hitbox::getDamage()
+{
+    return this->f_damage;
 }
 
 sf::FloatRect Hitbox::getBounds()

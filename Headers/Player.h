@@ -19,7 +19,7 @@ private:
     Weapon* hammer;
     Shield* shield;
 public:
-    Player();
+    Player(const float& maxHealth);
     ~Player();
 
     void getHurt(float& damage);
@@ -27,6 +27,8 @@ public:
     void regenerate();
 
     // Virtual override
+    bool checkObstacle(Hitbox* hitbox);
+    bool checkInteraction(Hitbox* hitbox);
     void resizeItems(sf::Vector2f scaleRatio);
 
     void update();

@@ -17,6 +17,7 @@ private:
     // SFML Properties
     sf::RenderWindow* window;
     sf::Clock clock;
+    sf::Clock updateClock;
 
     // Views
     sf::View view;
@@ -43,7 +44,7 @@ public:
     // Updates
     void updateDelta();
     void updateSFMLEvents();
-    void updateInput();
+    float getUpdateTime();
 
     // Renders
     void renderDrawable(sf::Drawable* drawable);
