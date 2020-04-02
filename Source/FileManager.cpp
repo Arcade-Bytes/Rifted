@@ -85,7 +85,6 @@ namespace ftl{
         OpenSaveFile(xml_doc);
         //coins
         xml_doc.FirstChildElement(PLAYER)->FirstChildElement(COINS)->SetText(player.getMony().c_str());
-        xml_doc.PrintError();
         //health
         xml_doc.FirstChildElement(PLAYER)->FirstChildElement(HEALTH)->SetText(player.getHealth().c_str());
         //maxhealth
@@ -154,7 +153,7 @@ namespace ftl{
     void OpenSaveFile(XMLDocument& xml_saveFile){
         char cwd[PATH_MAX];
         if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        printf("Current working dir: %s\n", cwd);
+        //printf("Current working dir: %s\n", cwd);
         }
         int i_error = xml_saveFile.LoadFile("ds000002.sl");
         
