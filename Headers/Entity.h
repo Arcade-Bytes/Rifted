@@ -12,6 +12,7 @@ private:
 protected:
     float f_currentHealth;
     float f_maxHealth;
+    bool b_isDead;
 
     bool b_isGrounded;
     bool b_facingRight;
@@ -38,7 +39,6 @@ public:
     Entity(const float& maxHealth);
     virtual ~Entity();
 
-
     // Position
     sf::Vector2f getPosition();
     void setPosition(const float&x, const float& y);
@@ -53,6 +53,8 @@ public:
     // Damage
     void getHurt(float& damage);
     void getHealed(float& healing);
+    virtual void die();
+    bool isDead();
 
     // Movement
     void move(const float& xdir);

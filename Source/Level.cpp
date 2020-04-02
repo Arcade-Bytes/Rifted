@@ -18,11 +18,10 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     std::vector<MapObject> enemyData = this->map->getEnemyData();
     for(auto data : enemyData)
     {
-        /*
         Enemy* enemy = new Enemy(100.0f, this->player);
         enemy->setSize(data.size);
         enemy->setPosition(data.positon);
-        this->enemies.push_back(enemy);*/
+        this->enemies.push_back(enemy);
     }
 
     // Doors init
@@ -97,6 +96,41 @@ Level::~Level()
     delete this->map;
 }
 
+// Checks
+void Level::checkLevelExitReached()
+{
+    for(unsigned int i=0; i<exits.size(); i++)
+    {
+        if(exits[i]->checkPlayerCollision(this->player))
+        {
+            this->b_playerLeaves = true;
+            this->i_exitIndex = i;
+        }
+    }
+}
+
+void Level::checkEnemyDeaths()
+{
+    std::vector<Enemy*> deadEnemies;
+
+    // Search dead enemies
+    for(auto enemy : enemies)
+    {
+        if(enemy->isDead())
+        {
+            deadEnemies.push_back(enemy);
+        }
+    }
+    // Kill / Remove dead enemies
+    for(auto enemy: deadEnemies)
+    {
+        enemies.erase(std::find(enemies.begin(), enemies.end(), enemy));
+        delete enemy;
+        enemy = NULL;
+    }
+}
+
+// Level exit related
 bool Level::didPlayerLeave()
 {
     return this->b_playerLeaves;
@@ -109,26 +143,21 @@ LevelExit* Level::getActiveExit()
 
 void Level::update()
 {
+    // Entity updates
     this->player->update();
-
     for(auto enemy: enemies)
         enemy->update();
 
+    // Lever testing
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Z))
-    {
         for(auto lever : levers)
             lever->interact();
-    }
+
+    // Check deaths
+    this->checkEnemyDeaths();
 
     // Check level exit reached
-    for(unsigned int i=0; i<exits.size(); i++)
-    {
-        if(exits[i]->checkPlayerCollision(this->player))
-        {
-            this->b_playerLeaves = true;
-            this->i_exitIndex = i;
-        }
-    }
+    this->checkLevelExitReached();
 
     // Adjust view
     Engine::getInstance()->setViewCenter(this->player->getPosition());

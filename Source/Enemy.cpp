@@ -66,6 +66,11 @@ void Enemy::updateAIState(const float& distance)
     }
 }
 
+void Enemy::die()
+{
+    this->b_isDead = true;
+}
+
 bool Enemy::checkObstacle(Hitbox* hitbox)
 {
     HitboxType type = hitbox->getType();

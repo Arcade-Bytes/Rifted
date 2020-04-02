@@ -255,6 +255,6 @@ void Map::render()
                     engine->renderDrawable(this->map[l][x][y]);
 
     // Debug Hitbox
-    for(auto hitbox : v_mapHitboxes)
-        hitbox->render();
+    //for(auto hitbox : v_mapHitboxes)
+    //    hitbox->render();
 }

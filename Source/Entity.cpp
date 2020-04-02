@@ -4,6 +4,10 @@ Entity::Entity(const float& maxHealth)
 {
     this->shape.setSize(sf::Vector2f(50,50)); // Default / Base size
 
+    this->f_maxHealth = maxHealth;
+    this->f_currentHealth = this->f_maxHealth;
+    this->b_isDead = false;
+
     this->i_wallCollision = this->i_nearPlatformEnd = 0;
     this->b_isGrounded = false;
     this->b_facingRight = true;
@@ -11,9 +15,6 @@ Entity::Entity(const float& maxHealth)
     this->f_invulnerabilityTime = 0.0f;
 
     this->f_jumpForce = 1200.0f;
-
-    this->f_maxHealth = maxHealth;
-    this->f_currentHealth = this->f_maxHealth;
     
     this->movement = new MovementComponent(&this->vf_position, 400.0f, 450.33f, sf::Vector2f(400.0f, 800.0f));
     this->hitbox = new Hitbox(PLAYER, 0,0, 0,0);
@@ -85,8 +86,8 @@ void Entity::getHurt(float& damage)
     f_currentHealth -= damage;
     if(f_currentHealth <= 0.0f)
     {
-        printf("Oh I died :D\n");
-        //f_currentHealth = 0.001f;
+        if(!this->b_isDead)printf("Oh I died :D\n");
+        this->die();
     }
 }
 
@@ -97,6 +98,16 @@ void Entity::getHealed(float& healing)
     {
         f_currentHealth = f_maxHealth;
     }
+}
+
+void Entity::die()
+{
+    this->b_isDead = true;
+}
+
+bool Entity::isDead()
+{
+    return this->b_isDead;
 }
 
 void Entity::move(const float& xdir)

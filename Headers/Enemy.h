@@ -31,6 +31,8 @@ public:
     void updateAI();
     void updateAIState(const float& distance);
 
+    void die();
+
     // Virtual override
     bool checkObstacle(Hitbox* hitbox);
     bool checkInteraction(Hitbox* hitbox);

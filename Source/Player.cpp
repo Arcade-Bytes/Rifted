@@ -127,5 +127,5 @@ void Player::render()
     this->sword->render();
     this->hammer->render();
     this->shield->render();
-    this->hitbox->render();
+    //this->hitbox->render();
 }

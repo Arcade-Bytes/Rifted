@@ -26,6 +26,11 @@ public:
     Level(Player* player, std::string mapName, const int& entranceIndex);
     ~Level();
 
+    // Event checks
+    void checkLevelExitReached();
+    void checkEnemyDeaths();
+
+    // Level exit related
     bool didPlayerLeave();
     LevelExit* getActiveExit();
 
