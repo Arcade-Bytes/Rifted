@@ -13,6 +13,9 @@ private:
     float f_attackCooldown; // Total time needed to finish the attack
     float f_attackTime;     // Moment when the attack hits and its calculated
     float f_attackDelta;    // Time that passed since the attack started
+
+    int i_upgradeLevel;     // The upgrade level of the weapon, -1 means it's not unlocked yet
+
 public:
     Weapon(const float& cooldown, const float& timeToAttack, const float& xsize, const float& ysize);
     ~Weapon();
@@ -23,6 +26,15 @@ public:
     void startAttack();
     void updateAttack();
     void attack();
+
+    /**
+     * Returns the level (int) of the weapon
+     **/
+    int getUpgradeLvl();
+    /**
+     * Sets the weapon's level
+     **/
+    void setUpgradeLvl(int i_lvl);
 
     void update();
     void render();

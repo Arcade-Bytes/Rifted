@@ -37,6 +37,23 @@ public:
     void updateMovement();
     bool updateWeapon(Weapon* weapon);
 
+    /**
+     * Returns the current entity's health
+     **/
+    std::string getHealth();
+    /**
+     * Returns the maximun health the entity can have
+     **/
+    std::string getMaxHealth();
+    /**
+     * Sets the current entity's health
+     **/
+    void setHealth(float f_health);
+    /**
+     * Sets the maximun health the entity can have
+     **/
+    void setMaxHealth(float f_maxHealth);
+
     void update();
     void render();
 };
