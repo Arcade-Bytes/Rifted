@@ -44,7 +44,6 @@ MainMenuState::~MainMenuState(){
 void MainMenuState:: update()
 {
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
-        std::cerr << "Pulso:Enter\n";
         this->changeState(MENU_STATE);
     }
 }

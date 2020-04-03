@@ -30,8 +30,16 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     }
 
     // NPC init
-    npcs.push_back(new NPC("cleric.png", 150,2688, true,"Hola buenos dias compañero como estas\nen este gran dia"));
-    npcs.push_back(new NPC("cleric.png", 700,2688, true,"Hey tú de qué vas payaso\nimbécil te parto la cara"));
+    std::vector<MapObject> npcData;
+    npcData.push_back(MapObject());npcData[0].name = "tendero";
+    npcData[0].positon = {120*4,4*722};npcData[0].size = {(float)tileSize.x*4,(float)tileSize.y*4};
+    for(auto data : npcData)
+    {
+        NPC* npc = new NPC(data.name);
+        npc->setSize(data.size);
+        npc->setPosition(data.positon);
+        this->npcs.push_back(npc);
+    }
 
     // Doors init
     std::vector<MapObject> doorData = this->map->getDoorData();
@@ -212,9 +220,10 @@ void Level::update()
         for(auto lever : levers)
             lever->interact();
 
+    // Interactables
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
         for(unsigned int i = 0; i< npcs.size(); i++){
-            if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 50)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 50))){
+            if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 100)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 100))){
                 if(this->npcs[i]->getImShop() == true)
                     this->nextState = SHOP_STATE;
                 else

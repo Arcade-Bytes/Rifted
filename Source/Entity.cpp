@@ -74,6 +74,7 @@ void Entity::setSize(sf::Vector2f size)
         size.x / this->shape.getSize().x,
         size.y / this->shape.getSize().y
     };
+    printf("New Size is %f, %f\n", size.x, size.y);
     this->initSize(size);
 
     this->movement->resize(ratio);

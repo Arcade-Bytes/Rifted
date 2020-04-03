@@ -18,7 +18,6 @@ void AnimationComponent::loadAnimationsFromJSON(const std::string& filepath)
     // It'll follow a strict format
     FILE* pFile = fopen(filepath.c_str(), "rb");
 
-    if(!pFile) printf("Aahahahahahaha\n");
     if(!pFile) return;
 
     std::vector<Frame*> frames; // Auxiliar, but careful with the pointers
