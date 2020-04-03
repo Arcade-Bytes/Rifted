@@ -3,6 +3,7 @@
 
 #include "Engine.h"
 #include "State.h"
+#include "FileManager.h"
 #include "Map.h"
 #include "NPC.h"
 #include "Player.h"
@@ -18,6 +19,8 @@ private:
     int i_exitIndex;
 
     StateType nextState;
+
+    std::string levelName;
 
     Player* player;
     std::vector<Enemy*> enemies;
@@ -38,6 +41,7 @@ public:
     // Level exit related
     bool didPlayerLeave();
     LevelExit* getActiveExit();
+    void saveLevelData();
 
     // State change
     StateType getNextState();

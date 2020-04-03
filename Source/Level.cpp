@@ -2,6 +2,8 @@
 
 Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 {
+    this->levelName = mapName;
+
     this->b_playerLeaves = false;
     this->resetNextState();
 
@@ -42,6 +44,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 
     // Levers init
     std::vector<MapObject> leverData = this->map->getLeverData();
+    int leverCounter = 0;
     for(auto data : leverData)
     {
         Lever* lever = new Lever();
@@ -53,7 +56,11 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
             if(door->getVinculationId() == data.name)
                 lever->addDoor(door);
 
+        bool active = ftl::GetLeverState(this->levelName, leverCounter);
+        if(active) lever->interact();
+
         this->levers.push_back(lever);
+        leverCounter = this->levers.size();
     }
 
     // Exit init
@@ -150,6 +157,17 @@ bool Level::didPlayerLeave()
 LevelExit* Level::getActiveExit()
 {
     return this->exits[this->i_exitIndex];
+}
+
+void Level::saveLevelData()
+{
+    // Save lever and coin data
+    for(int i=0; i<levers.size(); i++)
+        ftl::SetLeverState(levelName, i, levers[i]->getIsActive());
+    /*
+    for(int i=0; i<coins.size(); i++)
+        ftl::SetCoinState(levelName, i, coins[i]->getIsPicked());
+    */
 }
 
 // State change

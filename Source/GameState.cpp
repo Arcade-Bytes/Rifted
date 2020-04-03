@@ -19,9 +19,18 @@ void GameState::update()
     // Check level change
     if(this->level->didPlayerLeave())
     {
+        // Get destination data
         LevelExit* exit = this->level->getActiveExit();
         std::string mapFile = exit->getDestination();
         int entranceIndex = exit->getEntranceIndex();
+
+        // Save game data
+        this->player->setLevel(mapFile);
+        this->player->setDoor(entranceIndex);
+        ftl::SaveGame(*this->player);
+        this->level->saveLevelData();
+
+        // Reset level
         delete this->level;
         this->level = new Level(this->player, mapFile, entranceIndex);
     }
