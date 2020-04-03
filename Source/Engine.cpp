@@ -9,6 +9,9 @@ Engine::Engine()
 
     this->view.setViewport(sf::FloatRect(0.0f,0.0f,1.0f,1.0f));
     this->view.setSize(this->window->getSize().x, this->window->getSize().y);
+    this->uiView = this->window->getDefaultView();
+    this->uiView.setViewport(sf::FloatRect(0.0f,0.0f,1.0f,1.0f));
+    this->uiView.setSize(this->window->getSize().x, this->window->getSize().y);
 }
 
 Engine::~Engine()
@@ -17,9 +20,19 @@ Engine::~Engine()
 }
 
 // Accessors
+void Engine::windowClose()
+{
+    this->window->close();
+}
+
 bool Engine::isWindowOpen()
 {
     return this->window->isOpen();
+}
+
+sf::Vector2u Engine::getWindowSize()
+{
+    return this->window->getSize();
 }
 
 const float& Engine::getDelta()
@@ -79,6 +92,11 @@ float Engine::getUpdateTime()
 void Engine::renderDrawable(sf::Drawable* drawable)
 {
     this->window->draw(*drawable);
+}
+
+void Engine::setFollowView(bool follow)
+{
+    this->window->setView(follow ? view : uiView);
 }
 
 void Engine::windowClear()

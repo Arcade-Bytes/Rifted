@@ -2,13 +2,25 @@
 
 Game::Game()
 {
-    this->state = new GameState();
+    this->player = new Player(100.0f);
+
+    this->states.push(new MenuState(&states, player));
+    this->states.push(new PauseState(&states, player));
+    this->states.push(new ShopState(&states, player));
+    this->states.push(new TextState(&states, player, sf::Text()));
+    this->states.push(new GameState(&states, player));
+    this->states.push(new MainMenuState(&states, player));
+
+
+
     this->updateStartTime = 0.0f;
 }
 
 Game::~Game()
 {
-    delete this->state;
+    delete this->player;
+    while(!this->states.empty())
+        this->states.pop();
 }
 
 void Game::updateDelta()
@@ -23,7 +35,8 @@ void Game::updateSFMLEvents()
 
 void Game::update()
 {
-    this->state->update();
+    if(!this->states.empty())
+        this->states.top()->update();
 }
 
 void Game::render()
@@ -31,7 +44,8 @@ void Game::render()
     Engine* engine = Engine::getInstance();
     engine->windowClear();
 
-	this->state->render();
+    if(!this->states.empty())
+        this->states.top()->render();
 
     engine->windowDisplay();
 }

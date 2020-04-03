@@ -21,6 +21,7 @@ private:
 
     // Views
     sf::View view;
+    sf::View uiView;
 
     // Input
     std::map<sf::Keyboard::Key, bool> pressedKeys;
@@ -31,7 +32,9 @@ public:
     Engine &operator= (const Engine&) = delete;
 
     // Accessors
+    void windowClose();
     bool isWindowOpen();
+    sf::Vector2u getWindowSize();
     const float& getDelta();
 
     // Views
@@ -48,6 +51,7 @@ public:
 
     // Renders
     void renderDrawable(sf::Drawable* drawable);
+    void setFollowView(bool follow);
     void windowClear();
     void windowDisplay();
 

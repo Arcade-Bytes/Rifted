@@ -20,6 +20,7 @@ public:
     void setSize(sf::Vector2f size);
 
     void addDoor(Door* door);
+    bool getIsActive();
     void interact();
 
     void update();

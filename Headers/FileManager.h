@@ -77,7 +77,23 @@ namespace ftl{
      * Switches a lever, given the level and the lever ID 
      * 
      **/
-    void LeverSwitch(std::string s_level, int i_LeverId);    
+    void LeverSwitch(std::string s_level, int i_LeverId);
+    /**
+     * Set the current picked state of a given coin
+     **/ 
+    void SetCoinState(std::string s_level, int i_CoinId, bool state);
+    /**
+     * Set the current picked state of a given lever
+     **/ 
+    void SetLeverState(std::string s_level, int i_LeverId, bool state);
+    /**
+     * Get the current picked state of a given coin
+     **/ 
+    bool GetCoinState(std::string s_level, int i_CoinId);
+    /**
+     * Get the current picked state of a given lever
+     **/ 
+    bool GetLeverState(std::string s_level, int i_LeverId);
     /**
      * ADD DESCRIPTION
      * 

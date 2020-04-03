@@ -2,7 +2,10 @@
 #define LEVEL_H
 
 #include "Engine.h"
+#include "State.h"
+#include "FileManager.h"
 #include "Map.h"
+#include "NPC.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Lever.h"
@@ -15,8 +18,13 @@ private:
     bool b_playerLeaves;
     int i_exitIndex;
 
+    StateType nextState;
+
+    std::string levelName;
+
     Player* player;
     std::vector<Enemy*> enemies;
+    std::vector<NPC*> npcs;
     std::vector<Lever*> levers;
     std::vector<Door*> doors;
     std::vector<LevelExit*> exits;
@@ -33,6 +41,11 @@ public:
     // Level exit related
     bool didPlayerLeave();
     LevelExit* getActiveExit();
+    void saveLevelData();
+
+    // State change
+    StateType getNextState();
+    void resetNextState();
 
     void update();
     void render();

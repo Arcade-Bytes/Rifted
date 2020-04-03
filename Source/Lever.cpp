@@ -44,6 +44,11 @@ void Lever::addDoor(Door* door)
     v_doorPointers.push_back(door);
 }
 
+bool Lever::getIsActive()
+{
+    return this->b_isActive;
+}
+
 void Lever::interact()
 {
     b_isActive = !b_isActive;
