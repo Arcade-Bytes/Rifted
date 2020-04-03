@@ -21,7 +21,7 @@ Entity::Entity(const float& maxHealth)
     this->f_jumpForce = 1200.0f;
     
     this->movement = new MovementComponent(&this->vf_position, 400.0f, 450.33f, sf::Vector2f(400.0f, 800.0f));
-    this->hitbox = new Hitbox(PLAYER, 0,0, 0,0);
+    this->hitbox = NULL;
     this->animation = NULL;
 
     this->spriteTexture = new sf::Texture();
@@ -34,6 +34,7 @@ Entity::Entity(const float& maxHealth)
 Entity::~Entity()
 {
     delete this->movement;
+    if(this->hitbox) delete this->hitbox;
     if(this->animation) delete this->animation;
     delete this->spriteTexture;
 }
@@ -42,7 +43,7 @@ void Entity::initSize(sf::Vector2f size)
 {
     this->shape.setSize(size);
     this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
-    this->hitbox->setSize(size.x, size.y);
+    if(this->hitbox) this->hitbox->setSize(size.x, size.y);
 }
 
 sf::Vector2f Entity::getPosition()
@@ -59,7 +60,7 @@ void Entity::setPosition(sf::Vector2f pos)
 {
     this->vf_position = pos;
     this->shape.setPosition(this->vf_position);
-    this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
+    if(this->hitbox) this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
 }
 
 sf::Vector2f Entity::getSize()

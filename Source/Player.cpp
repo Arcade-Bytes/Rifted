@@ -4,14 +4,16 @@
 Player::Player(const float& maxHealth)
     : Entity(maxHealth)
 {
+    this->hitbox = new Hitbox(PLAYER, this->shape.getSize().x,this->shape.getSize().y, this->vf_position.x,this->vf_position.y);
+
     this->sword = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 30, true);
     this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 60, 70, 60, true);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
+    this->bow = new RangedWeapon(0.6f, 0.1f, 20, true, this->b_facingRight);
 
     this->animation = new AnimationComponent(this->shape);
     this->animation->loadAnimationsFromJSON("animations/pengo.json");
 
-    this->bow = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 20, true); //testing grounds, melee bow cha cha cha
     ftl::LoadGame(*this);
 }
 
@@ -55,6 +57,11 @@ void Player::regenerate()
         if(f_currentHealth >= i_currentChunk * chunkSize)
             f_currentHealth = i_currentChunk * chunkSize;
     }
+}
+
+void Player::linkWorldProjectiles(std::vector<Projectile*>& proyectileArray)
+{
+    if(this->bow) this->bow->linkWorldProjectiles(proyectileArray);
 }
 
 bool Player::checkObstacle(Hitbox* hitbox)
@@ -110,20 +117,13 @@ void Player::update()
         this->sword->startAttack();
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::H))
         this->hammer->startAttack();
-    /***XML TEST***/
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-    {
-        ftl::SaveGame(*this);
-       
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F7))
-    {
-        ftl::LoadGame(*this);
-    }
-    /*****/
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        this->bow->startAttack();
+
     // Update the attacks
     this->updateWeapon(sword);
     this->updateWeapon(hammer);
+    this->updateWeapon(bow);
 
     // Update shield state
     this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);

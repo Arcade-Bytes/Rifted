@@ -32,6 +32,16 @@ void Weapon::setPosition(const float& xpos, const float& ypos, bool facingRight)
     );
 }
 
+sf::Vector2f Weapon::getPosition()
+{
+    return this->hitbox->getPosition();
+}
+
+void Weapon::attack()
+{
+    this->hitbox->setSize(vf_size.x, vf_size.y);
+}
+
 void Weapon::startAttack()
 {
     if(!b_isAttacking) {
@@ -51,7 +61,7 @@ void Weapon::updateAttack()
     if(!b_alreadyAttacked && f_attackDelta >= f_attackTime)
     {
         b_alreadyAttacked = true;
-        this->hitbox->setSize(vf_size.x, vf_size.y);
+        this->attack();
     }
 
     // If the attack finished

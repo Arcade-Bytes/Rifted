@@ -25,6 +25,7 @@ private:
     Player* player;
     std::vector<Enemy*> enemies;
     std::vector<NPC*> npcs;
+    std::vector<Projectile*> projectiles;
     std::vector<Lever*> levers;
     std::vector<Door*> doors;
     std::vector<LevelExit*> exits;
@@ -37,6 +38,7 @@ public:
     // Event checks
     void checkLevelExitReached();
     void checkEnemyDeaths();
+    void checkDestroyedBullets();
 
     // Level exit related
     bool didPlayerLeave();

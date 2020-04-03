@@ -34,6 +34,7 @@ public:
     void die();
 
     // Virtual override
+    void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray);
     bool checkObstacle(Hitbox* hitbox);
     bool checkInteraction(Hitbox* hitbox);
     void resizeItems(sf::Vector2f scaleRatio);

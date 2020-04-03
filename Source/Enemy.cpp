@@ -3,6 +3,8 @@
 Enemy::Enemy(const float& maxHealth, Player* playerRef)
     : Entity(maxHealth)
 {
+    this->hitbox = new Hitbox(ENEMY, this->shape.getSize().x,this->shape.getSize().y, this->vf_position.x,this->vf_position.y);
+
     this->player = playerRef;
     this->b_patrolLeft = false;
     this->f_aggroDistance = 150;
@@ -69,6 +71,11 @@ void Enemy::updateAIState(const float& distance)
 void Enemy::die()
 {
     this->b_isDead = true;
+}
+
+void Enemy::linkWorldProjectiles(std::vector<Projectile*>& proyectileArray)
+{
+    //if(this->bow) this->bow->linkWorldProjectiles(proyectileArray);
 }
 
 bool Enemy::checkObstacle(Hitbox* hitbox)

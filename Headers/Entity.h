@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "Hitbox.h"
 #include "Weapon.h"
+#include "RangedWeapon.h"
 #include "MovementComponent.h"
 #include "AnimationComponent.h"
 
@@ -53,6 +54,9 @@ public:
     void setSize(sf::Vector2f size);
     virtual void resizeItems(sf::Vector2f scaleRatio) = 0;
 
+    // Weapons
+    virtual void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray) = 0;
+
     // Damage
     void getHurt(float& damage);
     void getHealed(float& healing);
@@ -76,21 +80,13 @@ public:
     void updateInvulnerability();
     bool updateWeapon(Weapon* weapon);
 
-    /**
-     * Returns the current entity's health
-     **/
+    // Returns the current entity's health
     std::string getHealth();
-    /**
-     * Returns the maximun health the entity can have
-     **/
+    // Returns the maximun health the entity can have
     std::string getMaxHealth();
-    /**
-     * Sets the current entity's health
-     **/
+    // Sets the current entity's health
     void setHealth(float f_health);
-    /**
-     * Sets the maximun health the entity can have
-     **/
+    // Sets the maximun health the entity can have
     void setMaxHealth(float f_maxHealth);
 
     void update();

@@ -173,32 +173,32 @@ namespace ftl{
         XMLDocument xml_doc;
         OpenSaveFile(xml_doc);
         //coins
-        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(COINS)->SetText(player.getMony().c_str());
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_COINS)->SetText(player.getMony().c_str());
         //health
-        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(HEALTH)->SetText(player.getHealth().c_str());
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_HEALTH)->SetText(player.getHealth().c_str());
         //maxhealth
-        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(MAXHEALTH)->SetText(player.getMaxHealth().c_str());
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_MAXHEALTH)->SetText(player.getMaxHealth().c_str());
         //kills
-        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(KILLS)->SetText(player.getKills().c_str());
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_KILLS)->SetText(player.getKills().c_str());
         //deaths?
-        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(DEATHS)->SetText(player.getDeaths().c_str());
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_DEATHS)->SetText(player.getDeaths().c_str());
         //score?
-        //  xml_doc.FirstChildElement(PLAYER)->FirstChildElement()->SetText();
+        //  xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_)->SetText();
         //upgrades
-        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(UPG)->FirstChildElement(HEALTH)->SetText(player.getHealthUpg().c_str());
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_UPG)->FirstChildElement(SFL_HEALTH)->SetText(player.getHealthUpg().c_str());
         //level
-        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(LVL)->FirstChildElement(LVLNAME)->SetText(player.getLevel().c_str());
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_LVL)->FirstChildElement(SFL_LVLNAME)->SetText(player.getLevel().c_str());
         //door
-        xml_doc.FirstChildElement(PLAYER)->FirstChildElement(LVL)->FirstChildElement(DOOR)->SetText(player.getDoor().c_str());
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_LVL)->FirstChildElement(SFL_DOOR)->SetText(player.getDoor().c_str());
         //weapons
         //shield
-        xml_doc.FirstChildElement(WPN)->FirstChildElement(SHIELD)->FirstChildElement(UPG)->SetText(player.getShieldLvl().c_str());
+        xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_SHIELD)->FirstChildElement(SFL_UPG)->SetText(player.getShieldLvl().c_str());
         //hammr
-        xml_doc.FirstChildElement(WPN)->FirstChildElement(HMMR)->FirstChildElement(UPG)->SetText(player.getHammrLvl().c_str());
+        xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_HMMR)->FirstChildElement(SFL_UPG)->SetText(player.getHammrLvl().c_str());
         //bow
-        xml_doc.FirstChildElement(WPN)->FirstChildElement(BOW)->FirstChildElement(UPG)->SetText(player.getBowLvl().c_str());
+        xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_BOW)->FirstChildElement(SFL_UPG)->SetText(player.getBowLvl().c_str());
         //sword?
-        xml_doc.FirstChildElement(WPN)->FirstChildElement(SWD)->FirstChildElement(UPG)->SetText(player.getSwordLvl().c_str());
+        xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_SWD)->FirstChildElement(SFL_UPG)->SetText(player.getSwordLvl().c_str());
 
         CloseSaveFile(xml_doc);
 
@@ -210,30 +210,30 @@ namespace ftl{
         XMLDocument xml_doc;
         OpenSaveFile(xml_doc);
         //coins
-        player.setMony(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(COINS)->GetText()));
+        player.setMony(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_COINS)->GetText()));
         //health
-        player.setHealth(std::stof(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(HEALTH)->GetText()));
+        player.setHealth(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_HEALTH)->GetText()));
         //maxhealth
-        player.setMaxHealth(std::stof(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(MAXHEALTH)->GetText()));        
+        player.setMaxHealth(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_MAXHEALTH)->GetText()));        
         //kills
-        player.setKills(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(KILLS)->GetText()));        
+        player.setKills(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_KILLS)->GetText()));        
         //deaths?
-        player.setDeaths(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(DEATHS)->GetText()));        
+        player.setDeaths(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_DEATHS)->GetText()));        
         //upgrades
-        player.setHealthUpg(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(UPG)->FirstChildElement(HEALTH)->GetText()));        
+        player.setHealthUpg(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_UPG)->FirstChildElement(SFL_HEALTH)->GetText()));        
         //level
-        player.setLevel(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(LVL)->FirstChildElement(LVLNAME)->GetText());        
+        player.setLevel(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_LVL)->FirstChildElement(SFL_LVLNAME)->GetText());        
         //door
-        player.setDoor(std::stoi(xml_doc.FirstChildElement(PLAYER)->FirstChildElement(LVL)->FirstChildElement(DOOR)->GetText()));        
+        player.setDoor(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_LVL)->FirstChildElement(SFL_DOOR)->GetText()));        
         //weapons
         //shield
-        player.setShieldLvl(std::stoi(xml_doc.FirstChildElement(WPN)->FirstChildElement(SHIELD)->FirstChildElement(UPG)->GetText()));
+        player.setShieldLvl(std::stoi(xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_SHIELD)->FirstChildElement(SFL_UPG)->GetText()));
         //hammr
-        player.setHammrLvl(std::stoi(xml_doc.FirstChildElement(WPN)->FirstChildElement(HMMR)->FirstChildElement(UPG)->GetText()));
+        player.setHammrLvl(std::stoi(xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_HMMR)->FirstChildElement(SFL_UPG)->GetText()));
         //bow
-        player.setBowLvl(std::stoi(xml_doc.FirstChildElement(WPN)->FirstChildElement(BOW)->FirstChildElement(UPG)->GetText()));
+        player.setBowLvl(std::stoi(xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_BOW)->FirstChildElement(SFL_UPG)->GetText()));
         //sword?
-        player.setSwordLvl(std::stoi(xml_doc.FirstChildElement(WPN)->FirstChildElement(SWD)->FirstChildElement(UPG)->GetText()));
+        player.setSwordLvl(std::stoi(xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_SWD)->FirstChildElement(SFL_UPG)->GetText()));
         CloseSaveFile(xml_doc);
         
     }
@@ -256,7 +256,7 @@ namespace ftl{
     }
     
     void CloseSaveFile(XMLDocument& xml_saveFile){
-        if(xml_saveFile.SaveFile(SAVE_FILE,true)!=0)
+        if(xml_saveFile.SaveFile(SFL_SAVE_FILE,true)!=0)
         {
             std::cerr<< "error saving save file\n";
             exit(EXIT_FAILURE);

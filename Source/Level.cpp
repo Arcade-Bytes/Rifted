@@ -16,6 +16,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     this->player->setPosition(
         this->map->getPlayerPosition()
     );
+    this->player->linkWorldProjectiles(this->projectiles);
 
     // Enemies init
     std::vector<MapObject> enemyData = this->map->getEnemyData();
@@ -24,6 +25,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
         Enemy* enemy = new Enemy(100.0f, this->player);
         enemy->setSize(data.size);
         enemy->setPosition(data.positon);
+        enemy->linkWorldProjectiles(this->projectiles);
         this->enemies.push_back(enemy);
     }
 
@@ -93,6 +95,12 @@ Level::~Level()
         npc = NULL;
     }
     npcs.clear();
+    for(auto projectile : projectiles)
+    {
+        delete projectile;
+        projectile = NULL;
+    }
+    projectiles.clear();
     for(auto lever : levers)
     {
         delete lever;
@@ -129,22 +137,31 @@ void Level::checkLevelExitReached()
 
 void Level::checkEnemyDeaths()
 {
-    std::vector<Enemy*> deadEnemies;
-
-    // Search dead enemies
-    for(auto enemy : enemies)
+    for(auto iter = enemies.begin() ; iter != enemies.end() ; ++iter)
     {
-        if(enemy->isDead())
+        auto position = iter - enemies.begin();
+
+        if(enemies[position]->isDead())
         {
-            deadEnemies.push_back(enemy);
+            delete enemies[position];
+            enemies.erase(iter);
+            --iter;
         }
     }
-    // Kill / Remove dead enemies
-    for(auto enemy: deadEnemies)
+}
+
+void Level::checkDestroyedBullets()
+{
+    for(auto iter = projectiles.begin() ; iter != projectiles.end() ; ++iter)
     {
-        enemies.erase(std::find(enemies.begin(), enemies.end(), enemy));
-        delete enemy;
-        enemy = NULL;
+        auto position = iter - projectiles.begin();
+
+        if(projectiles[position]->isDestroyed())
+        {
+            delete projectiles[position];
+            projectiles.erase(iter);
+            --iter;
+        }
     }
 }
 
@@ -162,10 +179,10 @@ LevelExit* Level::getActiveExit()
 void Level::saveLevelData()
 {
     // Save lever and coin data
-    for(int i=0; i<levers.size(); i++)
+    for(unsigned int i=0; i<levers.size(); i++)
         ftl::SetLeverState(levelName, i, levers[i]->getIsActive());
     /*
-    for(int i=0; i<coins.size(); i++)
+    for(unsigned int i=0; i<coins.size(); i++)
         ftl::SetCoinState(levelName, i, coins[i]->getIsPicked());
     */
 }
@@ -184,6 +201,8 @@ void Level::resetNextState()
 void Level::update()
 {
     // Entity updates
+    for(auto projectile : projectiles)
+        projectile->update();
     this->player->update();
     for(auto enemy: enemies)
         enemy->update();
@@ -206,6 +225,7 @@ void Level::update()
 
     // Check deaths
     this->checkEnemyDeaths();
+    this->checkDestroyedBullets();
 
     // Check level exit reached
     this->checkLevelExitReached();
@@ -221,6 +241,9 @@ void Level::render()
 
     for(auto npc: npcs)
         npc->render();
+
+    for(auto projectile : projectiles)
+        projectile->render();
 
     this->player->render();
 

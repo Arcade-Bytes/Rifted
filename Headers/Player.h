@@ -21,10 +21,9 @@ private:
     int i_healthUpg;                // Current health level, multiplier?
     std::string s_levelName;        // Current level name
     
-
     Weapon* sword;
     Weapon* hammer;
-    Weapon* bow;
+    RangedWeapon* bow;
     Shield* shield;
 public:
     Player(const float& maxHealth);
@@ -35,6 +34,7 @@ public:
     void regenerate();
 
     // Virtual override
+    void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray);
     bool checkObstacle(Hitbox* hitbox);
     bool checkInteraction(Hitbox* hitbox);
     void resizeItems(sf::Vector2f scaleRatio);

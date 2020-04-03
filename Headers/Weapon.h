@@ -23,11 +23,14 @@ private:
 
 public:
     Weapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize, float damage, bool isPlayer);
-    ~Weapon();
+    virtual ~Weapon();
 
     bool isAttacking();
 
     void setPosition(const float& xpos, const float& ypos, bool facingRight);
+    sf::Vector2f getPosition();
+
+    virtual void attack();
     void startAttack();
     void updateAttack();
 
