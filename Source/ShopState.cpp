@@ -95,99 +95,56 @@ void ShopState:: loadDialogue(){
 }
 
 void ShopState:: loadAssets(){
+    ResourceManager* resources = ResourceManager::getInstance();
 
     //Cargamos la fuente de texto
-    if (!fuente.loadFromFile("resources/XOX.ttf")) {
-        std::cerr << "Error cargando la fuente XOX.png";
-    exit(0);
-    }
     texto= new sf::Text();
-    texto->setFont(fuente);
+    texto->setFont(*resources->loadFont("resources/XOX.ttf"));
     texto->setColor(sf::Color::White);
-    texto_render.setFont(fuente);
-    pointer.setFont(fuente);
+    texto_render.setFont(*resources->loadFont("resources/XOX.ttf"));
+    pointer.setFont(*resources->loadFont("resources/XOX.ttf"));
 
     //Cargamos la flecha
-    if (!arrow.loadFromFile("resources/black_arrow.png")) {
-            std::cerr << "Error cargando la imagen black_arrow.png";
-        exit(0);
-    }
-    flecha_selector = new sf::Sprite(arrow);
+    flecha_selector = new sf::Sprite(*resources->loadTexture("resources/black_arrow.png"));
     flecha_selector->rotate(180);
     flecha_selector->setScale(0.4,0.4);
     flecha_selector->setOrigin(flecha_selector->getLocalBounds().width/2.0f, flecha_selector->getLocalBounds().height/2.0f);
 
     //Cargamos la flecha
-    if (!pergamino.loadFromFile("resources/parchment.png")) {
-            std::cerr << "Error cargando la imagen parchment.png";
-        exit(0);
-    }
-    parchment = new sf::Sprite(pergamino);
+    parchment = new sf::Sprite(*resources->loadTexture("resources/parchment.png"));
     parchment->setOrigin(parchment->getLocalBounds().width/2.0f, parchment->getLocalBounds().height/2.0f);
     parchment->rotate(90);
 
     //Cargamos las mejoras de vida
-    if (!heart.loadFromFile("resources/health_upgrade.png")) {
-            std::cerr << "Error cargando la imagen health_upgrade.png";
-        exit(0);
-    }
-    heart_upgrade = new sf::Sprite(heart);
+    heart_upgrade = new sf::Sprite(*resources->loadTexture("resources/health_upgrade.png"));
     heart_upgrade->setOrigin(heart_upgrade->getLocalBounds().width/2.0f, heart_upgrade->getLocalBounds().height/2.0f);
 
     //Cargamos las mejoras de espada
-    if (!sword.loadFromFile("resources/sword_upgrade.png")) {
-            std::cerr << "Error cargando la imagen sword_upgrade.png";
-        exit(0);
-    }
-    sword_upgrade = new sf::Sprite(sword);
+    sword_upgrade = new sf::Sprite(*resources->loadTexture("resources/sword_upgrade.png"));
     sword_upgrade->setOrigin(sword_upgrade->getLocalBounds().width/2.0f, sword_upgrade->getLocalBounds().height/2.0f);
 
     //Cargamos las monedas
-    if (!coin.loadFromFile("resources/coin.png")) {
-            std::cerr << "Error cargando la imagen coin.png";
-        exit(0);
-    }
-    coin_purse = new sf::Sprite(coin);
+    coin_purse = new sf::Sprite(*resources->loadTexture("resources/coin.png"));
     coin_purse->setOrigin(coin_purse->getLocalBounds().width/2.0f, coin_purse->getLocalBounds().height/2.0f);
 
     //Cargamos el escudo
-    if (!shield.loadFromFile("resources/shield.png")) {
-            std::cerr << "Error cargando la imagen shield.png";
-        exit(0);
-    }
-    shield_upgrade = new sf::Sprite(shield);
+    shield_upgrade = new sf::Sprite(*resources->loadTexture("resources/shield.png"));
     shield_upgrade->setOrigin(shield_upgrade->getLocalBounds().width/2.0f, shield_upgrade->getLocalBounds().height/2.0f);
 
     //Cargamos el martillo
-    if (!hammer.loadFromFile("resources/hammer.png")) {
-            std::cerr << "Error cargando la imagen hammer.png";
-        exit(0);
-    }
-    hammer_upgrade = new sf::Sprite(hammer);
+    hammer_upgrade = new sf::Sprite(*resources->loadTexture("resources/hammer.png"));
     hammer_upgrade->setOrigin(hammer_upgrade->getLocalBounds().width/2.0f, hammer_upgrade->getLocalBounds().height/2.0f);
 
     //Cargamos el martillo
-    if (!bow.loadFromFile("resources/bow.png")) {
-            std::cerr << "Error cargando la imagen bow.png";
-        exit(0);
-    }
-    bow_upgrade = new sf::Sprite(bow);
+    bow_upgrade = new sf::Sprite(*resources->loadTexture("resources/bow.png"));
     bow_upgrade->setOrigin(bow_upgrade->getLocalBounds().width/2.0f, bow_upgrade->getLocalBounds().height/2.0f);
 
     //Cargamos al tendero
-    if (!cleric.loadFromFile("resources/cleric.png")) {
-            std::cerr << "Error cargando la imagen cleric.png";
-        exit(0);
-    }
-    npc_cleric = new sf::Sprite(cleric);
+    npc_cleric = new sf::Sprite(*resources->loadTexture("resources/cleric.png"));
     npc_cleric->setOrigin(npc_cleric->getLocalBounds().width/2.0f, npc_cleric->getLocalBounds().height/2.0f);
 
     //Cargamos la caja de texto
-    if (!box.loadFromFile("resources/text_box.png")) {
-            std::cerr << "Error cargando la imagen text_box.png";
-        exit(0);
-    }
-    text_box = new sf::Sprite(box);
+    text_box = new sf::Sprite(*resources->loadTexture("resources/text_box.png"));
     text_box->setOrigin(text_box->getLocalBounds().width/2.0f, text_box->getLocalBounds().height/2.0f);
 
 

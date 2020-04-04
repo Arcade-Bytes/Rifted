@@ -39,6 +39,7 @@ public:
     void regenerate();
 
     void pickCoin(int value);
+    void addKill(int amount);
     void unlockWeapon(std::string weaponName);
     bool getIsWeaponUnlocked(std::string weaponName);
 

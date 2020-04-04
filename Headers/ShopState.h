@@ -7,27 +7,16 @@
 class ShopState : public State {
 private:
     sf::Sprite* parchment;// Fondo para los datos del jugador
-    sf::Texture pergamino; //Contiene la textura para construir parchment
-    sf::Font fuente; // Fuente para escribir
     sf::Text* texto; // Variable para contener el texto
     sf::Sprite* flecha_selector;// Flecha que indica la opcion seleccionada
-    sf::Texture arrow; //Contiene la textura para construir la flecha
     sf::Sprite* heart_upgrade;// Indica las mejoras de vida actuales
-    sf::Texture heart; //Contiene la textura para construir heart_upgrade
     sf::Sprite* sword_upgrade;// Indica las mejoras de espada actuales
-    sf::Texture sword; //Contiene la textura para construir sword_upgrade
     sf::Sprite* coin_purse;// Indica las monedas actuales
-    sf::Texture coin; //Contiene la textura para construir coin_purse
     sf::Sprite* hammer_upgrade;// Indica las mejoras de hammer actuales
-    sf::Texture hammer; //Contiene la textura para construir hammer_upgrade
     sf::Sprite* bow_upgrade;// Indica las mejoras de bow actuales
-    sf::Texture bow; //Contiene la textura para construir bow_upgrade
     sf::Sprite* shield_upgrade;// Indica las mejoras de shield actuales
-    sf::Texture shield; //Contiene la textura para construir shield_upgrade
     sf::Sprite* npc_cleric;// Indica el sprite del tendero actuales
-    sf::Texture cleric; //Contiene la textura para construir npc_cleric
     sf::Sprite* text_box;// Indica el sprite de la caja de texto
-    sf::Texture box; //Contiene la textura para construir text_box
     sf::Clock* clock;
 
     std::vector<sf::Text> textoTienda_v1; //Opciones de bienvenida

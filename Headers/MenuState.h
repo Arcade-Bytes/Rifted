@@ -13,10 +13,6 @@ private:
     sf::Sprite* fondoIni;
     sf::Sprite* flecha_selectorR;
     sf::Sprite* flecha_selectorL;
-    sf::Texture tex;
-    sf::Texture tex2;
-    sf::Texture tex3;
-    sf::Font fuente;
     sf::Text* texto;
     sf::Clock* clock;
 

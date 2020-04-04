@@ -5,41 +5,23 @@ MenuState::MenuState(std::stack<State*>* states, Player* player)
 {
     this->Iam = MENU_STATE;
 
-    if (!tex.loadFromFile("resources/TheRift.jpg")) {
-        std::cerr << "Error cargando la imagen TheRifted.png";
-    exit(0);
-    }
-
-    if (!fuente.loadFromFile("resources/XOX.ttf")) {
-        std::cerr << "Error cargando la fuente XOX.png";
-    exit(0);
-    }
-
-    if (!tex2.loadFromFile("resources/pixel-arrow-png-18.png")) {
-            std::cerr << "Error cargando la imagen TheRifted.png";
-        exit(0);
-    }
-
-    if (!tex3.loadFromFile("resources/pixel-arrow-png-18.png")) {
-            std::cerr << "Error cargando la imagen TheRifted.png";
-        exit(0);
-    }
-
     clock = new sf::Clock();
 
-    fondoIni = new sf::Sprite(tex);
+    ResourceManager* resources = ResourceManager::getInstance();
+    sf::Texture* riftTex = resources->loadTexture("resources/TheRift.jpg");
+    fondoIni = new sf::Sprite(*riftTex);
 
     fondoIni->setScale(2,2);
 
-    fondoIni->setTextureRect(sf::IntRect(0,0,tex.getSize().x,tex.getSize().y) );
+    fondoIni->setTextureRect(sf::IntRect(0,0,riftTex->getSize().x,riftTex->getSize().y) );
 
-    flecha_selectorR = new sf::Sprite(tex2);
+    flecha_selectorR = new sf::Sprite(*resources->loadTexture("resources/pixel-arrow-png-18.png"));
 
     flecha_selectorR->setScale(0.4,0.4);
 
     flecha_selectorR->setOrigin(flecha_selectorR->getLocalBounds().width/2.0f, flecha_selectorR->getLocalBounds().height/2.0f);
 
-    flecha_selectorL = new sf::Sprite(tex3);
+    flecha_selectorL = new sf::Sprite(*resources->loadTexture("resources/pixel-arrow-png-18.png"));
 
     flecha_selectorL->setScale(0.4,0.4);
 
@@ -49,7 +31,7 @@ MenuState::MenuState(std::stack<State*>* states, Player* player)
 
     texto = new sf::Text();
 
-    texto->setFont(fuente);
+    texto->setFont(*resources->loadFont("resources/XOX.ttf"));
 
     i = 0;
 

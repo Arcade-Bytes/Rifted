@@ -171,6 +171,7 @@ void Level::checkLevelExitReached()
 
 void Level::checkEnemyDeaths()
 {
+    int killed = 0;
     for(auto iter = enemies.begin() ; iter != enemies.end() ; ++iter)
     {
         auto position = iter - enemies.begin();
@@ -179,9 +180,11 @@ void Level::checkEnemyDeaths()
         {
             delete enemies[position];
             enemies.erase(iter);
+            killed++;
             --iter;
         }
     }
+    this->player->addKill(killed);
 }
 
 void Level::checkDestroyedBullets()
