@@ -1,6 +1,6 @@
 #include "ShopState.h"
 
-#define maxLvImprovement 5  //Nivel Maximo de mejora
+#define maxLvImprovement 3  //Nivel Maximo de mejora
 //Los precios bases de la tienda
 #define basePriceDmg 100    // Precio de la espada
 #define basePriceLife 100   // Precio de la vida
@@ -12,7 +12,6 @@ ShopState::ShopState(std::stack<State*>* states, Player* player)
     :State(states, player)
 {
     this->Iam = SHOP_STATE;
-    b_reInit = true;
 
     this->initPlayerData();
 
@@ -203,16 +202,18 @@ void ShopState:: update(){
 
     Engine* engine = Engine::getInstance();
     if(engine->getKeyPressed(sf::Keyboard::Right)){
-        if(seleccion == max_seleccion)
-            seleccion = 1;
-        else
-            seleccion++;
+        this->selectionUp();
+        while(!getIsUnlocked(this->seleccion))
+        {
+            this->selectionUp();
+        }
     }
     if(engine->getKeyPressed(sf::Keyboard::Left)){
-        if(seleccion == 1)
-            seleccion = max_seleccion;
-        else
-            seleccion--;
+        this->selectionDown();
+        while(!getIsUnlocked(this->seleccion))
+        {
+            this->selectionDown();
+        }
     }
 
     if(engine->getKeyPressed(sf::Keyboard::Return)){
@@ -221,18 +222,7 @@ void ShopState:: update(){
             case 1: //SI LE DA AL BOTON DE SALIR ....
                 texto_render = textoTienda_v5[random()%textoTienda_v5.size()]; //CARGAMOS UNA DESPEDIDA
                 this->b_reInit = true;
-                this->changeState(GAME_STATE);
-            break;
-
-            case 3: //SI COMPRA DANYO .....
-                if(i_damage < maxLvImprovement){
-
-                    if((i_damage+1)*basePriceDmg <= i_money){
-                        texto_render = textoTienda_v2[random()%textoTienda_v2.size()]; //CARGAMOS UN COMPRA CORRECTA Y LEVEL UP
-                        i_money-=(i_damage*basePriceDmg);
-                        i_damage+=1;
-                    }else {texto_render = textoTienda_v3[random()%textoTienda_v3.size()];} //CARGAMOS COMPRA INCORRECTA
-                }else{ texto_render = textoTienda_v4[random()%textoTienda_v4.size()];} //CARGAMOS ESTA AL MAXIMO
+                this->changeState(GAME_STATE, false);
             break;
             
             case 2: //SI COMPRA VIDA .....
@@ -241,19 +231,30 @@ void ShopState:: update(){
 
                     if((i_life+1)*basePriceLife <= i_money){
                         texto_render = textoTienda_v2[random()%textoTienda_v2.size()];
-                        i_money-=(i_life*basePriceLife);
+                        i_money-=((i_life+1)*basePriceLife);
                         i_life+=1;
                     }else {texto_render = textoTienda_v3[random()%textoTienda_v3.size()];}
                 }else{ texto_render = textoTienda_v4[random()%textoTienda_v4.size()];}
             
             break;
+
+            case 3: //SI COMPRA DANYO .....
+                if(i_damage < maxLvImprovement){
+
+                    if((i_damage+1)*basePriceDmg <= i_money && i_damage >= 0){
+                        texto_render = textoTienda_v2[random()%textoTienda_v2.size()]; //CARGAMOS UN COMPRA CORRECTA Y LEVEL UP
+                        i_money-=((i_damage+1)*basePriceDmg);
+                        i_damage+=1;
+                    }else {texto_render = textoTienda_v3[random()%textoTienda_v3.size()];} //CARGAMOS COMPRA INCORRECTA
+                }else{ texto_render = textoTienda_v4[random()%textoTienda_v4.size()];} //CARGAMOS ESTA AL MAXIMO
+            break;
             
             case 4: 
-                if(i_shield < maxLvImprovement){
+                if(i_shield < 0){ // Shield not upgradable
 
-                    if((i_shield+1)*basePriceArmor <= i_money){
+                    if((i_shield+1)*basePriceArmor <= i_money && i_shield >= 0){
                         texto_render = textoTienda_v2[random()%textoTienda_v2.size()];
-                        i_money-=(i_shield*basePriceArmor);
+                        i_money-=((i_shield+1)*basePriceArmor);
                         i_shield+=1;
                     }else {texto_render = textoTienda_v3[random()%textoTienda_v3.size()];}
                 }else{ texto_render = textoTienda_v4[random()%textoTienda_v4.size()];}
@@ -263,9 +264,9 @@ void ShopState:: update(){
             case 5: 
                 if(i_hammer < maxLvImprovement){
 
-                    if((i_hammer+1)*basePriceArmor <= i_money){
+                    if((i_hammer+1)*basePriceArmor <= i_money && i_hammer >= 0){
                         texto_render = textoTienda_v2[random()%textoTienda_v2.size()];
-                        i_money-=(i_shield*basePriceArmor);
+                        i_money-=((i_hammer+1)*basePriceArmor);
                         i_hammer+=1;
                     }else {texto_render = textoTienda_v3[random()%textoTienda_v3.size()];}
                 }else{ texto_render = textoTienda_v4[random()%textoTienda_v4.size()];}
@@ -275,15 +276,16 @@ void ShopState:: update(){
             case 6: 
                 if(i_bow < maxLvImprovement){
 
-                    if((i_bow+1)*basePriceArmor <= i_money){
+                    if((i_bow+1)*basePriceArmor <= i_money && i_bow >= 0){
                         texto_render = textoTienda_v2[random()%textoTienda_v2.size()];
-                        i_money-=(i_bow*basePriceArmor);
+                        i_money-=((i_bow+1)*basePriceArmor);
                         i_bow+=1;
                     }else {texto_render = textoTienda_v3[random()%textoTienda_v3.size()];}
                 }else{ texto_render = textoTienda_v4[random()%textoTienda_v4.size()];}
         
             break;
         }
+        this->player->setMony(i_money);
         this->player->setSwordLvl(i_damage);
         this->player->setHealthUpg(i_life);
         this->player->setShieldLvl(i_shield);
@@ -321,15 +323,43 @@ void ShopState:: render(){
 void ShopState::initPlayerData()
 {
     i_damage  = atoi(this->player->getSwordLvl().c_str());
-    if(i_damage != -1)max_seleccion++;
     i_life    = atoi(this->player->getHealthUpg().c_str());
     i_money   = atoi(this->player->getMony().c_str());
     i_hammer  = atoi(this->player->getHammrLvl().c_str());
-    if(i_hammer != -1)max_seleccion++;
     i_bow     = atoi(this->player->getBowLvl().c_str());
-    if(i_bow != -1)max_seleccion++;
     i_shield  = atoi(this->player->getShieldLvl().c_str());
-    if(i_shield != -1)max_seleccion++;
+    this->max_seleccion = 6;
+}
+
+bool ShopState::getIsUnlocked(int index)
+{
+    // Vida danyo escudo martillo bow
+    bool unlocked = false;
+    switch(index) {
+        case 1: unlocked = true; break;
+        case 2: if(i_life >= 0) unlocked = true; break;
+        case 3: if(i_damage >= 0) unlocked = true; break;
+        case 4: if(i_shield >= 0) unlocked = true; break;
+        case 5: if(i_hammer >= 0) unlocked = true; break;
+        case 6: if(i_bow >= 0) unlocked = true; break;
+    }
+    return unlocked;
+}
+
+void ShopState::selectionDown()
+{
+    if(seleccion == 1)
+        seleccion = max_seleccion;
+    else
+        seleccion--;
+}
+
+void ShopState::selectionUp()
+{
+    if(seleccion == max_seleccion)
+        seleccion = 1;
+    else
+        seleccion++;
 }
 
 void ShopState::drawText(){
@@ -477,7 +507,7 @@ void ShopState:: drawParchment(){
         shield_upgrade->setScale(0.5,0.5);
         engine->renderDrawable(shield_upgrade);
     
-        if(i_shield<maxLvImprovement)
+        if(i_shield<0)
             texto->setString("Lv " + std::to_string(i_shield+1));
         else texto->setString("Lv Max ");
         texto->setPosition(engine->getWindowSize().x/4*3.05,engine->getWindowSize().y/5 + 310);
@@ -548,7 +578,7 @@ void ShopState:: drawPrices(){
     }
      if(i_shield != -1){
 
-        if(i_shield<maxLvImprovement){
+        if(i_shield<0){
 
             coin_purse->setPosition(engine->getWindowSize().x/4*3.05-60,engine->getWindowSize().y/5 + 378);
             coin_purse->setScale(0.1,0.1);

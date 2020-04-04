@@ -41,7 +41,7 @@ void TextState:: update()
 { 
     setText(player->getNear());
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
-        this->changeState(GAME_STATE);
+        this->changeState(GAME_STATE, false);
     }
 }
 

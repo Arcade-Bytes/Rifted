@@ -16,67 +16,9 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     this->player->setPosition(
         this->map->getPlayerPosition()
     );
+    this->player->linkWorldProjectiles(this->projectiles);
 
-    // Enemies init
-    std::vector<MapObject> enemyData = this->map->getEnemyData();
-    for(auto data : enemyData)
-    {
-        Enemy* enemy = new Enemy(100.0f, this->player);
-        enemy->setSize(data.size);
-        enemy->setPosition(data.positon);
-        this->enemies.push_back(enemy);
-    }
-
-    // NPC init
-    npcs.push_back(new NPC("cleric.png", 150,2688, true,"Hola buenos dias compañero como estas\nen este gran dia"));
-    npcs.push_back(new NPC("cleric.png", 700,2688, false,"Hey tú de qué vas payaso\nimbécil te parto la cara"));
-
-    // Doors init
-    std::vector<MapObject> doorData = this->map->getDoorData();
-    for(auto data : doorData)
-    {
-        Door* door = new Door();
-        door->setSize(data.size);
-        door->setPosition(data.positon);
-        door->setVinculationId(data.name);
-        this->doors.push_back(door);
-    }
-
-    // Levers init
-    std::vector<MapObject> leverData = this->map->getLeverData();
-    int leverCounter = 0;
-    for(auto data : leverData)
-    {
-        Lever* lever = new Lever();
-        lever->setSize(data.size);
-        lever->setPosition(data.positon);
-
-        // Vinculate to doors
-        for(auto door : doors)
-            if(door->getVinculationId() == data.name)
-                lever->addDoor(door);
-
-        bool active = ftl::GetLeverState(this->levelName, leverCounter);
-        if(active) lever->interact();
-
-        this->levers.push_back(lever);
-        leverCounter = this->levers.size();
-    }
-
-    // Exit init
-    std::vector<MapObject> exitData = this->map->getExitData();
-    for(auto data : exitData)
-    {
-        int splitter = data.name.find("/");
-        std::string mapFile = data.name.substr(0,splitter);
-        std::string index = data.name.substr(splitter+1);
-        int entrance = atoi(index.c_str());
-        
-        LevelExit* exit = new LevelExit(mapFile, entrance);
-        exit->setSize(data.size);
-        exit->setPosition(data.positon);
-        this->exits.push_back(exit);
-    }
+    this->initObjectData();
 }
 
 Level::~Level()
@@ -93,6 +35,12 @@ Level::~Level()
         npc = NULL;
     }
     npcs.clear();
+    for(auto projectile : projectiles)
+    {
+        delete projectile;
+        projectile = NULL;
+    }
+    projectiles.clear();
     for(auto lever : levers)
     {
         delete lever;
@@ -114,6 +62,100 @@ Level::~Level()
     delete this->map;
 }
 
+void Level::initObjectData()
+{
+    // Enemies init
+    std::vector<MapObject> objectData = this->map->getEnemyData();
+    for(auto data : objectData)
+    {
+        Enemy* enemy = EnemyFactory::makeEnemy(this->player, data.size, data.type);
+        enemy->setPosition(data.positon);
+        enemy->linkWorldProjectiles(this->projectiles);
+        this->enemies.push_back(enemy);
+    }
+
+    // NPC init
+    objectData = this->map->getNPCData();
+    for(auto data : objectData)
+    {
+        NPC* npc = new NPC(data.name);
+        npc->setSize(data.size);
+        npc->setPosition(data.positon);
+        this->npcs.push_back(npc);
+    }
+
+    // Doors init
+    objectData = this->map->getDoorData();
+    for(auto data : objectData)
+    {
+        Door* door = new Door();
+        door->setSize(data.size);
+        door->setPosition(data.positon);
+        door->setVinculationId(data.name);
+        this->doors.push_back(door);
+    }
+
+    // Levers init
+    objectData = this->map->getLeverData();
+    int counter = 0;
+    for(auto data : objectData)
+    {
+        Lever* lever = new Lever();
+        lever->setSize(data.size);
+        lever->setPosition(data.positon);
+
+        // Vinculate to doors
+        for(auto door : doors)
+            if(door->getVinculationId() == data.name)
+                lever->addDoor(door);
+
+        bool active = ftl::GetLeverState(this->levelName, counter);
+        if(active) lever->interact();
+
+        this->levers.push_back(lever);
+        counter = this->levers.size();
+    }
+
+    // Coin init
+    counter = 0;
+    objectData = this->map->getCoinData();
+    for(auto data : objectData)
+    {
+        bool picked = ftl::GetCoinState(this->levelName, counter);
+        Pickable* coin = new Pickable(picked);
+        coin->setSize(data.size);
+        coin->setPosition(data.positon);
+        this->coins.push_back(coin);
+        counter = this->coins.size();
+    }
+
+    // Tools
+    objectData = this->map->getToolData();
+    for(auto data : objectData)
+    {
+        bool unlocked = this->player->getIsWeaponUnlocked(data.name);
+        Pickable* tool = new Pickable(unlocked, data.name);
+        tool->setSize(data.size);
+        tool->setPosition(data.positon);
+        this->tools.push_back(tool);
+    }
+
+    // Exit init
+    objectData = this->map->getExitData();
+    for(auto data : objectData)
+    {
+        int splitter = data.name.find("/");
+        std::string mapFile = data.name.substr(0,splitter);
+        std::string index = data.name.substr(splitter+1);
+        int entrance = atoi(index.c_str());
+        
+        LevelExit* exit = new LevelExit(mapFile, entrance);
+        exit->setSize(data.size);
+        exit->setPosition(data.positon);
+        this->exits.push_back(exit);
+    }
+}
+
 // Checks
 void Level::checkLevelExitReached()
 {
@@ -129,22 +171,31 @@ void Level::checkLevelExitReached()
 
 void Level::checkEnemyDeaths()
 {
-    std::vector<Enemy*> deadEnemies;
-
-    // Search dead enemies
-    for(auto enemy : enemies)
+    for(auto iter = enemies.begin() ; iter != enemies.end() ; ++iter)
     {
-        if(enemy->isDead())
+        auto position = iter - enemies.begin();
+
+        if(enemies[position]->isDead())
         {
-            deadEnemies.push_back(enemy);
+            delete enemies[position];
+            enemies.erase(iter);
+            --iter;
         }
     }
-    // Kill / Remove dead enemies
-    for(auto enemy: deadEnemies)
+}
+
+void Level::checkDestroyedBullets()
+{
+    for(auto iter = projectiles.begin() ; iter != projectiles.end() ; ++iter)
     {
-        enemies.erase(std::find(enemies.begin(), enemies.end(), enemy));
-        delete enemy;
-        enemy = NULL;
+        auto position = iter - projectiles.begin();
+
+        if(projectiles[position]->isDestroyed())
+        {
+            delete projectiles[position];
+            projectiles.erase(iter);
+            --iter;
+        }
     }
 }
 
@@ -162,12 +213,18 @@ LevelExit* Level::getActiveExit()
 void Level::saveLevelData()
 {
     // Save lever and coin data
-    for(int i=0; i<levers.size(); i++)
+    for(unsigned int i=0; i<levers.size(); i++)
         ftl::SetLeverState(levelName, i, levers[i]->getIsActive());
-    /*
-    for(int i=0; i<coins.size(); i++)
+    
+    for(unsigned int i=0; i<coins.size(); i++)
         ftl::SetCoinState(levelName, i, coins[i]->getIsPicked());
-    */
+}
+
+bool Level::didPlayerDie()
+{
+    bool dead = this->player->isDead();
+    if(dead) this->player->revive();
+    return dead;
 }
 
 // State change
@@ -184,6 +241,8 @@ void Level::resetNextState()
 void Level::update()
 {
     // Entity updates
+    for(auto projectile : projectiles)
+        projectile->update();
     this->player->update();
     for(auto enemy: enemies)
         enemy->update();
@@ -191,11 +250,31 @@ void Level::update()
     // Lever testing
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Z))
         for(auto lever : levers)
-            lever->interact();
+        {
+            sf::Vector2f diff = lever->getPosition() - this->player->getPosition();
+            float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
+            if(distance < lever->getSize().x)
+                lever->interact();
+        }
 
+    // Interactables
+    for(auto coin : coins) {
+        if(!coin->getIsPicked() && coin->isWithinReach(this->player->getPosition()))
+        {
+            coin->setIsPicked(true);
+            this->player->pickCoin(1);
+        }
+    }
+    for(auto tool : tools) {
+        if(!tool->getIsPicked() && tool->isWithinReach(this->player->getPosition()))
+        {
+            tool->setIsPicked(true);
+            this->player->unlockWeapon(tool->getName());
+        }
+    }
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
         for(unsigned int i = 0; i< npcs.size(); i++){
-            if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 50)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 50))){
+            if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 100)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 100))){
                 if(this->npcs[i]->getImShop() == true)
                     this->nextState = SHOP_STATE;
                 else{
@@ -208,6 +287,7 @@ void Level::update()
 
     // Check deaths
     this->checkEnemyDeaths();
+    this->checkDestroyedBullets();
 
     // Check level exit reached
     this->checkLevelExitReached();
@@ -221,19 +301,27 @@ void Level::render()
     Engine::getInstance()->setFollowView(true);
     this->map->render();
 
+    for(auto lever: levers)
+        lever->render();
+        
     for(auto npc: npcs)
         npc->render();
 
-    this->player->render();
+    for(auto projectile : projectiles)
+        projectile->render();
 
     for(auto enemy: enemies)
         enemy->render();
 
+    for(auto coin : coins)
+        coin->render();
+    for(auto tool : tools)
+        tool->render();
+
+    this->player->render();
+
     for(auto door: doors)
         door->render();
-
-    for(auto lever: levers)
-        lever->render();
 
     for(auto exit: exits)
         exit->render();

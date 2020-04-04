@@ -18,10 +18,10 @@
         <upgrades>0</upgrades>
     </sword>
     <hammr>
-        <upgrades>0</upgrades>
+        <upgrades>-1</upgrades>
     </hammr>
     <shield>
-        <upgrades>0</upgrades>
+        <upgrades>-1</upgrades>
     </shield>
     <bow>
         <upgrades>-1</upgrades>

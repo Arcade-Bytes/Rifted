@@ -1,11 +1,11 @@
 #include "PauseState.h"
 
+#define maxLvImprovement 3  //Nivel Maximo de mejora
 
 PauseState::PauseState(std::stack<State*>* states, Player* player)
     :State(states, player)
 {
     this->Iam = PAUSE_STATE;
-    this->b_reInit = true;
 
     //Rellenamos variables
     this->initPlayerData();
@@ -151,10 +151,15 @@ void PauseState:: update()
             seleccion--;
     }
 
-    if(engine->getKeyPressed(sf::Keyboard::A)) //AUMENTO LAS ESTADISTICAS DE FORMA ARTIFICIAL PARA PROBAR COSAS
+    //AUMENTO LAS ESTADISTICAS DE FORMA ARTIFICIAL PARA PROBAR COSAS
+    if(engine->getKeyPressed(sf::Keyboard::A))
     {
         this->player->setMony(i_money + 100);
         i_money = atoi(this->player->getMony().c_str());
+    }
+
+    if(engine->getKeyPressed(sf::Keyboard::P)){
+        this->changeState(GAME_STATE, false);
     }
 
     if(engine->getKeyPressed(sf::Keyboard::Return)){
@@ -163,11 +168,11 @@ void PauseState:: update()
             break;
 
             case 2: //Volvemos a la partida
-                this->changeState(GAME_STATE);
+                this->changeState(GAME_STATE, false);
                 break;
 
             case 3:  //Volvemos al menu principal
-                this->changeState(MAINMENU_STATE);
+                this->changeState(MAINMENU_STATE, true);
                 break;
         }
         this->b_reInit = true;
@@ -343,7 +348,7 @@ void PauseState:: drawPlayerData(){
     heart_upgrade->setScale(0.1,0.1);
     engine->renderDrawable(heart_upgrade);
 
-    texto->setString("Lv " + std::to_string(i_life));
+    texto->setString("Lv " + (i_life >= maxLvImprovement ? "Max" : std::to_string(i_life)));
     texto->setPosition(engine->getWindowSize().x/4*2*1.15,engine->getWindowSize().y/5 + 450);
     texto->setCharacterSize(50);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
@@ -351,16 +356,17 @@ void PauseState:: drawPlayerData(){
 
     //Sword
 
-    sword_upgrade->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 410);
-    sword_upgrade->setScale(0.13,0.13);
-    engine->renderDrawable(sword_upgrade);
+    if(i_damage != -1){
+        sword_upgrade->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 410);
+        sword_upgrade->setScale(0.13,0.13);
+        engine->renderDrawable(sword_upgrade);
 
-    texto->setString("Lv " + std::to_string(i_damage));
-    texto->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 450);
-    texto->setCharacterSize(50);
-    texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
-    engine->renderDrawable(texto);
-
+        texto->setString("Lv " + (i_damage >= maxLvImprovement ? "Max" : std::to_string(i_damage)));
+        texto->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 450);
+        texto->setCharacterSize(50);
+        texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
+        engine->renderDrawable(texto);
+    }
     if(i_shield != -1){
 
         //Shield
@@ -382,7 +388,7 @@ void PauseState:: drawPlayerData(){
         hammer_upgrade->setScale(0.3,0.3);
         engine->renderDrawable(hammer_upgrade);
 
-        texto->setString("Lv " + std::to_string(i_hammer));
+        texto->setString("Lv " + (i_hammer >= maxLvImprovement ? "Max" : std::to_string(i_hammer)));
         texto->setPosition(engine->getWindowSize().x/2*1.28,engine->getWindowSize().y/5 + 600);
         texto->setCharacterSize(50);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
@@ -398,7 +404,7 @@ void PauseState:: drawPlayerData(){
         bow_upgrade->setScale(0.3,0.3);
         engine->renderDrawable(bow_upgrade);
 
-        texto->setString("Lv " + std::to_string(i_bow));
+        texto->setString("Lv " + (i_bow >= maxLvImprovement ? "Max" : std::to_string(i_bow)));
         texto->setPosition(engine->getWindowSize().x/2*1.53,engine->getWindowSize().y/5 + 600);
         texto->setCharacterSize(50);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);

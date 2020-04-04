@@ -5,8 +5,9 @@
 #include "Hitbox.h"
 
 class Weapon {
-private:
+protected:
     Hitbox* hitbox;
+private:
 
     bool b_isAttacking;
     bool b_alreadyAttacked;
@@ -20,14 +21,18 @@ private:
     float f_attackDelta;    // Time that passed since the attack started
 
     int i_upgradeLevel;     // The upgrade level of the weapon, -1 means it's not unlocked yet
+    float f_baseDamage;
 
 public:
     Weapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize, float damage, bool isPlayer);
-    ~Weapon();
+    virtual ~Weapon();
 
     bool isAttacking();
 
     void setPosition(const float& xpos, const float& ypos, bool facingRight);
+    sf::Vector2f getPosition();
+
+    virtual void attack();
     void startAttack();
     void updateAttack();
 

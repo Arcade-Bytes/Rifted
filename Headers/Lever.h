@@ -1,6 +1,7 @@
 #ifndef LEVER_H
 #define LEVER_H
 
+#include "ResourceManager.h"
 #include "Door.h"
 
 class Lever {
@@ -17,6 +18,7 @@ public:
     sf::Vector2f getPosition();
     void setPosition(const float&x, const float& y);
     void setPosition(sf::Vector2f pos);
+    sf::Vector2f getSize();
     void setSize(sf::Vector2f size);
 
     void addDoor(Door* door);

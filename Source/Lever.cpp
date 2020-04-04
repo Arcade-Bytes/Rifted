@@ -6,7 +6,8 @@ Lever::Lever()
     b_isActive = false;
 
     this->vf_position = {300,750};
-    this->shape.setFillColor(sf::Color::Yellow);
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/palanca.png"));
+    this->shape.setTextureRect(sf::IntRect(162,163,162,162));
     this->setSize(sf::Vector2f(70,70));
     this->shape.setPosition(this->vf_position);
 }
@@ -33,6 +34,11 @@ void Lever::setPosition(sf::Vector2f pos)
     this->shape.setPosition(this->vf_position);
 }
 
+sf::Vector2f Lever::getSize()
+{
+    return this->shape.getSize();
+}
+
 void Lever::setSize(sf::Vector2f size)
 {
     this->shape.setSize(size);
@@ -57,9 +63,11 @@ void Lever::interact()
         door->toggleOpenState();
     }
 
-    this->shape.setFillColor(
-        b_isActive ? sf::Color::Blue : sf::Color::Yellow
-    );
+    this->shape.setTextureRect(sf::IntRect(
+        b_isActive ? 0 : 162,
+        b_isActive ? 0 : 163,
+        162,162
+    ));
 }
 
 void Lever::update()

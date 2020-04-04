@@ -2,30 +2,31 @@
 #include <limits.h>
 #include <iostream>
 #include <string.h>
+#include <stdio.h>
+#include<stdlib.h>
 #include "../tinyxml2-master/tinyxml2.h"
 #include "Player.h"
 
-#define SAVE_FILE   "ds000002.sl"
-#define EXTRA_FILE  "ds000003.sl"
+#define SFL_TEMPLATE_FILE "saveSAFE"
+#define SFL_SAVE_FILE   "ds000002.sl"
+#define SFL_EXTRA_FILE  "ds000003.sl"
 
-#define SAVE "savefile"
-#define PLAYER "player"
-#define HEALTH "health"
-#define MAXHEALTH "maxhealth"
-#define COINS "coin"
-#define DEATHS "deaths"
-#define KILLS "kills"
-#define UPG "upgrades"
-#define LVL "level"
-#define LVLNAME "name"
-#define DOOR "door"
-#define SHIELD "shield"
-#define HMMR "hammr"
-#define BOW "bow"
-#define SWD "sword"
-#define WPN "weapons"
-
-#define LEVEL1  ""
+#define SFL_SAVE "savefile"
+#define SFL_PLAYER "player"
+#define SFL_HEALTH "health"
+#define SFL_MAXHEALTH "maxhealth"
+#define SFL_COINS "coin"
+#define SFL_DEATHS "deaths"
+#define SFL_KILLS "kills"
+#define SFL_UPG "upgrades"
+#define SFL_LVL "level"
+#define SFL_LVLNAME "name"
+#define SFL_DOOR "door"
+#define SFL_SHIELD "shield"
+#define SFL_HMMR "hammr"
+#define SFL_BOW "bow"
+#define SFL_SWD "sword"
+#define SFL_WPN "weapons"
 
 using namespace tinyxml2;   //fuck off long string >:((
     
@@ -113,7 +114,11 @@ namespace ftl{
     /**
      * Closes/Saves a XMLDocument 
      **/ 
-    void CloseSaveFile(XMLDocument &xml_doc);    
+    void CloseSaveFile(XMLDocument &xml_doc);
+    /**
+     * Resets save file with the base template
+     **/
+    void ResetSaveFile();  
 
 };
 

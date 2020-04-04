@@ -31,7 +31,6 @@ private:
 
     sf::Clock* clock;
 
-    bool b_reInit;
     int i_damage; //Para montar las estadísticas del jugador en la pantalla de pausa
     int i_life;
     int i_money;

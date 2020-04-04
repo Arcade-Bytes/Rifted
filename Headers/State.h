@@ -5,6 +5,7 @@
 #include <map>
 #include "Engine.h"
 #include "Player.h"
+#include "ResourceManager.h"
 #include <SFML/Graphics.hpp>
 
 enum StateType {MENU_STATE = 1, GAME_STATE, PAUSE_STATE, SHOP_STATE, MAINMENU_STATE, TEXT_STATE};
@@ -14,6 +15,7 @@ private:
 
 protected:
     StateType Iam; //Necesario para poder condicionar los cambios de estados
+    bool b_reInit;
     int seleccion;  //Necesario para que los botones del menu puedan cambiar estados
 
     Player* player;
@@ -30,7 +32,7 @@ public:
 
     virtual void update() = 0;
     virtual void render() = 0;
-    void changeState(StateType target);
+    void changeState(StateType target, bool reInit);
 };
 
 #endif

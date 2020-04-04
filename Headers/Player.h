@@ -15,6 +15,7 @@ private:
     float f_regenerationSpeed;      // Time between regen and regen once you're already regenerating
     float f_regenerationAmount;     // Amount of life regenerated every update
     int i_nchunks;                  // Number of chunks the lifebar is divided in
+
     int i_coins;                    // Amount of coins
     int i_deaths;                   // Amount of player deaths... does it even die?
     int i_kills;                    // Amount of kills
@@ -26,7 +27,7 @@ private:
 
     Weapon* sword;
     Weapon* hammer;
-    Weapon* bow;
+    RangedWeapon* bow;
     Shield* shield;
 
 public:
@@ -37,7 +38,15 @@ public:
     void getHealed(float& healing);
     void regenerate();
 
+    void pickCoin(int value);
+    void unlockWeapon(std::string weaponName);
+    bool getIsWeaponUnlocked(std::string weaponName);
+
+    void die();
+    void trulyDie();
+
     // Virtual override
+    void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray);
     bool checkObstacle(Hitbox* hitbox);
     bool checkInteraction(Hitbox* hitbox);
     void resizeItems(sf::Vector2f scaleRatio);

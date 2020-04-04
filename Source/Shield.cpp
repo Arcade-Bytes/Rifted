@@ -87,18 +87,6 @@ void Shield::scale(sf::Vector2f scaleRatio)
     this->shape.scale(scaleRatio);
 }
 
-void Shield::update()
-{
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-    {
-        RiseShield();
-    }
-    else
-    {
-        RestShield();
-    }
-}
-
 void Shield::render()
 {
     if(b_isActive)

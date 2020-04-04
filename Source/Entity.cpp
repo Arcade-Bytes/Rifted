@@ -21,12 +21,10 @@ Entity::Entity(const float& maxHealth)
     this->f_jumpForce = 1200.0f;
     
     this->movement = new MovementComponent(&this->vf_position, 400.0f, 450.33f, sf::Vector2f(400.0f, 800.0f));
-    this->hitbox = new Hitbox(PLAYER, 0,0, 0,0);
+    this->hitbox = NULL;
     this->animation = NULL;
 
-    this->spriteTexture = new sf::Texture();
-    this->spriteTexture->loadFromFile("resources/snobees.png");
-    this->shape.setTexture(spriteTexture);
+    //this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/snobees.png"));
     this->initSize(sf::Vector2f(50,50));
     this->setPosition(350,350);
 }
@@ -34,15 +32,15 @@ Entity::Entity(const float& maxHealth)
 Entity::~Entity()
 {
     delete this->movement;
+    if(this->hitbox) delete this->hitbox;
     if(this->animation) delete this->animation;
-    delete this->spriteTexture;
 }
 
 void Entity::initSize(sf::Vector2f size)
 {
     this->shape.setSize(size);
     this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
-    this->hitbox->setSize(size.x, size.y);
+    if(this->hitbox) this->hitbox->setSize(size.x, size.y);
 }
 
 sf::Vector2f Entity::getPosition()
@@ -59,7 +57,7 @@ void Entity::setPosition(sf::Vector2f pos)
 {
     this->vf_position = pos;
     this->shape.setPosition(this->vf_position);
-    this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
+    if(this->hitbox) this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
 }
 
 sf::Vector2f Entity::getSize()
@@ -106,6 +104,16 @@ void Entity::getHealed(float& healing)
 void Entity::die()
 {
     this->b_isDead = true;
+}
+
+void Entity::trulyDie()
+{
+    this->die();
+}
+
+void Entity::revive()
+{
+    this->b_isDead = false;
 }
 
 bool Entity::isDead()
@@ -202,9 +210,10 @@ void Entity::checkCollisions()
                 this->getHurt(damage);
 
                 sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
+                this->movement->stopY();
                 this->knockback(
                     500.0f * (diff.x < 0 ? 1 : -1),
-                    200.0f
+                    -300.0f
                 );
 
                 this->b_isInvulnerable = true;
@@ -212,7 +221,7 @@ void Entity::checkCollisions()
 
                 if(hitbox->getType() == LETHAL)
                 {
-                    printf("Oh me caí we\n");
+                    this->trulyDie();
                 }
             }
         }
@@ -223,7 +232,7 @@ void Entity::updateAnimation()
 {
     if(this->animation)
     {
-        this->s_currentAnimation = "idle";
+        this->s_currentAnimation = "idle_right";
         if(abs(this->movement->getSpeed().x) > 0)
         {
             if(this->b_facingRight) this->s_currentAnimation = "walking_right";
@@ -231,8 +240,8 @@ void Entity::updateAnimation()
         }
         else
         {
-            if(this->b_facingRight) this->s_currentAnimation = "idle";
-            else                    this->s_currentAnimation = "idle";
+            if(this->b_facingRight) this->s_currentAnimation = "idle_right";
+            else                    this->s_currentAnimation = "idle_left";
         }
 
         this->animation->playAnimation(this->s_currentAnimation);

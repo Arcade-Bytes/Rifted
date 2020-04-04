@@ -3,6 +3,7 @@
 
 #include "Engine.h"
 #include "Hitbox.h"
+#include "ResourceManager.h"
 
 class Door {
 private:

@@ -1,6 +1,5 @@
 #include "MenuState.h"
 
-
 MenuState::MenuState(std::stack<State*>* states, Player* player)
     :State(states, player)
 {
@@ -85,13 +84,20 @@ void MenuState:: update(){
             seleccion--;
     }
 
-    if(engine->getKeyPressed(sf::Keyboard::Return) ){
-
+    if(engine->getKeyPressed(sf::Keyboard::Return))
+    {
         switch(seleccion){
-            case 1: this->changeState(GAME_STATE); break;   //Opcion Partida Nueva
-            case 2: this->changeState(GAME_STATE); break;   //Futuro Cargar Partida
+            case 1: //Opcion Partida Nueva
+                ftl::ResetSaveFile();
+                ftl::LoadGame(*this->player);
+                this->changeState(GAME_STATE, true);
+                break;   
+            case 2: //Futuro Cargar Partida
+                ftl::LoadGame(*this->player);
+                this->changeState(GAME_STATE, true);
+                break;
             case 3: break; //Futuro Ajustes
-            case 4: engine->windowClose(); break;           //Opcion Exit
+            case 4: engine->windowClose(); break;//Opcion Exit
         }
     }
 }

@@ -11,6 +11,8 @@ public:
     GameState(std::stack<State*>* states, Player* player);
     ~GameState();
 
+    void initGame();
+
     void update();
     void render();
 };

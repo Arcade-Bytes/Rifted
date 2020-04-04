@@ -3,6 +3,7 @@
 
 #include "Engine.h"
 #include "Hitbox.h"
+#include "ResourceManager.h"
 #include "../tinyxml2-master/tinyxml2.h"
 
 using namespace tinyxml2;
@@ -16,10 +17,6 @@ struct MapObject{
 
 class Map {
 private:
-    // Resources
-    sf::Texture* bgTexture;
-    sf::Texture* tilesetTexture;
-
     // Tileset data
     sf::Vector2i v_tilesetGridSize;
     sf::Vector2i v_tilesetTileSize;
@@ -34,12 +31,15 @@ private:
     // Starting positions
     sf::Vector2f playerStartingPosition;
     std::vector<MapObject> enemyData;
+    std::vector<MapObject> npcData;
     std::vector<MapObject> leverData;
     std::vector<MapObject> doorData;
+    std::vector<MapObject> coinData;
+    std::vector<MapObject> toolData;
     std::vector<MapObject> exitData;
 
     std::vector<std::vector<std::vector<sf::Sprite*>>> map;
-    sf::Sprite* background;
+    sf::RectangleShape* background;
     std::vector<Hitbox*> v_mapHitboxes;
 public:
     Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranceIndex);
@@ -48,8 +48,11 @@ public:
     // Starting position getters
     sf::Vector2f getPlayerPosition();
     std::vector<MapObject> getEnemyData();
+    std::vector<MapObject> getNPCData();
     std::vector<MapObject> getLeverData();
     std::vector<MapObject> getDoorData();
+    std::vector<MapObject> getCoinData();
+    std::vector<MapObject> getToolData();
     std::vector<MapObject> getExitData();
 
     void render();

@@ -1,17 +1,19 @@
 #include "Enemy.h"
 
-Enemy::Enemy(const float& maxHealth, Player* playerRef)
-    : Entity(maxHealth)
+Enemy::Enemy(Player* playerRef)
+    : Entity(100.0f)
 {
+    this->hitbox = new Hitbox(ENEMY, this->shape.getSize().x,this->shape.getSize().y, this->vf_position.x,this->vf_position.y);
+
+    // AI Properties and helpers
     this->player = playerRef;
     this->b_patrolLeft = false;
-    this->f_aggroDistance = 150;
-    this->f_attackDistance = 50;
     this->b_mutexAttack = false;
 
-    this->weapon = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 10, false);
-
-    this->shape.setFillColor(sf::Color::Red);
+    this->f_aggroDistance = 150;
+    this->f_attackDistance = 50;
+    this->weapon = NULL;
+    this->animation = NULL;
 }
 
 Enemy::~Enemy()
@@ -19,10 +21,49 @@ Enemy::~Enemy()
     delete this->weapon;
 }
 
+// Factory setters
+void Enemy::setWeapon(const float& cooldown, const float& timeToAttack,
+    const float& window, const float& xsize, const float& ysize, float damage)
+{
+    if(this->weapon) delete this->weapon;
+    this->weapon = new Weapon(cooldown, timeToAttack, window, xsize, ysize, damage, false);
+}
+
+void Enemy::setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage)
+{
+    if(this->weapon) delete this->weapon;
+    this->weapon = new RangedWeapon(cooldown, timeToAttack, damage, false, this->b_facingRight);
+}
+
+void Enemy::setAnimation(std::string animationFile)
+{
+    if(this->animation) delete this->animation;
+    this->animation = new AnimationComponent(this->shape);
+    this->animation->loadAnimationsFromJSON("animations/"+animationFile);
+}
+
+void Enemy::setMaxSpeed(const float&maxX, const float&maxY)
+{
+    this->movement->setMaxSpeed(sf::Vector2f(maxX, maxY));
+}
+
+void Enemy::setAIDistances(float aggro, float attack)
+{
+    this->f_aggroDistance = aggro;
+    this->f_attackDistance = attack;
+}
+
+void Enemy::setRangedMode(bool ranged)
+{
+    this->b_isRanged = ranged;
+}
+
 void Enemy::attack()
 {
     if(!b_mutexAttack)
+    {
         weapon->startAttack();
+    }
 }
 
 void Enemy::updateAI()
@@ -30,10 +71,11 @@ void Enemy::updateAI()
     sf::Vector2f diff = (this->player->getPosition() - this->vf_position);
     float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
 
-    updateAIState(distance);
+    updateAIState(distance, abs(diff.y));
 
     switch(state) {
         case EnemyAttacking:
+            this->b_facingRight = diff.x > 0;
             attack();
             break;
         case EnemyChasing:
@@ -50,9 +92,10 @@ void Enemy::updateAI()
     }
 }
 
-void Enemy::updateAIState(const float& distance)
+void Enemy::updateAIState(const float& distance, const float& yDiff)
 {
-    if(distance <= this->f_attackDistance)
+    if(distance <= this->f_attackDistance
+        && (!this->b_isRanged || (this->b_isRanged && yDiff <= this->getSize().y/2)))
     {
         state = EnemyAttacking;
     }
@@ -69,6 +112,17 @@ void Enemy::updateAIState(const float& distance)
 void Enemy::die()
 {
     this->b_isDead = true;
+}
+
+void Enemy::trulyDie()
+{
+    this->die();
+}
+
+void Enemy::linkWorldProjectiles(std::vector<Projectile*>& proyectileArray)
+{
+    RangedWeapon* ranged = dynamic_cast<RangedWeapon*>(weapon);
+    if(ranged) ranged->linkWorldProjectiles(proyectileArray);
 }
 
 bool Enemy::checkObstacle(Hitbox* hitbox)

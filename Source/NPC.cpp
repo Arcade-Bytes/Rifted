@@ -1,15 +1,32 @@
 #include "NPC.h"
-NPC::NPC(std::string textureName, float x, float y,bool hasShop, std::string dialogText)
+NPC::NPC(std::string sheetFile)
 {
-    this->texture.loadFromFile("resources/"+textureName);
-    this->sprite.setTexture(texture);//
+    FILE* file = fopen(("npcSheets/"+sheetFile+".json").c_str(), "rb");
 
-    //sprite->setOrigin(sprite->getLocalBounds().width/2.0f, sprite->getLocalBounds().height);
-    this->sprite.setPosition(x,y);
+    char buffer[65536];
+    rapidjson::FileReadStream is(file, buffer, sizeof(buffer));
+    rapidjson::Document document;
+    document.ParseStream<0, rapidjson::UTF8<>, rapidjson::FileReadStream>(is);
 
-    dialogo.setString(dialogText);
-    //Si true es el NPC de la tienda, lo uso en Game para saber si meto estado Dialogo o Tienda
-    ImShop = hasShop;
+    std::string textureFile = document["textureFile"].GetString();
+    this->b_isShop = document["isShop"].GetBool();
+
+    for(unsigned int i = 0; i < document["quotes"].Size() ; i++)
+    {
+        rapidjson::Value& state = document["quotes"][i];
+        std::string stateName = state["state"].GetString();
+
+        for(unsigned int j = 0; j < state["quotes"].Size() ; j++)
+        {
+            this->quotes[stateName].push_back(
+                state["quotes"][j]["text"].GetString()
+            );
+        }
+    }
+
+    fclose(file);
+    this->dialogo.setString(this->quotes["greeting"][0]);
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+textureFile));
 }
 
 NPC::~NPC()
@@ -17,33 +34,38 @@ NPC::~NPC()
 
 }
 
-void NPC:: render(){
-
-    Engine* engine = Engine::getInstance();
-
-    engine->renderDrawable(&sprite);
-
+sf::Vector2f NPC::getPosition()
+{
+    return shape.getPosition();
 }
 
-sf::Vector2f NPC:: getPosition(){
-
-    return sprite.getPosition();
-
+void NPC::setPosition(sf::Vector2f pos)
+{
+    this->shape.setPosition(pos);
 }
 
-sf::Text NPC:: getDialogue(){
+sf::Vector2f NPC::getSize()
+{
+    return this->shape.getSize();
+}
 
+void NPC::setSize(sf::Vector2f size)
+{
+    this->shape.setSize(size);
+    shape.setOrigin(shape.getSize().x/2.0f, shape.getSize().y/2);
+}
+
+sf::Text NPC:: getDialogue()
+{
     return dialogo;
-
 }
 
 
 bool NPC:: getImShop()
 {
-    return ImShop;
+    return this->b_isShop;
 }
 
-void NPC:: update()
-{
-
+void NPC:: render(){
+    Engine::getInstance()->renderDrawable(&shape);
 }
