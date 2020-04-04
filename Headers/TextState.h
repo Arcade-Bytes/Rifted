@@ -19,6 +19,7 @@ public:
 
     void update();
     void render();
+    void setText(std::string text);
     void endState();
 };
 
