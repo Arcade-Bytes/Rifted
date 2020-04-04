@@ -11,8 +11,6 @@ Game::Game()
     this->states.push(new GameState(&states, player));
     this->states.push(new MainMenuState(&states, player));
 
-
-
     this->updateStartTime = 0.0f;
 }
 
@@ -44,8 +42,20 @@ void Game::render()
     Engine* engine = Engine::getInstance();
     engine->windowClear();
 
-    if(!this->states.empty())
+    StateType type = states.top()->getIam();
+    if(states.size() >= 2 && (type == PAUSE_STATE || type == TEXT_STATE))
+    {
+        State* topState = this->states.top();
+        this->states.pop();
         this->states.top()->render();
+        this->states.push(topState);
+        this->states.top()->render();
+    }
+    else
+    {
+        if(!this->states.empty())
+            this->states.top()->render();
+    }
 
     engine->windowDisplay();
 }

@@ -5,6 +5,7 @@
 #include <map>
 #include "Engine.h"
 #include "Player.h"
+#include "ResourceManager.h"
 #include <SFML/Graphics.hpp>
 
 enum StateType {MENU_STATE = 1, GAME_STATE, PAUSE_STATE, SHOP_STATE, MAINMENU_STATE, TEXT_STATE};

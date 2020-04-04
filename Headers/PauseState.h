@@ -22,16 +22,23 @@ private:
     sf::Texture skull; //Contiene la textura para construir kill_count
     sf::Sprite* parchment;// Fondo para los datos del jugador
     sf::Texture pergamino; //Contiene la textura para construir parchment
-    sf::Sprite* armor_upgrade;// Indica el nivel de armadura
-    sf::Texture armor; //Contiene la textura para construir armor_upgrade
+    sf::Sprite* shield_upgrade;// Indica el nivel de escudo
+    sf::Texture shield; //Contiene la textura para construir shield_upgrade
+    sf::Sprite* bow_upgrade;// Indica el nivel de bow
+    sf::Texture bow; //Contiene la textura para construir bow_upgrade
+    sf::Sprite* hammer_upgrade;// Indica el nivel de hammer
+    sf::Texture hammer; //Contiene la textura para construir hammer_upgrade
+
     sf::Clock* clock;
 
     int i_damage; //Para montar las estadísticas del jugador en la pantalla de pausa
     int i_life;
-    int i_kills;
     int i_money;
-    int i_armor;
+    int i_hammer;
+    int i_shield;
+    int i_bow;
     int i_score;
+    int i_kills;
     bool dir; //Direccion de la animacion de la flecha
     int i; //COntrol para animacion de la flecha
     

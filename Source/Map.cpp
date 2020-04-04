@@ -41,9 +41,8 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
     image->QueryIntAttribute("width", &imgWidth);
     image->QueryIntAttribute("height", &imgHeight);
     textureFich = image->Attribute("source");
+    std::string textureFileName = std::string(textureFich);
 
-    this->tilesetTexture = new sf::Texture();
-    this->tilesetTexture->loadFromFile("maps/"+std::string(textureFich));
     this->v_tilesetGridSize.x = imgWidth / this->v_tilesetTileSize.x;
     this->v_tilesetGridSize.y = imgHeight / this->v_tilesetTileSize.y;
     this->i_tilesetLinearSize = v_tilesetGridSize.x * v_tilesetGridSize.y;
@@ -55,13 +54,20 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
 
     // Background data
     tileset = tileset->NextSiblingElement("tileset");
-    image = tileset->FirstChildElement("image");
-    textureFich = image->Attribute("source");
-    this->bgTexture = new sf::Texture();
-    this->bgTexture->loadFromFile("maps/"+std::string(textureFich));
-    this->background = new sf::Sprite(*bgTexture);
-    this->background->setPosition(0,0);
-    this->background->setScale(this->scaleFactor);
+    if(tileset)
+    {
+        image = tileset->FirstChildElement("image");
+        textureFich = image->Attribute("source");
+        this->background = new sf::RectangleShape();
+        this->background->setTexture(ResourceManager::getInstance()->loadTexture("maps/"+std::string(textureFich)));
+        this->background->setPosition(0,0);
+        this->background->setSize(sf::Vector2f(v_tileSize.x*v_gridSize.x,v_tileSize.y*v_gridSize.y));
+    }
+    else
+    {
+        this->background = NULL;
+    }
+    
 
     // Map reading
     layer = mapdata->FirstChildElement("layer");
@@ -86,7 +92,7 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
                     gid--;
                     int coordX = (gid) % this->v_tilesetGridSize.x;
                     int coordY = (gid) / this->v_tilesetGridSize.x;
-                    this->map[l][x][y] = new sf::Sprite(*tilesetTexture);
+                    this->map[l][x][y] = new sf::Sprite(*ResourceManager::getInstance()->loadTexture("maps/"+textureFileName));
                     this->map[l][x][y]->setTextureRect(sf::IntRect(
                         coordX * this->v_tilesetTileSize.x,
                         coordY * this->v_tilesetTileSize.y,
@@ -221,9 +227,7 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
 
 Map::~Map()
 {
-    delete this->bgTexture;
-    delete this->tilesetTexture;
-    delete this->background;
+    if(this->background) delete this->background;
     for (unsigned int l = 0; l < this->layers; l++)
     {
         for (int x = 0; x < this->v_gridSize.x; x++)
@@ -292,7 +296,7 @@ void Map::render()
     Engine* engine = Engine::getInstance();
 
     // Background
-    engine->renderDrawable(this->background);
+    if(this->background) engine->renderDrawable(this->background);
 
     // Tile map
     for (unsigned int l = 0; l < this->layers; l++)

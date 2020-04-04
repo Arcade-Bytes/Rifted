@@ -19,8 +19,9 @@ private:
     int i_deaths;                   // Amount of player deaths... does it even die?
     int i_kills;                    // Amount of kills
     int i_door;                     // Door we used to enter the level
-    std::string s_levelName;        // Current level name
     int i_healthUpg;                // Current health level, multiplier?
+    int i_score;                    // Score
+    std::string s_levelName;        // Current level name
     
     Weapon* sword;
     Weapon* hammer;
@@ -58,6 +59,7 @@ public:
     std::string getSwordLvl();
     std::string getShieldLvl();
     std::string getBowLvl();
+    std::string getScore();
     void setMony(int i_money);
     void setKills(int i_kills);
     void setDeaths(int i_deaths);

@@ -3,6 +3,7 @@
 
 #include "Engine.h"
 #include "Hitbox.h"
+#include "ResourceManager.h"
 #include "../tinyxml2-master/tinyxml2.h"
 
 using namespace tinyxml2;
@@ -16,10 +17,6 @@ struct MapObject{
 
 class Map {
 private:
-    // Resources
-    sf::Texture* bgTexture;
-    sf::Texture* tilesetTexture;
-
     // Tileset data
     sf::Vector2i v_tilesetGridSize;
     sf::Vector2i v_tilesetTileSize;
@@ -42,7 +39,7 @@ private:
     std::vector<MapObject> exitData;
 
     std::vector<std::vector<std::vector<sf::Sprite*>>> map;
-    sf::Sprite* background;
+    sf::RectangleShape* background;
     std::vector<Hitbox*> v_mapHitboxes;
 public:
     Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranceIndex);

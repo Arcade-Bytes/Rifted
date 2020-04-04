@@ -7,13 +7,13 @@
 #include <rapidjson/filereadstream.h>
 
 #include "Engine.h"
+#include "ResourceManager.h"
 
 class NPC {
 
 private:
     sf::Text dialogo;
 
-    sf::Texture texture;
     sf::RectangleShape shape;
 
     std::map<std::string, std::vector<std::string>> quotes;

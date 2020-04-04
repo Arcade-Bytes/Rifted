@@ -32,6 +32,14 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             enemy->setRangedMode(true);
             enemy->setMaxHealth(50);
             break;
+        default: 
+            enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 15);
+            enemy->setAnimation("greenEnemy.json");
+            enemy->setMaxSpeed(300.0f, 800.0f);
+            enemy->setAIDistances(150, 50);
+            enemy->setRangedMode(false);
+            enemy->setMaxHealth(90);
+            break;
     }
 
     enemy->setSize(size);

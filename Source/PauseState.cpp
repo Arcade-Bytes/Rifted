@@ -1,5 +1,6 @@
 #include "PauseState.h"
 
+#define maxLvImprovement 3  //Nivel Maximo de mejora
 
 PauseState::PauseState(std::stack<State*>* states, Player* player)
     :State(states, player)
@@ -29,7 +30,9 @@ PauseState::~PauseState(){
     delete sword_upgrade;
     delete coin_purse;
     delete kill_count;
-    delete armor_upgrade;
+    delete shield_upgrade;
+    delete hammer_upgrade;
+    delete bow_upgrade;
     delete parchment;
     delete clock;
 }
@@ -100,13 +103,29 @@ void PauseState::loadAssets(){
     kill_count = new sf::Sprite(skull);
     kill_count->setOrigin(kill_count->getLocalBounds().width/2.0f, kill_count->getLocalBounds().height/2.0f);
 
-    //Cargamos las armaduras
-    if (!armor.loadFromFile("resources/armor_v1.png")) {
-            std::cerr << "Error cargando la imagen armor_v1.png";
+    //Cargamos el escudo
+    if (!shield.loadFromFile("resources/shield.png")) {
+            std::cerr << "Error cargando la imagen shield.png";
         exit(0);
     }
-    armor_upgrade = new sf::Sprite(armor);
-    armor_upgrade->setOrigin(armor_upgrade->getLocalBounds().width/2.0f, armor_upgrade->getLocalBounds().height/2.0f);
+    shield_upgrade = new sf::Sprite(shield);
+    shield_upgrade->setOrigin(shield_upgrade->getLocalBounds().width/2.0f, shield_upgrade->getLocalBounds().height/2.0f);
+
+    //Cargamos el martillo
+    if (!hammer.loadFromFile("resources/hammer.png")) {
+            std::cerr << "Error cargando la imagen hammer.png";
+        exit(0);
+    }
+    hammer_upgrade = new sf::Sprite(hammer);
+    hammer_upgrade->setOrigin(hammer_upgrade->getLocalBounds().width/2.0f, hammer_upgrade->getLocalBounds().height/2.0f);
+
+    //Cargamos el arco
+    if (!bow.loadFromFile("resources/bow.png")) {
+            std::cerr << "Error cargando la imagen bow";
+        exit(0);
+    }
+    bow_upgrade = new sf::Sprite(bow);
+    bow_upgrade->setOrigin(bow_upgrade->getLocalBounds().width/2.0f, bow_upgrade->getLocalBounds().height/2.0f);
 
 }
 
@@ -159,6 +178,22 @@ void PauseState:: update()
         this->b_reInit = true;
     }
 
+    if(engine->getKeyPressed(sf::Keyboard::B)){
+
+        if(i_bow != 0)
+            i_bow = 0;
+        else i_bow = -1;
+
+        if(i_hammer != 0)
+            i_hammer = 0;
+        else i_hammer = -1;
+
+        if(i_shield != 0)
+            i_shield = 0;
+        else i_shield = -1;
+
+    }
+
 }
 
 void PauseState:: render(){
@@ -183,12 +218,14 @@ void PauseState:: render(){
 
 void PauseState::initPlayerData()
 {
-    i_damage = atoi(this->player->getSwordLvl().c_str());
-    i_life = atoi(this->player->getHealthUpg().c_str());
-    i_kills = atoi(this->player->getKills().c_str());
-    i_money = atoi(this->player->getMony().c_str());
-    i_score = 0;//atoi(this->player->getKills().c_str());
-    i_armor = 0;//atoi(this->player->getKills().c_str());
+    i_damage  = atoi(this->player->getSwordLvl().c_str());
+    i_life    = atoi(this->player->getHealthUpg().c_str());
+    i_kills   = atoi(this->player->getKills().c_str());
+    i_money   = atoi(this->player->getMony().c_str());
+    i_hammer  = atoi(this->player->getHammrLvl().c_str());
+    i_score   = atoi(this->player->getScore().c_str());
+    i_shield  = atoi(this->player->getShieldLvl().c_str());
+    i_bow     = atoi(this->player->getBowLvl().c_str());
 }
 
 void PauseState::drawText(){ 
@@ -261,61 +298,118 @@ void PauseState:: drawPlayerData(){
 
     texto->setColor(sf::Color::Black);
 
+    //Score
+
     texto->setString("Score : " + std::to_string(i_score));
-    texto->setPosition(engine->getWindowSize().x/4*2.7,engine->getWindowSize().y/5);
+    texto->setPosition(engine->getWindowSize().x/2*1.08,engine->getWindowSize().y/5);
     texto->setCharacterSize(54);
-    texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
+    texto->setOrigin(0,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
-    heart_upgrade->setPosition(engine->getWindowSize().x/4*2.6,engine->getWindowSize().y/5 + 110);
-    heart_upgrade->setScale(0.1,0.1);
-    engine->renderDrawable(heart_upgrade);
 
-    texto->setString("Lv " + std::to_string(i_life));
-    texto->setPosition(engine->getWindowSize().x/4*3,engine->getWindowSize().y/5 + 90);
-    texto->setCharacterSize(54);
-    texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
-    engine->renderDrawable(texto);
+    //Money
 
-    sword_upgrade->setPosition(engine->getWindowSize().x/4*2.6,engine->getWindowSize().y/5 + 230);
-    sword_upgrade->setScale(0.1,0.1);
-    engine->renderDrawable(sword_upgrade);
-
-    texto->setString("Lv " + std::to_string(i_damage));
-    texto->setPosition(engine->getWindowSize().x/4*3,engine->getWindowSize().y/5 + 210);
-    texto->setCharacterSize(54);
-    texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
-    engine->renderDrawable(texto);
-
-    armor_upgrade->setPosition(engine->getWindowSize().x/4*2.6,engine->getWindowSize().y/5 + 350);
-    armor_upgrade->setScale(1,1);
-    engine->renderDrawable(armor_upgrade);
-
-    texto->setString("Lv " + std::to_string(i_armor));
-    texto->setPosition(engine->getWindowSize().x/4*3,engine->getWindowSize().y/5 + 330);
-    texto->setCharacterSize(54);
-    texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
-    engine->renderDrawable(texto);
-
-    coin_purse->setPosition(engine->getWindowSize().x/4*2.6,engine->getWindowSize().y/5 + 470);
+    coin_purse->setPosition(engine->getWindowSize().x/2*1.1,engine->getWindowSize().y/5 + 110);
     coin_purse->setScale(0.1,0.1);
     engine->renderDrawable(coin_purse);
 
-    texto->setString(" " + std::to_string(i_money));
-    texto->setPosition(engine->getWindowSize().x/4*3,engine->getWindowSize().y/5 + 450);
+    texto->setString(" : " + std::to_string(i_money));
+    texto->setPosition(engine->getWindowSize().x/2*1.12,engine->getWindowSize().y/5 + 90);
     texto->setCharacterSize(54);
-    texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
+    texto->setOrigin(0,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
-    kill_count->setPosition(engine->getWindowSize().x/4*2.6,engine->getWindowSize().y/5 + 590);
+    //Kills
+
+    kill_count->setPosition(engine->getWindowSize().x/2*1.1,engine->getWindowSize().y/5 + 210);
     kill_count->setScale(0.1,0.1);
     engine->renderDrawable(kill_count);
 
-    texto->setString(" " + std::to_string(i_kills));
-    texto->setPosition(engine->getWindowSize().x/4*3,engine->getWindowSize().y/5 + 570);
+    texto->setString(" : " + std::to_string(i_kills));
+    texto->setPosition(engine->getWindowSize().x/2*1.16,engine->getWindowSize().y/5 + 190);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
+
+
+    //Texto "Estadisticas"
+
+    texto->setString(" Mejoras Actuales ");
+    texto->setStyle(sf::Text::Underlined |sf::Text::Bold );
+    texto->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 290);
+    texto->setCharacterSize(54);
+    texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
+    engine->renderDrawable(texto);
+    texto->setStyle(sf::Text::Regular);
+
+    //Life
+
+    heart_upgrade->setPosition(engine->getWindowSize().x/2*1.15,engine->getWindowSize().y/5 + 410);
+    heart_upgrade->setScale(0.1,0.1);
+    engine->renderDrawable(heart_upgrade);
+
+    texto->setString("Lv " + (i_life >= maxLvImprovement ? "Max" : std::to_string(i_life)));
+    texto->setPosition(engine->getWindowSize().x/4*2*1.15,engine->getWindowSize().y/5 + 450);
+    texto->setCharacterSize(50);
+    texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
+    engine->renderDrawable(texto);
+
+    //Sword
+
+    if(i_damage != -1){
+        sword_upgrade->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 410);
+        sword_upgrade->setScale(0.13,0.13);
+        engine->renderDrawable(sword_upgrade);
+
+        texto->setString("Lv " + (i_damage >= maxLvImprovement ? "Max" : std::to_string(i_damage)));
+        texto->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 450);
+        texto->setCharacterSize(50);
+        texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
+        engine->renderDrawable(texto);
+    }
+    if(i_shield != -1){
+
+        //Shield
+
+        shield_upgrade->setPosition(engine->getWindowSize().x/2*1.65,engine->getWindowSize().y/5 + 400);
+        shield_upgrade->setScale(0.3,0.3);
+        engine->renderDrawable(shield_upgrade);
+
+        texto->setString("Lv Max");
+        texto->setPosition(engine->getWindowSize().x/2*1.65,engine->getWindowSize().y/5 + 450);
+        texto->setCharacterSize(50);
+        texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
+        engine->renderDrawable(texto);
+    }
+    if(i_hammer != -1){
+        //Hammer
+
+        hammer_upgrade->setPosition(engine->getWindowSize().x/2*1.28,engine->getWindowSize().y/5 + 550);
+        hammer_upgrade->setScale(0.3,0.3);
+        engine->renderDrawable(hammer_upgrade);
+
+        texto->setString("Lv " + (i_hammer >= maxLvImprovement ? "Max" : std::to_string(i_hammer)));
+        texto->setPosition(engine->getWindowSize().x/2*1.28,engine->getWindowSize().y/5 + 600);
+        texto->setCharacterSize(50);
+        texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
+        engine->renderDrawable(texto);
+    
+    }
+
+    if(i_bow != -1){
+
+        //Bow
+
+        bow_upgrade->setPosition(engine->getWindowSize().x/2*1.53,engine->getWindowSize().y/5 + 550);
+        bow_upgrade->setScale(0.3,0.3);
+        engine->renderDrawable(bow_upgrade);
+
+        texto->setString("Lv " + (i_bow >= maxLvImprovement ? "Max" : std::to_string(i_bow)));
+        texto->setPosition(engine->getWindowSize().x/2*1.53,engine->getWindowSize().y/5 + 600);
+        texto->setCharacterSize(50);
+        texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
+        engine->renderDrawable(texto);
+    }
 
 }
 

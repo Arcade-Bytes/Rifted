@@ -5,40 +5,27 @@ MainMenuState::MainMenuState(std::stack<State*>* states, Player* player)
     :State(states, player)
 {
     this->Iam = MAINMENU_STATE;
-    if (!tex.loadFromFile("resources/TheRift.jpg")) {
-        std::cerr << "Error cargando la imagen TheRifted.png";
-    exit(0);
-    }
-
-    if (!fuente.loadFromFile("resources/XOX.ttf")) {
-        std::cerr << "Error cargando la fuente XOX.png";
-    exit(0);
-    }
     
     clock = new sf::Clock();
 
-    fondoIni = new sf::Sprite(tex);
-
+    ResourceManager* resource = ResourceManager::getInstance();
+    fondoIni = new sf::Sprite(*resource->loadTexture("resources/TheRift.jpg"));
     fondoIni->setScale(2,2);
-
-    fondoIni->setTextureRect(sf::IntRect(0,0,tex.getSize().x,tex.getSize().y) );
+    fondoIni->setTextureRect(sf::IntRect(0,0,
+        resource->getTexture("resources/TheRift.jpg")->getSize().x,
+        resource->getTexture("resources/TheRift.jpg")->getSize().y
+    ));
 
     texto = new sf::Text();
-
-    texto->setFont(fuente);
+    texto->setFont(*resource->loadFont("resources/XOX.ttf"));
 
     i = 0;
-
     dir = true;
-
-
 }
 MainMenuState::~MainMenuState(){
-
     delete fondoIni;
     delete texto;
     delete clock;
-
 }
 
 void MainMenuState:: update()

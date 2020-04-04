@@ -2,11 +2,11 @@
 #define PICKABLE_H
 
 #include "Engine.h"
+#include "ResourceManager.h"
 
 class Pickable {
 
 private:
-    sf::Texture texture;
     sf::RectangleShape shape;
 
     bool b_isPicked;

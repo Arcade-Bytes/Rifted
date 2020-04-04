@@ -10018,8 +10018,8 @@
   <object id="53" name="1" x="743" y="357" width="36" height="42"/>
  </objectgroup>
  <objectgroup id="11" name="Salidas">
-  <object id="49" name="Prueba_Beta/0" x="802" y="350" width="32" height="51"/>
-  <object id="52" name="Prueba_Beta/1" x="-27" y="321" width="27" height="429"/>
+  <object id="49" name="Prueba_1/0" x="802" y="350" width="32" height="51"/>
+  <object id="52" name="Prueba_Beta/0" x="-27" y="321" width="27" height="429"/>
  </objectgroup>
  <objectgroup id="5" name="1">
   <object id="8" x="228.5" y="711" width="40" height="40"/>
@@ -10056,7 +10056,8 @@
   <object id="15" name="salida" x="382.5" y="507" width="20" height="20"/>
  </objectgroup>
  <objectgroup id="4" name="NPC">
-  <object id="1" name="tendero" x="100" y="712" width="24" height="24"/>
+  <object id="56" name="tendero" x="100" y="722" width="24" height="24"/>
+  <object id="57" name="nota" x="160" y="722" width="24" height="24"/>
  </objectgroup>
  <objectgroup id="7" name="Monedas">
   <object id="15" name="" x="360.5" y="510" width="16" height="16"/>

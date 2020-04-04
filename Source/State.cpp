@@ -39,10 +39,11 @@ void State::changeState(StateType target, bool reInit)
         if((helper[helper.size()-1]->getIam()) == target)
         {
             helper[helper.size()-1]->b_reInit = reInit;
-            for(auto item : helper)
+            for(int i=helper.size()-2; i>=0; i--)
             {
-                states->push(item);
+                states->push(helper[i]);
             }
+            states->push(helper[helper.size()-1]);
             break;
         }
     }

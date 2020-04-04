@@ -18,8 +18,12 @@ private:
     sf::Texture sword; //Contiene la textura para construir sword_upgrade
     sf::Sprite* coin_purse;// Indica las monedas actuales
     sf::Texture coin; //Contiene la textura para construir coin_purse
-    sf::Sprite* armor_upgrade;// Indica las mejoras de armadura actuales
-    sf::Texture armor; //Contiene la textura para construir armor_upgrade
+    sf::Sprite* hammer_upgrade;// Indica las mejoras de hammer actuales
+    sf::Texture hammer; //Contiene la textura para construir hammer_upgrade
+    sf::Sprite* bow_upgrade;// Indica las mejoras de bow actuales
+    sf::Texture bow; //Contiene la textura para construir bow_upgrade
+    sf::Sprite* shield_upgrade;// Indica las mejoras de shield actuales
+    sf::Texture shield; //Contiene la textura para construir shield_upgrade
     sf::Sprite* npc_cleric;// Indica el sprite del tendero actuales
     sf::Texture cleric; //Contiene la textura para construir npc_cleric
     sf::Sprite* text_box;// Indica el sprite de la caja de texto
@@ -37,9 +41,12 @@ private:
     int i_damage; //Para montar las estadísticas del jugador en la pantalla de pausa
     int i_life;
     int i_money;
-    int i_armor;
+    int i_hammer;
+    int i_shield;
+    int i_bow;
     bool dir; //Direccion de la animacion de la flecha
     int i; //COntrol para animacion de la flecha
+    int max_seleccion;
     
 public:
     ShopState(std::stack<State*>* states, Player* player);
@@ -49,6 +56,10 @@ public:
     void render();
 
     void initPlayerData();
+
+    bool getIsUnlocked(int index);
+    void selectionDown();
+    void selectionUp();
 
     void drawText();
     void drawArrow();

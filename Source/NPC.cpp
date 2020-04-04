@@ -26,8 +26,7 @@ NPC::NPC(std::string sheetFile)
 
     fclose(file);
 
-    this->texture.loadFromFile("resources/"+textureFile);
-    this->shape.setTexture(&texture);
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+textureFile));
 }
 
 NPC::~NPC()

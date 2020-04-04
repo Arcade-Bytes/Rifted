@@ -1,8 +1,7 @@
 #include "Pickable.h"
 Pickable::Pickable(bool isPicked)
 {
-    this->texture.loadFromFile("resources/coin.png");
-    this->shape.setTexture(&texture);
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/coin.png"));
     this->name = "";
     this->b_isPicked = isPicked;
 }
