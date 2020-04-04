@@ -23,6 +23,10 @@ private:
 
     std::string levelName;
 
+    // View properties
+    sf::Vector2i limitLeftUp;
+    sf::Vector2i limitRightDown;
+
     Player* player;
     std::vector<Enemy*> enemies;
     std::vector<NPC*> npcs;
@@ -39,6 +43,10 @@ public:
     ~Level();
 
     void initObjectData();
+
+    // View related
+    void initViewLimits();
+    void adjustPlayerView();
 
     // Event checks
     void checkLevelExitReached();

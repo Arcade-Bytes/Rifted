@@ -21,6 +21,10 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
     mapdata->QueryIntAttribute("tilewidth", &this->v_tileSize.x);
     mapdata->QueryIntAttribute("tileheight", &this->v_tileSize.y);
     v_tileSize = overrideTileSize;
+    this->v_totalPixelSize = {
+        this->v_tileSize.x * (float)this->v_gridSize.x,
+        this->v_tileSize.y * (float)this->v_gridSize.y
+    };
 
     // Layer count
     this->layers = 0;
@@ -249,6 +253,11 @@ Map::~Map()
         hitbox = NULL;
     }
     v_mapHitboxes.clear();
+}
+
+sf::Vector2f Map::getMapTotalPixelSize()
+{
+    return this->v_totalPixelSize;
 }
 
 sf::Vector2f Map::getPlayerPosition()

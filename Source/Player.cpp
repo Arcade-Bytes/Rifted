@@ -65,6 +65,11 @@ void Player::pickCoin(int value)
     this->i_coins += value;
 }
 
+void Player::addKill(int amount)
+{
+    this->i_kills += amount;
+}
+
 void Player::unlockWeapon(std::string weaponName)
 {
     if(weaponName == "Sword")

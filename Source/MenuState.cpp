@@ -5,41 +5,23 @@ MenuState::MenuState(std::stack<State*>* states, Player* player)
 {
     this->Iam = MENU_STATE;
 
-    if (!tex.loadFromFile("resources/TheRift.jpg")) {
-        std::cerr << "Error cargando la imagen TheRifted.png";
-    exit(0);
-    }
-
-    if (!fuente.loadFromFile("resources/XOX.ttf")) {
-        std::cerr << "Error cargando la fuente XOX.png";
-    exit(0);
-    }
-
-    if (!tex2.loadFromFile("resources/pixel-arrow-png-18.png")) {
-            std::cerr << "Error cargando la imagen TheRifted.png";
-        exit(0);
-    }
-
-    if (!tex3.loadFromFile("resources/pixel-arrow-png-18.png")) {
-            std::cerr << "Error cargando la imagen TheRifted.png";
-        exit(0);
-    }
-
     clock = new sf::Clock();
 
-    fondoIni = new sf::Sprite(tex);
+    ResourceManager* resources = ResourceManager::getInstance();
+    sf::Texture* riftTex = resources->loadTexture("resources/TheRift.jpg");
+    fondoIni = new sf::Sprite(*riftTex);
 
     fondoIni->setScale(2,2);
 
-    fondoIni->setTextureRect(sf::IntRect(0,0,tex.getSize().x,tex.getSize().y) );
+    fondoIni->setTextureRect(sf::IntRect(0,0,riftTex->getSize().x,riftTex->getSize().y) );
 
-    flecha_selectorR = new sf::Sprite(tex2);
+    flecha_selectorR = new sf::Sprite(*resources->loadTexture("resources/pixel-arrow-png-18.png"));
 
     flecha_selectorR->setScale(0.4,0.4);
 
     flecha_selectorR->setOrigin(flecha_selectorR->getLocalBounds().width/2.0f, flecha_selectorR->getLocalBounds().height/2.0f);
 
-    flecha_selectorL = new sf::Sprite(tex3);
+    flecha_selectorL = new sf::Sprite(*resources->loadTexture("resources/pixel-arrow-png-18.png"));
 
     flecha_selectorL->setScale(0.4,0.4);
 
@@ -49,7 +31,7 @@ MenuState::MenuState(std::stack<State*>* states, Player* player)
 
     texto = new sf::Text();
 
-    texto->setFont(fuente);
+    texto->setFont(*resources->loadFont("resources/XOX.ttf"));
 
     i = 0;
 
@@ -120,25 +102,25 @@ void MenuState:: drawText(){
     engine->renderDrawable(fondoIni);
 
     texto->setString("Nueva Partida");
-    texto->setPosition(engine->getWindowSize().x/2,engine->getWindowSize().y/2);
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Continuar Partida");
-    texto->setPosition(engine->getWindowSize().x/2,engine->getWindowSize().y/2 + 100);
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + 100);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Ajustes");
-    texto->setPosition(engine->getWindowSize().x/2,engine->getWindowSize().y/2 + 200);
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + 200);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Salir");
-    texto->setPosition(engine->getWindowSize().x/2,engine->getWindowSize().y/2 + 300);
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + 300);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
@@ -148,7 +130,7 @@ void MenuState:: drawText(){
     texto->setCharacterSize(216);
     texto->setColor(sf::Color::White);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
-    texto->setPosition(engine->getWindowSize().x/2,engine->getWindowSize().y/4);
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/4);
 
     engine->renderDrawable(texto);
 
@@ -163,30 +145,30 @@ void MenuState:: drawArrow(){
         switch(seleccion){
             case 1:
 
-                flecha_selectorR->setPosition(engine->getWindowSize().x/2 + 300 ,engine->getWindowSize().y/2+ 10);
+                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 300 ,engine->getBaseResolution().y/2+ 10);
                 
 
-                flecha_selectorL->setPosition(engine->getWindowSize().x/2 - 300 ,engine->getWindowSize().y/2+ 10);
+                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 300 ,engine->getBaseResolution().y/2+ 10);
                      
             
             break;
 
             case 2:
 
-                flecha_selectorR->setPosition(engine->getWindowSize().x/2 + 380 ,engine->getWindowSize().y/2+ 110);
+                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 380 ,engine->getBaseResolution().y/2+ 110);
                 
 
-                flecha_selectorL->setPosition(engine->getWindowSize().x/2 - 380 ,engine->getWindowSize().y/2+ 110);
+                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 380 ,engine->getBaseResolution().y/2+ 110);
                 
             
             break;
 
             case 3:
 
-                flecha_selectorR->setPosition(engine->getWindowSize().x/2 + 200 ,engine->getWindowSize().y/2+ 210);
+                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 200 ,engine->getBaseResolution().y/2+ 210);
                 
 
-                flecha_selectorL->setPosition(engine->getWindowSize().x/2 - 200 ,engine->getWindowSize().y/2+ 210);
+                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 200 ,engine->getBaseResolution().y/2+ 210);
                 
 
             
@@ -194,10 +176,10 @@ void MenuState:: drawArrow(){
 
             case 4:
 
-                flecha_selectorR->setPosition(engine->getWindowSize().x/2 + 170 ,engine->getWindowSize().y/2+ 310);
+                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 170 ,engine->getBaseResolution().y/2+ 310);
                 
 
-                flecha_selectorL->setPosition(engine->getWindowSize().x/2 - 170 ,engine->getWindowSize().y/2+ 310);
+                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 170 ,engine->getBaseResolution().y/2+ 310);
                 
             
             break;

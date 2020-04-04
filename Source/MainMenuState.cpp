@@ -47,7 +47,7 @@ void MainMenuState:: render(){
     texto->setCharacterSize(216);
     texto->setColor(sf::Color::White);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
-    texto->setPosition(engine->getWindowSize().x/2,engine->getWindowSize().y/3);
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/3);
 
     engine->renderDrawable(texto);
 
@@ -56,7 +56,7 @@ void MainMenuState:: render(){
     texto->setString("Press Enter to Continue");
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
-    texto->setPosition(engine->getWindowSize().x/2,engine->getWindowSize().y/4*3 );
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/4*3 );
 
     if(clock->getElapsedTime().asSeconds()>(0.0004)){  //0.00004
         if(dir==true)

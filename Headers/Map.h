@@ -20,6 +20,7 @@ private:
     // Tileset data
     sf::Vector2i v_tilesetGridSize;
     sf::Vector2i v_tilesetTileSize;
+    sf::Vector2f v_totalPixelSize;
     int i_tilesetLinearSize;
 
     // Map Sizes
@@ -44,6 +45,8 @@ private:
 public:
     Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranceIndex);
     ~Map();
+
+    sf::Vector2f getMapTotalPixelSize();
 
     // Starting position getters
     sf::Vector2f getPlayerPosition();

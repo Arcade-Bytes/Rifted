@@ -19,6 +19,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     this->player->linkWorldProjectiles(this->projectiles);
 
     this->initObjectData();
+    this->initViewLimits();
 }
 
 Level::~Level()
@@ -156,6 +157,38 @@ void Level::initObjectData()
     }
 }
 
+// View related
+void Level::initViewLimits()
+{
+    sf::Vector2f mapSize = this->map->getMapTotalPixelSize();
+    sf::Vector2u windowSize = Engine::getInstance()->getBaseResolution();
+
+    this->limitLeftUp.x = this->limitRightDown.x = mapSize.x / 2;
+    this->limitLeftUp.y = this->limitRightDown.y = mapSize.y / 2;
+    if(mapSize.x > windowSize.x)
+    {
+        limitLeftUp.x       = windowSize.x/2;
+        limitRightDown.x    = mapSize.x - windowSize.x/2;
+    }
+    if(mapSize.y > windowSize.y)
+    {
+        limitLeftUp.y       = windowSize.y/2;
+        limitRightDown.y    = mapSize.y - windowSize.y/2;
+    }
+}
+
+void Level::adjustPlayerView()
+{
+    // Read player position and clamp it if necessary
+    sf::Vector2f playerPosition = this->player->getPosition();
+    if(playerPosition.x < limitLeftUp.x)            playerPosition.x = limitLeftUp.x;
+    else if(playerPosition.x > limitRightDown.x)    playerPosition.x = limitRightDown.x;
+    if(playerPosition.y < limitLeftUp.y)            playerPosition.y = limitLeftUp.y;
+    else if(playerPosition.y > limitRightDown.y)    playerPosition.y = limitRightDown.y;
+
+    Engine::getInstance()->setViewCenter(playerPosition);
+}
+
 // Checks
 void Level::checkLevelExitReached()
 {
@@ -171,6 +204,7 @@ void Level::checkLevelExitReached()
 
 void Level::checkEnemyDeaths()
 {
+    int killed = 0;
     for(auto iter = enemies.begin() ; iter != enemies.end() ; ++iter)
     {
         auto position = iter - enemies.begin();
@@ -179,9 +213,11 @@ void Level::checkEnemyDeaths()
         {
             delete enemies[position];
             enemies.erase(iter);
+            killed++;
             --iter;
         }
     }
+    this->player->addKill(killed);
 }
 
 void Level::checkDestroyedBullets()
@@ -293,7 +329,7 @@ void Level::update()
     this->checkLevelExitReached();
 
     // Adjust view
-    Engine::getInstance()->setViewCenter(this->player->getPosition());
+    this->adjustPlayerView();
 }
 
 void Level::render()

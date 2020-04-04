@@ -12,8 +12,7 @@ private:
     bool b_isPicked;
     std::string name;
 public:
-    Pickable(bool isPicked);
-    Pickable(bool isPicked, std::string newName);
+    Pickable(bool isPicked, std::string newName = "");
     ~Pickable();
 
     sf::Vector2f getPosition();

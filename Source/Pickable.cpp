@@ -1,15 +1,24 @@
 #include "Pickable.h"
-Pickable::Pickable(bool isPicked)
-{
-    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/coin.png"));
-    this->name = "";
-    this->b_isPicked = isPicked;
-}
 
 Pickable::Pickable(bool isPicked, std::string newName)
-    : Pickable(isPicked)
 {
+    this->b_isPicked = isPicked;
     this->name = newName;
+    std::string pickableFile;
+
+    if(this->name == "Sword")
+        pickableFile = "sword_upgrade";
+    else if(this->name == "Hammer")
+        pickableFile = "hammer";
+    else if(this->name == "Bow")
+        pickableFile = "bow";
+    else if(this->name == "Shield")
+        pickableFile = "shield";
+    else
+        pickableFile = "coin";
+
+
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+pickableFile+".png"));
 }
 
 Pickable::~Pickable()
