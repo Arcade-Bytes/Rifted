@@ -6,6 +6,8 @@ Player::Player(const float& maxHealth)
 {
     this->hitbox = new Hitbox(PLAYER, this->shape.getSize().x,this->shape.getSize().y, this->vf_position.x,this->vf_position.y);
 
+    this->i_nchunks = 4;
+
     this->sword = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 30, true);
     this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 60, 70, 60, true);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
@@ -13,8 +15,6 @@ Player::Player(const float& maxHealth)
 
     this->animation = new AnimationComponent(this->shape);
     this->animation->loadAnimationsFromJSON("animations/pengo.json");
-
-    ftl::LoadGame(*this);
 }
 
 Player::~Player()
@@ -57,6 +57,57 @@ void Player::regenerate()
         if(f_currentHealth >= i_currentChunk * chunkSize)
             f_currentHealth = i_currentChunk * chunkSize;
     }
+}
+
+void Player::pickCoin(int value)
+{
+    this->i_coins += value;
+}
+
+void Player::unlockWeapon(std::string weaponName)
+{
+    if(weaponName == "Sword")
+    {
+        if(atoi(this->getSwordLvl().c_str()) < 0)
+            this->setSwordLvl(0);
+    }
+    else if(weaponName == "Hammer")
+    {
+        if(atoi(this->getHammrLvl().c_str()) < 0)
+            this->setHammrLvl(0);
+    }
+    else if(weaponName == "Bow")
+    {
+        if(atoi(this->getBowLvl().c_str()) < 0)
+            this->setBowLvl(0);
+    }
+    else if(weaponName == "Shield")
+    {
+        if(atoi(this->getShieldLvl().c_str()) < 0)
+            this->setShieldLvl(0);
+    }
+}
+
+bool Player::getIsWeaponUnlocked(std::string weaponName)
+{
+    bool result = false;
+    if(weaponName == "Sword")
+    {
+        result = (atoi(this->getSwordLvl().c_str()) >= 0);
+    }
+    else if(weaponName == "Hammer")
+    {
+        result = (atoi(this->getHammrLvl().c_str()) >= 0);
+    }
+    else if(weaponName == "Bow")
+    {
+        result = (atoi(this->getBowLvl().c_str()) >= 0);
+    }
+    else if(weaponName == "Shield")
+    {
+        result = (atoi(this->getShieldLvl().c_str()) >= 0);
+    }
+    return result;
 }
 
 void Player::linkWorldProjectiles(std::vector<Projectile*>& proyectileArray)
@@ -113,12 +164,21 @@ void Player::update()
     sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
         this->jump(0,1);
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+    if(getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::G))
         this->sword->startAttack();
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+    else if(getIsWeaponUnlocked("Hammer") && sf::Keyboard::isKeyPressed(sf::Keyboard::H))
         this->hammer->startAttack();
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+    else if(getIsWeaponUnlocked("Bow") && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
         this->bow->startAttack();
+    else if(getIsWeaponUnlocked("Shield") && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+    {
+        this->shield->RiseShield();
+    }
+    else
+    {
+        this->shield->RestShield();
+    }
+    
 
     // Update the attacks
     this->updateWeapon(sword);
@@ -127,7 +187,6 @@ void Player::update()
 
     // Update shield state
     this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);
-    this->shield->update();
 
     // Update life regeneration
     this->regenerate();
@@ -195,54 +254,59 @@ std::string Player::getBowLvl()
 {
     return std::to_string(this->bow->getUpgradeLvl()).c_str();
 }
-//SET DATA SAVED
 
-    void Player::setMony(int i_money)
-    {
-        this->i_coins = i_money;
-    }
-    
-    void Player::setKills(int i_kills)
-    {
-        this->i_kills = i_kills;
-    }
-    
-    void Player::setDeaths(int i_deaths)
-    {
-        this->i_deaths = i_deaths;
-    }
-    
-    void Player::setHealthUpg(int i_healthupg)
-    {
-        this->i_healthUpg = i_healthupg;
-    }
-    
-    void Player::setLevel(std::string s_levelName)
-    {
-        this->s_levelName = s_levelName;
-    }
-    
-    void Player::setDoor(int i_door)
-    {
-        this->i_door = i_door;
-    }
-    
-    void Player::setHammrLvl(int i_lvl)
-    {
-        this->hammer->setUpgradeLvl(i_lvl);
-    }
-    
-    void Player::setSwordLvl(int i_lvl)
-    {
-        this->sword->setUpgradeLvl(i_lvl);
-    }
-    
-    void Player::setShieldLvl(int i_lvl)
-    {
-        this->shield->setUpgradeLvl(i_lvl);
-    }
-    
-    void Player::setBowLvl(int i_lvl)
-    {
-        this->bow->setUpgradeLvl(i_lvl);
-    }
+//SET DATA SAVED
+void Player::setMony(int i_money)
+{
+    this->i_coins = i_money;
+}
+
+void Player::setKills(int i_kills)
+{
+    this->i_kills = i_kills;
+}
+
+void Player::setDeaths(int i_deaths)
+{
+    this->i_deaths = i_deaths;
+}
+
+void Player::setHealthUpg(int i_healthupg)
+{
+    this->i_healthUpg = i_healthupg;
+
+    // Set new life values
+    float chunkSize = this->f_maxHealth / this->i_nchunks;
+    this->i_nchunks = 4 + this->i_healthUpg;
+    this->f_maxHealth = chunkSize * this->i_nchunks;
+}
+
+void Player::setLevel(std::string s_levelName)
+{
+    this->s_levelName = s_levelName;
+}
+
+void Player::setDoor(int i_door)
+{
+    this->i_door = i_door;
+}
+
+void Player::setHammrLvl(int i_lvl)
+{
+    this->hammer->setUpgradeLvl(i_lvl);
+}
+
+void Player::setSwordLvl(int i_lvl)
+{
+    this->sword->setUpgradeLvl(i_lvl);
+}
+
+void Player::setShieldLvl(int i_lvl)
+{
+    this->shield->setUpgradeLvl(i_lvl);
+}
+
+void Player::setBowLvl(int i_lvl)
+{
+    this->bow->setUpgradeLvl(i_lvl);
+}

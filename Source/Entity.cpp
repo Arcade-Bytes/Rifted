@@ -204,9 +204,10 @@ void Entity::checkCollisions()
                 this->getHurt(damage);
 
                 sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
+                this->movement->stopY();
                 this->knockback(
                     500.0f * (diff.x < 0 ? 1 : -1),
-                    200.0f
+                    -300.0f
                 );
 
                 this->b_isInvulnerable = true;
@@ -225,7 +226,7 @@ void Entity::updateAnimation()
 {
     if(this->animation)
     {
-        this->s_currentAnimation = "idle";
+        this->s_currentAnimation = "idle_right";
         if(abs(this->movement->getSpeed().x) > 0)
         {
             if(this->b_facingRight) this->s_currentAnimation = "walking_right";
@@ -233,8 +234,8 @@ void Entity::updateAnimation()
         }
         else
         {
-            if(this->b_facingRight) this->s_currentAnimation = "idle";
-            else                    this->s_currentAnimation = "idle";
+            if(this->b_facingRight) this->s_currentAnimation = "idle_right";
+            else                    this->s_currentAnimation = "idle_left";
         }
 
         this->animation->playAnimation(this->s_currentAnimation);

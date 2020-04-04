@@ -3,7 +3,7 @@
 RangedWeapon::RangedWeapon(
     const float& cooldown, const float& timeToAttack,
     const float& damage, bool isPlayer, bool& ownerFacing) 
-: Weapon(cooldown, timeToAttack, 0, 0, 0, damage, isPlayer), b_ownerFacingRight(ownerFacing), b_isPlayer(isPlayer), f_damage(damage)
+: Weapon(cooldown, timeToAttack, 0, 0, 0, damage, isPlayer), b_ownerFacingRight(ownerFacing), b_isPlayer(isPlayer)
 {
     this->projectileArray = NULL;
 }
@@ -26,7 +26,7 @@ void RangedWeapon::attack()
             new Projectile(this->getPosition(),
             {this->b_ownerFacingRight ? 1.f : -1.f, 0},
             1000.f,
-            this->f_damage,
+            this->hitbox->getDamage(),
             this->b_isPlayer
         ));
     }

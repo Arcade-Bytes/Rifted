@@ -4,6 +4,7 @@ State::State(std::stack<State*>* statesRef, Player* playerRef)
 {
     this->states = statesRef;
     this->player = playerRef;
+    this->b_reInit = true;
 }
 
 State::~State()
@@ -26,7 +27,7 @@ int State::getSeleccion()
     return this->seleccion;
 }
 
-void State::changeState(StateType target)
+void State::changeState(StateType target, bool reInit)
 {
     std::vector<State*> helper;
     int originalSize = states->size();
@@ -37,6 +38,7 @@ void State::changeState(StateType target)
 
         if((helper[helper.size()-1]->getIam()) == target)
         {
+            helper[helper.size()-1]->b_reInit = reInit;
             for(auto item : helper)
             {
                 states->push(item);

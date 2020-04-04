@@ -11,7 +11,6 @@ ShopState::ShopState(std::stack<State*>* states, Player* player)
     :State(states, player)
 {
     this->Iam = SHOP_STATE;
-    b_reInit = true;
 
     this->initPlayerData();
 
@@ -201,7 +200,7 @@ void ShopState:: update(){
             case 1: //SI LE DA AL BOTON DE SALIR ....
                 texto_render = textoTienda_v5[random()%textoTienda_v5.size()]; //CARGAMOS UNA DESPEDIDA
                 this->b_reInit = true;
-                this->changeState(GAME_STATE);
+                this->changeState(GAME_STATE, false);
             break;
 
             case 3: //SI COMPRA DANYO .....
@@ -241,7 +240,7 @@ void ShopState:: update(){
             break;
         }
         this->player->setSwordLvl(i_damage);
-        this->player->setHealthUpg(i_damage);
+        this->player->setHealthUpg(i_life);
         this->player->setMony(i_money);
     }
 }

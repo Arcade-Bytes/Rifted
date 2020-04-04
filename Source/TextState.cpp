@@ -40,7 +40,7 @@ TextState::~TextState(){
 void TextState:: update()
 { 
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
-        this->changeState(GAME_STATE);
+        this->changeState(GAME_STATE, false);
     }
 }
 

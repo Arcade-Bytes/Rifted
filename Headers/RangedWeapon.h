@@ -11,7 +11,6 @@ private:
     std::vector<Projectile*>* projectileArray;
     bool& b_ownerFacingRight;
     bool b_isPlayer;
-    float f_damage;
 public:
     RangedWeapon(const float& cooldown, const float& timeToAttack, const float& damage, bool isPlayer, bool& b_ownerFacing);
     ~RangedWeapon();

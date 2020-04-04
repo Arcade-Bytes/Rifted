@@ -2,9 +2,12 @@
 #include <limits.h>
 #include <iostream>
 #include <string.h>
+#include <stdio.h>
+#include<stdlib.h>
 #include "../tinyxml2-master/tinyxml2.h"
 #include "Player.h"
 
+#define SFL_TEMPLATE_FILE "saveSAFE"
 #define SFL_SAVE_FILE   "ds000002.sl"
 #define SFL_EXTRA_FILE  "ds000003.sl"
 
@@ -24,8 +27,6 @@
 #define SFL_BOW "bow"
 #define SFL_SWD "sword"
 #define SFL_WPN "weapons"
-
-#define SFL_ LEVEL1  ""
 
 using namespace tinyxml2;   //fuck off long string >:((
     
@@ -113,7 +114,11 @@ namespace ftl{
     /**
      * Closes/Saves a XMLDocument 
      **/ 
-    void CloseSaveFile(XMLDocument &xml_doc);    
+    void CloseSaveFile(XMLDocument &xml_doc);
+    /**
+     * Resets save file with the base template
+     **/
+    void ResetSaveFile();  
 
 };
 

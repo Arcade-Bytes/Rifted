@@ -34,8 +34,11 @@ private:
     // Starting positions
     sf::Vector2f playerStartingPosition;
     std::vector<MapObject> enemyData;
+    std::vector<MapObject> npcData;
     std::vector<MapObject> leverData;
     std::vector<MapObject> doorData;
+    std::vector<MapObject> coinData;
+    std::vector<MapObject> toolData;
     std::vector<MapObject> exitData;
 
     std::vector<std::vector<std::vector<sf::Sprite*>>> map;
@@ -48,8 +51,11 @@ public:
     // Starting position getters
     sf::Vector2f getPlayerPosition();
     std::vector<MapObject> getEnemyData();
+    std::vector<MapObject> getNPCData();
     std::vector<MapObject> getLeverData();
     std::vector<MapObject> getDoorData();
+    std::vector<MapObject> getCoinData();
+    std::vector<MapObject> getToolData();
     std::vector<MapObject> getExitData();
 
     void render();

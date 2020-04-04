@@ -1,13 +1,13 @@
 #include "Weapon.h"
 
 Weapon::Weapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize, float damage, bool isPlayer)
-    : f_attackCooldown(cooldown), f_attackTime(timeToAttack), f_attackWindow(window)
+    : f_attackCooldown(cooldown), f_attackTime(timeToAttack), f_attackWindow(window), f_baseDamage(damage)
 {
     this->vf_size = {xsize, ysize};
     this->b_isAttacking = false;
     this->f_reach = 30.0f;
 
-    this->hitbox = new Hitbox(isPlayer ? PLAYER_ATTACK : ENEMY_ATTACK, 0,0, 0,0, damage);
+    this->hitbox = new Hitbox(isPlayer ? PLAYER_ATTACK : ENEMY_ATTACK, 0,0, 0,0, this->f_baseDamage);
     this->hitbox->setColor(sf::Color(55,55,55,200));
     b_isAttacking = false;
     
@@ -100,4 +100,5 @@ int Weapon::getUpgradeLvl()
 void Weapon::setUpgradeLvl(int i_lvl)
 {
     this->i_upgradeLevel = i_lvl;
+    this->hitbox->setDamage(this->f_baseDamage * (this->i_upgradeLevel+1));
 }

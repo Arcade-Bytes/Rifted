@@ -44,7 +44,7 @@ MainMenuState::~MainMenuState(){
 void MainMenuState:: update()
 {
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
-        this->changeState(MENU_STATE);
+        this->changeState(MENU_STATE, false);
     }
 }
 

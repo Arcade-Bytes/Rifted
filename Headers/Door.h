@@ -8,6 +8,7 @@ class Door {
 private:
     bool b_isOpen;
     sf::Vector2f vf_position;
+    sf::Texture texture;
     sf::RectangleShape shape;
     Hitbox* hitbox;
 

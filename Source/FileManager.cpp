@@ -60,7 +60,7 @@ namespace ftl{
 
     void PickedCoin(std::string s_level, int i_CoinId)
     {
-        std::string s_coinId = "a"+std::to_string(i_CoinId);
+        std::string s_coinId = "c"+std::to_string(i_CoinId);
         XMLDocument xml_doc;
         OpenSaveFile(xml_doc);       
         xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement(s_coinId.c_str())->SetText("1");
@@ -69,7 +69,7 @@ namespace ftl{
 
     void LeverSwitch(std::string s_level, int i_LeverId)
     {
-        std::string s_LeverId = "a"+std::to_string(i_LeverId);
+        std::string s_LeverId = "l"+std::to_string(i_LeverId);
         XMLDocument xml_doc;
         OpenSaveFile(xml_doc);       
         std::string s_prev = xml_doc.FirstChildElement(s_level.c_str())->FirstChildElement( s_LeverId.c_str())->GetText();
@@ -82,7 +82,7 @@ namespace ftl{
 
     void SetCoinState(std::string s_level, int i_CoinId, bool state)
     {
-        std::string s_coinId = "a"+std::to_string(i_CoinId);
+        std::string s_coinId = "c"+std::to_string(i_CoinId);
         XMLDocument xml_doc;
         OpenSaveFile(xml_doc); 
 
@@ -105,7 +105,7 @@ namespace ftl{
 
     void SetLeverState(std::string s_level, int i_LeverId, bool state)
     {
-        std::string s_LeverId = "a"+std::to_string(i_LeverId);
+        std::string s_LeverId = "l"+std::to_string(i_LeverId);
         XMLDocument xml_doc;
         OpenSaveFile(xml_doc);
 
@@ -128,7 +128,7 @@ namespace ftl{
 
     bool GetCoinState(std::string s_level, int i_CoinId)
     {
-        std::string s_coinId = "a"+std::to_string(i_CoinId);
+        std::string s_coinId = "c"+std::to_string(i_CoinId);
         int state = 0;
         XMLDocument xml_doc;
         OpenSaveFile(xml_doc);
@@ -148,7 +148,7 @@ namespace ftl{
 
     bool GetLeverState(std::string s_level, int i_LeverId)
     {
-        std::string s_LeverId = "a"+std::to_string(i_LeverId);
+        std::string s_LeverId = "l"+std::to_string(i_LeverId);
         int state = 0;
 
         XMLDocument xml_doc;
@@ -261,9 +261,33 @@ namespace ftl{
             std::cerr<< "error saving save file\n";
             exit(EXIT_FAILURE);
         }
-
     }
-    
-    
 
+    void ResetSaveFile()
+    {
+        std::ifstream streamI;
+        std::ofstream streamO;
+        char ch;
+        streamI.open(SFL_TEMPLATE_FILE);
+        if(!streamI)
+        {
+            std::cout<<"Error in opening template file..!!\n";
+            return;
+        }
+        streamO.open(SFL_SAVE_FILE, std::ofstream::out | std::ofstream::trunc);
+        if(!streamO)
+        {
+            std::cout<<"Error in opening save file..!!\n";
+            streamO.close();
+            return;
+        }
+        streamI>>ch;
+        while(streamI.eof()==0)
+        {
+            streamO<<ch;
+            streamI>>ch;
+        }
+        streamI.close();
+        streamO.close();
+    }
 };

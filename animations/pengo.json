@@ -1,13 +1,13 @@
 [
   {
-    "name":"idle",
+    "name":"idle_left",
     "frames":
     [
       {
         "duration": 500,
         "rect":
         {
-          "offset_x": 0,
+          "offset_x": 32,
           "offset_y": 0,
           "width": 16,
           "height": 16
@@ -17,7 +17,33 @@
         "duration": 500,
         "rect":
         {
-          "offset_x": 0,
+          "offset_x": 32,
+          "offset_y": 0,
+          "width": 16,
+          "height": 16
+        }
+      }
+    ]
+  },
+  {
+    "name":"idle_right",
+    "frames":
+    [
+      {
+        "duration": 200,
+        "rect":
+        {
+          "offset_x": 96,
+          "offset_y": 0,
+          "width": 16,
+          "height": 16
+        }
+      },
+      {
+        "duration": 200,
+        "rect":
+        {
+          "offset_x": 96,
           "offset_y": 0,
           "width": 16,
           "height": 16

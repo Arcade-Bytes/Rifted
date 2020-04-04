@@ -33,7 +33,6 @@ public:
     int getUpgradeLvl();
     void setUpgradeLvl(int i_lvl);
 
-    void update();
     void render();
 };
 

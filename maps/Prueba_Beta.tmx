@@ -10044,6 +10044,7 @@
   <object id="41" x="720" y="312.5" width="31" height="22"/>
   <object id="42" x="273" y="290" width="446" height="30"/>
   <object id="43" x="-1" y="312.5" width="273.5" height="7.5"/>
+  <object id="53" x="432" y="763" width="368.5" height="12.5"/>
  </objectgroup>
  <objectgroup id="10" name="ZonasLetales">
   <object id="44" x="432" y="755" width="368.5" height="12.5"/>
@@ -10053,6 +10054,13 @@
  </objectgroup>
  <objectgroup id="7" name="Palancas">
   <object id="15" name="salida" x="382.5" y="507" width="20" height="20"/>
+ </objectgroup>
+ <objectgroup id="4" name="NPC">
+  <object id="1" name="tendero" x="100" y="712" width="24" height="24"/>
+ </objectgroup>
+ <objectgroup id="7" name="Monedas">
+  <object id="15" name="" x="360.5" y="510" width="16" height="16"/>
+  <object id="21" name="" x="743" y="357.5" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="8" name="Puertas">
   <object id="21" name="salida" x="783" y="352.5" width="18" height="48"/>

@@ -8,6 +8,7 @@ private:
     std::vector<Door*> v_doorPointers;
     bool b_isActive;
     sf::Vector2f vf_position;
+    sf::Texture texture;
     sf::RectangleShape shape;
 public:
     Lever();
@@ -17,6 +18,7 @@ public:
     sf::Vector2f getPosition();
     void setPosition(const float&x, const float& y);
     void setPosition(sf::Vector2f pos);
+    sf::Vector2f getSize();
     void setSize(sf::Vector2f size);
 
     void addDoor(Door* door);

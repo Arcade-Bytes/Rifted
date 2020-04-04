@@ -11,6 +11,7 @@ target_sources(libModulos PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/ShopState.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Level.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/NPC.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Pickable.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Entity.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Player.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Enemy.cpp"

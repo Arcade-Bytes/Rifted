@@ -5,7 +5,6 @@ PauseState::PauseState(std::stack<State*>* states, Player* player)
     :State(states, player)
 {
     this->Iam = PAUSE_STATE;
-    this->b_reInit = true;
 
     //Rellenamos variables
     this->initPlayerData();
@@ -139,17 +138,21 @@ void PauseState:: update()
         i_money = atoi(this->player->getMony().c_str());
     }
 
+    if(engine->getKeyPressed(sf::Keyboard::P)){
+        this->changeState(GAME_STATE, false);
+    }
+
     if(engine->getKeyPressed(sf::Keyboard::Return)){
         switch(seleccion){
             case 1: //Aqui ira el hipotético ajustes
             break;
 
             case 2: //Volvemos a la partida
-                this->changeState(GAME_STATE);
+                this->changeState(GAME_STATE, false);
                 break;
 
             case 3:  //Volvemos al menu principal
-                this->changeState(MAINMENU_STATE);
+                this->changeState(MAINMENU_STATE, true);
                 break;
         }
         this->b_reInit = true;

@@ -6,6 +6,7 @@
 #include "FileManager.h"
 #include "Map.h"
 #include "NPC.h"
+#include "Pickable.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Lever.h"
@@ -28,12 +29,16 @@ private:
     std::vector<Projectile*> projectiles;
     std::vector<Lever*> levers;
     std::vector<Door*> doors;
+    std::vector<Pickable*> coins;
+    std::vector<Pickable*> tools;
     std::vector<LevelExit*> exits;
 
     Map* map;
 public:
     Level(Player* player, std::string mapName, const int& entranceIndex);
     ~Level();
+
+    void initObjectData();
 
     // Event checks
     void checkLevelExitReached();

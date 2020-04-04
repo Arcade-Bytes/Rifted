@@ -33,8 +33,7 @@ private:
     std::vector<sf::Text> textoTienda_v5; //Opciones de despedida
     sf::Text texto_render;
     sf::Text pointer;
-
-    bool b_reInit;
+    
     int i_damage; //Para montar las estadísticas del jugador en la pantalla de pausa
     int i_life;
     int i_money;

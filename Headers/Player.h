@@ -14,12 +14,13 @@ private:
     float f_regenerationSpeed;      // Time between regen and regen once you're already regenerating
     float f_regenerationAmount;     // Amount of life regenerated every update
     int i_nchunks;                  // Number of chunks the lifebar is divided in
+
     int i_coins;                    // Amount of coins
     int i_deaths;                   // Amount of player deaths... does it even die?
     int i_kills;                    // Amount of kills
     int i_door;                     // Door we used to enter the level
-    int i_healthUpg;                // Current health level, multiplier?
     std::string s_levelName;        // Current level name
+    int i_healthUpg;                // Current health level, multiplier?
     
     Weapon* sword;
     Weapon* hammer;
@@ -32,6 +33,10 @@ public:
     void getHurt(float& damage);
     void getHealed(float& healing);
     void regenerate();
+
+    void pickCoin(int value);
+    void unlockWeapon(std::string weaponName);
+    bool getIsWeaponUnlocked(std::string weaponName);
 
     // Virtual override
     void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray);

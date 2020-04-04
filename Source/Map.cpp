@@ -150,6 +150,31 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
                 mapObject.name = std::string(objName);
                 this->exitData.push_back(mapObject);
             }
+            else if(strcmp(name, "NPC") == 0)
+            {
+                const char* objName = object->Attribute("name");
+                MapObject mapObject;
+                mapObject.positon = position;
+                mapObject.size = size;
+                mapObject.name = std::string(objName);
+                this->npcData.push_back(mapObject);
+            }
+            else if(strcmp(name, "Monedas") == 0)
+            {
+                MapObject mapObject;
+                mapObject.positon = position;
+                mapObject.size = size;
+                this->coinData.push_back(mapObject);
+            }
+            else if(strcmp(name, "Herramientas") == 0)
+            {
+                const char* objName = object->Attribute("name");
+                MapObject mapObject;
+                mapObject.positon = position;
+                mapObject.size = size;
+                mapObject.name = std::string(objName);
+                this->toolData.push_back(mapObject);
+            }
             else if(strcmp(name, "Hitboxes") == 0)
             {
                 Hitbox* hitbox = new Hitbox(PLATFORM, size.x, size.y, position.x, position.y);
@@ -233,6 +258,11 @@ std::vector<MapObject> Map::getEnemyData()
     return this->enemyData;
 }
 
+std::vector<MapObject> Map::getNPCData()
+{
+    return this->npcData;
+}
+
 std::vector<MapObject> Map::getLeverData()
 {
     return this->leverData;
@@ -241,6 +271,16 @@ std::vector<MapObject> Map::getLeverData()
 std::vector<MapObject> Map::getDoorData()
 {
     return this->doorData;
+}
+
+std::vector<MapObject> Map::getCoinData()
+{
+    return this->coinData;
+}
+
+std::vector<MapObject> Map::getToolData()
+{
+    return this->toolData;
 }
 
 std::vector<MapObject> Map::getExitData()
