@@ -30,6 +30,7 @@ public:
     void invertSpeed();
     void undoMove(const float& x, const float& y);
 
+    void setMaxSpeed(sf::Vector2f maxSpeed);
     void resize(sf::Vector2f scaleRatio);
 
     void update();

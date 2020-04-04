@@ -24,9 +24,7 @@ Entity::Entity(const float& maxHealth)
     this->hitbox = NULL;
     this->animation = NULL;
 
-    this->spriteTexture = new sf::Texture();
-    this->spriteTexture->loadFromFile("resources/snobees.png");
-    this->shape.setTexture(spriteTexture);
+    //this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/snobees.png"));
     this->initSize(sf::Vector2f(50,50));
     this->setPosition(350,350);
 }
@@ -36,7 +34,6 @@ Entity::~Entity()
     delete this->movement;
     if(this->hitbox) delete this->hitbox;
     if(this->animation) delete this->animation;
-    delete this->spriteTexture;
 }
 
 void Entity::initSize(sf::Vector2f size)
@@ -74,7 +71,6 @@ void Entity::setSize(sf::Vector2f size)
         size.x / this->shape.getSize().x,
         size.y / this->shape.getSize().y
     };
-    printf("New Size is %f, %f\n", size.x, size.y);
     this->initSize(size);
 
     this->movement->resize(ratio);
@@ -108,6 +104,16 @@ void Entity::getHealed(float& healing)
 void Entity::die()
 {
     this->b_isDead = true;
+}
+
+void Entity::trulyDie()
+{
+    this->die();
+}
+
+void Entity::revive()
+{
+    this->b_isDead = false;
 }
 
 bool Entity::isDead()
@@ -215,7 +221,7 @@ void Entity::checkCollisions()
 
                 if(hitbox->getType() == LETHAL)
                 {
-                    printf("Oh me caí we\n");
+                    this->trulyDie();
                 }
             }
         }

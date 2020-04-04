@@ -110,6 +110,17 @@ bool Player::getIsWeaponUnlocked(std::string weaponName)
     return result;
 }
 
+void Player::die()
+{
+    //this->f_score /= 2;
+}
+
+void Player::trulyDie()
+{
+    this->die();
+    this->b_isDead = true;
+}
+
 void Player::linkWorldProjectiles(std::vector<Projectile*>& proyectileArray)
 {
     if(this->bow) this->bow->linkWorldProjectiles(proyectileArray);

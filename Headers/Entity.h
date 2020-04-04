@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include "Engine.h"
+#include "ResourceManager.h"
 #include "Hitbox.h"
 #include "Weapon.h"
 #include "RangedWeapon.h"
@@ -37,7 +38,6 @@ protected:
     MovementComponent* movement;
     AnimationComponent* animation;
 
-    sf::Texture* spriteTexture;
     sf::RectangleShape shape;
 public:
     Entity(const float& maxHealth);
@@ -61,6 +61,9 @@ public:
     void getHurt(float& damage);
     void getHealed(float& healing);
     virtual void die();
+    virtual void trulyDie();
+    void revive();
+
     bool isDead();
 
     // Movement

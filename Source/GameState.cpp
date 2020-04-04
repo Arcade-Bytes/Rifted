@@ -15,6 +15,7 @@ GameState::~GameState()
 void GameState::initGame()
 {
     if(this->level) delete this->level;
+    ftl::LoadGame(*this->player);
     this->level = new Level(player, player->getLevel(), atoi(player->getDoor().c_str()));
 }
 
@@ -47,16 +48,24 @@ void GameState::update()
         this->level = new Level(this->player, mapFile, entranceIndex);
     }
 
+    // Pause game
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::P))
     {
         this->changeState(PAUSE_STATE, true);
     }
 
+    // Change state
     StateType nextState = this->level->getNextState();
     if(nextState != GAME_STATE)
     {
         this->level->resetNextState();
         this->changeState(nextState, true);
+    }
+
+    // Reset level, load last save file
+    if(this->level->didPlayerDie())
+    {
+        this->b_reInit = true;
     }
 }
 

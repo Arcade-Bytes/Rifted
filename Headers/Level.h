@@ -8,7 +8,7 @@
 #include "NPC.h"
 #include "Pickable.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "EnemyFactory.h"
 #include "Lever.h"
 #include "Door.h"
 #include "BreakableDoor.h"
@@ -49,6 +49,7 @@ public:
     bool didPlayerLeave();
     LevelExit* getActiveExit();
     void saveLevelData();
+    bool didPlayerDie();
 
     // State change
     StateType getNextState();

@@ -26,11 +26,14 @@ void AnimationComponent::loadAnimationsFromJSON(const std::string& filepath)
     rapidjson::Document document;
     document.ParseStream<0, rapidjson::UTF8<>, rapidjson::FileReadStream>(is);
 
-    for(unsigned int i = 0; i < document.Size() ; i++)
+    std::string textureFile = document["texture"].GetString();
+    rapidjson::Value& animations = document["animations"];
+
+    for(unsigned int i = 0; i < animations.Size() ; i++)
     {
-        for(unsigned int j = 0; j < document[i]["frames"].Size(); j++)
+        for(unsigned int j = 0; j < animations[i]["frames"].Size(); j++)
         {
-            rapidjson::Value& frame = document[i]["frames"][j];
+            rapidjson::Value& frame = animations[i]["frames"][j];
 
             frames.push_back(
                 new Frame
@@ -46,11 +49,13 @@ void AnimationComponent::loadAnimationsFromJSON(const std::string& filepath)
             );
         }
 
-        this->addAnimation(document[i]["name"].GetString(), frames, true);
+        this->addAnimation(animations[i]["name"].GetString(), frames, true);
         frames.clear();
     }
 
     fclose(pFile);
+
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+textureFile));
 }
 
 void AnimationComponent::addAnimation(std::string key, std::vector<Frame*> frames, bool looped)

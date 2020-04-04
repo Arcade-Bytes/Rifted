@@ -38,6 +38,9 @@ public:
     void unlockWeapon(std::string weaponName);
     bool getIsWeaponUnlocked(std::string weaponName);
 
+    void die();
+    void trulyDie();
+
     // Virtual override
     void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray);
     bool checkObstacle(Hitbox* hitbox);

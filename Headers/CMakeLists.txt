@@ -20,6 +20,7 @@ target_sources(libModulos PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/BreakableDoor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/LevelExit.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Map.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../Source/EnemyFactory.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Animation.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Weapon.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/RangedWeapon.cpp"
@@ -28,6 +29,7 @@ target_sources(libModulos PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/MovementComponent.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/AnimationComponent.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/Hitbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../Source/ResourceManager.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../Source/FileManager.cpp"
 )
 

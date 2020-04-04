@@ -68,11 +68,10 @@ void Level::initObjectData()
     std::vector<MapObject> objectData = this->map->getEnemyData();
     for(auto data : objectData)
     {
-        /*Enemy* enemy = new Enemy(100.0f, this->player);
-        enemy->setSize(data.size);
+        Enemy* enemy = EnemyFactory::makeEnemy(this->player, data.size, data.type);
         enemy->setPosition(data.positon);
         enemy->linkWorldProjectiles(this->projectiles);
-        this->enemies.push_back(enemy);*/
+        this->enemies.push_back(enemy);
     }
 
     // NPC init
@@ -123,7 +122,6 @@ void Level::initObjectData()
     for(auto data : objectData)
     {
         bool picked = ftl::GetCoinState(this->levelName, counter);
-        printf("Picked is %d\n", picked);
         Pickable* coin = new Pickable(picked);
         coin->setSize(data.size);
         coin->setPosition(data.positon);
@@ -220,6 +218,13 @@ void Level::saveLevelData()
     
     for(unsigned int i=0; i<coins.size(); i++)
         ftl::SetCoinState(levelName, i, coins[i]->getIsPicked());
+}
+
+bool Level::didPlayerDie()
+{
+    bool dead = this->player->isDead();
+    if(dead) this->player->revive();
+    return dead;
 }
 
 // State change

@@ -9,6 +9,7 @@
 #include <rapidjson/filereadstream.h>
 
 #include "Animation.h"
+#include "ResourceManager.h"
 
 class AnimationComponent
 {

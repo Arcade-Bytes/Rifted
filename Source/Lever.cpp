@@ -6,9 +6,8 @@ Lever::Lever()
     b_isActive = false;
 
     this->vf_position = {300,750};
-    this->texture.loadFromFile("resources/palanca.png");
-    this->shape.setTexture(&texture);
-    this->shape.setTextureRect(sf::IntRect(162,162,162,162));
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/palanca.png"));
+    this->shape.setTextureRect(sf::IntRect(162,163,162,162));
     this->setSize(sf::Vector2f(70,70));
     this->shape.setPosition(this->vf_position);
 }
@@ -66,7 +65,7 @@ void Lever::interact()
 
     this->shape.setTextureRect(sf::IntRect(
         b_isActive ? 0 : 162,
-        b_isActive ? 0 : 162,
+        b_isActive ? 0 : 163,
         162,162
     ));
 }

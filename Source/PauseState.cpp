@@ -132,7 +132,8 @@ void PauseState:: update()
             seleccion--;
     }
 
-    if(engine->getKeyPressed(sf::Keyboard::A)) //AUMENTO LAS ESTADISTICAS DE FORMA ARTIFICIAL PARA PROBAR COSAS
+    //AUMENTO LAS ESTADISTICAS DE FORMA ARTIFICIAL PARA PROBAR COSAS
+    if(engine->getKeyPressed(sf::Keyboard::A))
     {
         this->player->setMony(i_money + 100);
         i_money = atoi(this->player->getMony().c_str());

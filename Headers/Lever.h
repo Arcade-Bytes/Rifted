@@ -1,6 +1,7 @@
 #ifndef LEVER_H
 #define LEVER_H
 
+#include "ResourceManager.h"
 #include "Door.h"
 
 class Lever {
@@ -8,7 +9,6 @@ private:
     std::vector<Door*> v_doorPointers;
     bool b_isActive;
     sf::Vector2f vf_position;
-    sf::Texture texture;
     sf::RectangleShape shape;
 public:
     Lever();

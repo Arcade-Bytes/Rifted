@@ -15,15 +15,15 @@
 </player>
 <weapons>
     <sword>
-        <upgrades>1</upgrades>
+        <upgrades>0</upgrades>
     </sword>
     <hammr>
-        <upgrades>3</upgrades>
+        <upgrades>0</upgrades>
     </hammr>
     <shield>
         <upgrades>0</upgrades>
     </shield>
     <bow>
-        <upgrades>-1</upgrades>
+        <upgrades>0</upgrades>
     </bow>
 </weapons>

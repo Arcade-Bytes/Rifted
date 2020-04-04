@@ -52,7 +52,6 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
         v_tileSize.x / (float)v_tilesetTileSize.x,
         v_tileSize.y / (float)v_tilesetTileSize.y
     };
-    printf("Map factor is %f x %f\n",scaleFactor.x,scaleFactor.y);
 
     // Background data
     tileset = tileset->NextSiblingElement("tileset");
