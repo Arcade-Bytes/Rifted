@@ -198,8 +198,10 @@ void Level::update()
             if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 50)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 50))){
                 if(this->npcs[i]->getImShop() == true)
                     this->nextState = SHOP_STATE;
-                else
+                else{
+                    this->player->setNear(npcs[i]->getDialogue().getString());
                     this->nextState = TEXT_STATE;
+                }
             }
         }
     }

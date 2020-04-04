@@ -202,6 +202,13 @@ std::string Player::getBowLvl()
 {
     return std::to_string(this->bow->getUpgradeLvl()).c_str();
 }
+
+std::string Player::getNear(){
+
+        return nearDialogue;
+}
+
+
 //SET DATA SAVED
 
     void Player::setMony(int i_money)
@@ -253,3 +260,9 @@ std::string Player::getBowLvl()
     {
         this->bow->setUpgradeLvl(i_lvl);
     }
+
+void Player::setNear( std::string text){
+
+    nearDialogue = text;
+
+}

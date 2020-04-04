@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "Weapon.h"
 #include "Shield.h"
+#include "NPC.h"
 
 class Player : public Entity {
 private:
@@ -21,12 +22,13 @@ private:
     int i_healthUpg;                // Current health level, multiplier?
     int i_score;                    // Score
     std::string s_levelName;        // Current level name
-    
+    std::string nearDialogue;
 
     Weapon* sword;
     Weapon* hammer;
     Weapon* bow;
     Shield* shield;
+
 public:
     Player(const float& maxHealth);
     ~Player();
@@ -52,6 +54,8 @@ public:
     std::string getShieldLvl();
     std::string getBowLvl();
     std::string getScore();
+    std::string getNear();
+    void setNear(std::string text);
     void setMony(int i_money);
     void setKills(int i_kills);
     void setDeaths(int i_deaths);
