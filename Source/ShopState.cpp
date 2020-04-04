@@ -324,13 +324,13 @@ void ShopState::drawText(){
     Engine* engine = Engine::getInstance();
 
     //Cuadro de texto
-    texto_render.setPosition(engine->getWindowSize().x/8+30,engine->getWindowSize().y/4);
+    texto_render.setPosition(engine->getBaseResolution().x/8+30,engine->getBaseResolution().y/4);
     texto_render.setOrigin(texto_render.getLocalBounds().width/2.0f,texto_render.getLocalBounds().height/2.0f);
     engine->renderDrawable(&texto_render);
 
     //Boton atras
     texto->setString("Exit");
-    texto->setPosition(engine->getWindowSize().x/4*2-120,engine->getWindowSize().y/8);
+    texto->setPosition(engine->getBaseResolution().x/4*2-120,engine->getBaseResolution().y/8);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
@@ -344,37 +344,37 @@ void ShopState:: drawArrow(){
     switch(seleccion){
             case 1:
 
-                flecha_selector->setPosition(engine->getWindowSize().x/4 + 180,engine->getWindowSize().y/8+10);                     
+                flecha_selector->setPosition(engine->getBaseResolution().x/4 + 180,engine->getBaseResolution().y/8+10);                     
             
             break;
 
             case 2:
 
-                flecha_selector->setPosition(engine->getWindowSize().x/4*1.45 -20,engine->getWindowSize().y/5 + 330);
+                flecha_selector->setPosition(engine->getBaseResolution().x/4*1.45 -20,engine->getBaseResolution().y/5 + 330);
             
             break;
 
             case 3:
 
-                flecha_selector->setPosition(engine->getWindowSize().x/4*2.1 -20,engine->getWindowSize().y/5 + 330);
+                flecha_selector->setPosition(engine->getBaseResolution().x/4*2.1 -20,engine->getBaseResolution().y/5 + 330);
 
             break;
 
             case 4:
 
-                flecha_selector->setPosition(engine->getWindowSize().x/4*2.75 -20 ,engine->getWindowSize().y/5+ 330);
+                flecha_selector->setPosition(engine->getBaseResolution().x/4*2.75 -20 ,engine->getBaseResolution().y/5+ 330);
 
             break;
 
             case 5:
 
-                flecha_selector->setPosition(engine->getWindowSize().x/4*1.77 -20 ,engine->getWindowSize().y/5+ 630);
+                flecha_selector->setPosition(engine->getBaseResolution().x/4*1.77 -20 ,engine->getBaseResolution().y/5+ 630);
 
             break;
 
             case 6:
 
-                flecha_selector->setPosition(engine->getWindowSize().x/4*2.42 -20 ,engine->getWindowSize().y/5+ 630);
+                flecha_selector->setPosition(engine->getBaseResolution().x/4*2.42 -20 ,engine->getBaseResolution().y/5+ 630);
 
             break;
         }
@@ -405,12 +405,12 @@ void ShopState:: drawPlayerData(){
 
     texto->setColor(sf::Color::Black);
 
-    coin_purse->setPosition(engine->getWindowSize().x/8 *5.5,engine->getWindowSize().y/8);
+    coin_purse->setPosition(engine->getBaseResolution().x/8 *5.5,engine->getBaseResolution().y/8);
     coin_purse->setScale(0.2,0.2);
     engine->renderDrawable(coin_purse);
 
     texto->setString(" " + std::to_string(i_money));
-    texto->setPosition(engine->getWindowSize().x/8 * 6 + 100,engine->getWindowSize().y/8 + -20);
+    texto->setPosition(engine->getBaseResolution().x/8 * 6 + 100,engine->getBaseResolution().y/8 + -20);
     texto->setCharacterSize(72);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
@@ -421,31 +421,31 @@ void ShopState:: drawParchment(){
 
     Engine* engine = Engine::getInstance();
     
-    parchment->setPosition(engine->getWindowSize().x/2+200,engine->getWindowSize().y/2);
+    parchment->setPosition(engine->getBaseResolution().x/2+200,engine->getBaseResolution().y/2);
     parchment->setScale(1.5,1.2);
     engine->renderDrawable(parchment);
 
-    npc_cleric->setPosition(engine->getWindowSize().x/10+60,engine->getWindowSize().y/10*8-50);
+    npc_cleric->setPosition(engine->getBaseResolution().x/10+60,engine->getBaseResolution().y/10*8-50);
     npc_cleric->setScale(2,2);
     engine->renderDrawable(npc_cleric);
 
-    text_box->setPosition(engine->getWindowSize().x/10+70,engine->getWindowSize().y/10*3-50);
+    text_box->setPosition(engine->getBaseResolution().x/10+70,engine->getBaseResolution().y/10*3-50);
     text_box->setScale(1,2);
     engine->renderDrawable(text_box);
 
-    heart_upgrade->setPosition(engine->getWindowSize().x/4*1.75,engine->getWindowSize().y/5 + 210);
+    heart_upgrade->setPosition(engine->getBaseResolution().x/4*1.75,engine->getBaseResolution().y/5 + 210);
     heart_upgrade->setScale(0.15,0.15);
     engine->renderDrawable(heart_upgrade);
 
     if(i_life<maxLvImprovement)
         texto->setString("Lv " + std::to_string(i_life+1));
     else texto->setString("Lv Max ");
-    texto->setPosition(engine->getWindowSize().x/4*1.75,engine->getWindowSize().y/5 + 310);
+    texto->setPosition(engine->getBaseResolution().x/4*1.75,engine->getBaseResolution().y/5 + 310);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
-    sword_upgrade->setPosition(engine->getWindowSize().x/4*2.4,engine->getWindowSize().y/5 + 200);
+    sword_upgrade->setPosition(engine->getBaseResolution().x/4*2.4,engine->getBaseResolution().y/5 + 200);
     sword_upgrade->setScale(0.2,0.2);
     engine->renderDrawable(sword_upgrade);
 
@@ -453,21 +453,21 @@ void ShopState:: drawParchment(){
     if(i_damage<maxLvImprovement)
         texto->setString("Lv " + std::to_string(i_damage+1));
     else texto->setString("Lv Max ");
-    texto->setPosition(engine->getWindowSize().x/4*2.4,engine->getWindowSize().y/5 + 310);
+    texto->setPosition(engine->getBaseResolution().x/4*2.4,engine->getBaseResolution().y/5 + 310);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     if(i_shield != -1){
 
-        shield_upgrade->setPosition(engine->getWindowSize().x/4*3.05,engine->getWindowSize().y/5 + 200);
+        shield_upgrade->setPosition(engine->getBaseResolution().x/4*3.05,engine->getBaseResolution().y/5 + 200);
         shield_upgrade->setScale(0.5,0.5);
         engine->renderDrawable(shield_upgrade);
     
         if(i_shield<0)
             texto->setString("Lv " + std::to_string(i_shield+1));
         else texto->setString("Lv Max ");
-        texto->setPosition(engine->getWindowSize().x/4*3.05,engine->getWindowSize().y/5 + 310);
+        texto->setPosition(engine->getBaseResolution().x/4*3.05,engine->getBaseResolution().y/5 + 310);
         texto->setCharacterSize(54);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
@@ -475,14 +475,14 @@ void ShopState:: drawParchment(){
 
     if((i_hammer != -1)){
 
-        hammer_upgrade->setPosition(engine->getWindowSize().x/4*2.07,engine->getWindowSize().y/5 + 500);
+        hammer_upgrade->setPosition(engine->getBaseResolution().x/4*2.07,engine->getBaseResolution().y/5 + 500);
         hammer_upgrade->setScale(0.5,0.5);
         engine->renderDrawable(hammer_upgrade);
     
         if(i_hammer<maxLvImprovement)
             texto->setString("Lv " + std::to_string(i_hammer+1));
         else texto->setString("Lv Max ");
-        texto->setPosition(engine->getWindowSize().x/4*2.07,engine->getWindowSize().y/5 + 610);
+        texto->setPosition(engine->getBaseResolution().x/4*2.07,engine->getBaseResolution().y/5 + 610);
         texto->setCharacterSize(54);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
@@ -490,7 +490,7 @@ void ShopState:: drawParchment(){
 
     if((i_bow != -1)){
 
-        bow_upgrade->setPosition(engine->getWindowSize().x/4*2.72,engine->getWindowSize().y/5 + 500);
+        bow_upgrade->setPosition(engine->getBaseResolution().x/4*2.72,engine->getBaseResolution().y/5 + 500);
         bow_upgrade->setScale(0.5,0.5);
         engine->renderDrawable(bow_upgrade);
 
@@ -498,7 +498,7 @@ void ShopState:: drawParchment(){
         if(i_bow<maxLvImprovement)
             texto->setString("Lv " + std::to_string(i_bow+1));
         else texto->setString("Lv Max ");
-        texto->setPosition(engine->getWindowSize().x/4*2.72,engine->getWindowSize().y/5 + 610);
+        texto->setPosition(engine->getBaseResolution().x/4*2.72,engine->getBaseResolution().y/5 + 610);
         texto->setCharacterSize(54);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
@@ -512,24 +512,24 @@ void ShopState:: drawPrices(){
 
     if(i_life<maxLvImprovement){
 
-        coin_purse->setPosition(engine->getWindowSize().x/4*1.75-60,engine->getWindowSize().y/5 + 378);
+        coin_purse->setPosition(engine->getBaseResolution().x/4*1.75-60,engine->getBaseResolution().y/5 + 378);
         coin_purse->setScale(0.1,0.1);
         engine->renderDrawable(coin_purse);
 
         texto->setString(std::to_string(basePriceLife*(i_life+1)));
-        texto->setPosition(engine->getWindowSize().x/4*1.75 +20,engine->getWindowSize().y/5 + 360);
+        texto->setPosition(engine->getBaseResolution().x/4*1.75 +20,engine->getBaseResolution().y/5 + 360);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
     }
 
     if(i_damage<maxLvImprovement){
 
-        coin_purse->setPosition(engine->getWindowSize().x/4*2.4-60,engine->getWindowSize().y/5 + 378);
+        coin_purse->setPosition(engine->getBaseResolution().x/4*2.4-60,engine->getBaseResolution().y/5 + 378);
         coin_purse->setScale(0.1,0.1);
         engine->renderDrawable(coin_purse);
 
         texto->setString(std::to_string(basePriceDmg*(i_damage+1)));
-        texto->setPosition(engine->getWindowSize().x/4*2.4 +20,engine->getWindowSize().y/5 + 360);
+        texto->setPosition(engine->getBaseResolution().x/4*2.4 +20,engine->getBaseResolution().y/5 + 360);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
     }
@@ -537,12 +537,12 @@ void ShopState:: drawPrices(){
 
         if(i_shield<0){
 
-            coin_purse->setPosition(engine->getWindowSize().x/4*3.05-60,engine->getWindowSize().y/5 + 378);
+            coin_purse->setPosition(engine->getBaseResolution().x/4*3.05-60,engine->getBaseResolution().y/5 + 378);
             coin_purse->setScale(0.1,0.1);
             engine->renderDrawable(coin_purse);
 
             texto->setString(std::to_string(basePriceArmor*(i_shield+1)));
-            texto->setPosition(engine->getWindowSize().x/4*3.05 +20,engine->getWindowSize().y/5 + 360);
+            texto->setPosition(engine->getBaseResolution().x/4*3.05 +20,engine->getBaseResolution().y/5 + 360);
             texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
             engine->renderDrawable(texto);
         }
@@ -552,12 +552,12 @@ void ShopState:: drawPrices(){
 
         if(i_hammer<maxLvImprovement){
 
-            coin_purse->setPosition(engine->getWindowSize().x/4*2.07-60,engine->getWindowSize().y/5 + 678);
+            coin_purse->setPosition(engine->getBaseResolution().x/4*2.07-60,engine->getBaseResolution().y/5 + 678);
             coin_purse->setScale(0.1,0.1);
             engine->renderDrawable(coin_purse);
 
             texto->setString(std::to_string(basePriceArmor*(i_hammer+1)));
-            texto->setPosition(engine->getWindowSize().x/4*2.07 +20,engine->getWindowSize().y/5 + 660);
+            texto->setPosition(engine->getBaseResolution().x/4*2.07 +20,engine->getBaseResolution().y/5 + 660);
             texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
             engine->renderDrawable(texto);
         }
@@ -567,12 +567,12 @@ void ShopState:: drawPrices(){
 
         if(i_bow<maxLvImprovement){
 
-            coin_purse->setPosition(engine->getWindowSize().x/4*2.72-60,engine->getWindowSize().y/5 + 678);
+            coin_purse->setPosition(engine->getBaseResolution().x/4*2.72-60,engine->getBaseResolution().y/5 + 678);
             coin_purse->setScale(0.1,0.1);
             engine->renderDrawable(coin_purse);
 
             texto->setString(std::to_string(basePriceArmor*(i_bow+1)));
-            texto->setPosition(engine->getWindowSize().x/4*2.72 +20,engine->getWindowSize().y/5 + 660);
+            texto->setPosition(engine->getBaseResolution().x/4*2.72 +20,engine->getBaseResolution().y/5 + 660);
             texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
             engine->renderDrawable(texto);
         }

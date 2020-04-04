@@ -12,7 +12,7 @@ TextState::TextState(std::stack<State*>* states, Player* player, sf::Text dialog
 
     text_box = new sf::Sprite(*ResourceManager::getInstance()->loadTexture("resources/text_box.png"));
     text_box->setOrigin(text_box->getLocalBounds().width/2.0f, text_box->getLocalBounds().height/2.0f);
-    text_box->setPosition(engine->getWindowSize().x/2,engine->getWindowSize().y/7);
+    text_box->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/7);
     text_box->setScale(3,1.5);
 
     dialogue.setColor(sf::Color::White);

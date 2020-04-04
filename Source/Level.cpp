@@ -19,6 +19,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     this->player->linkWorldProjectiles(this->projectiles);
 
     this->initObjectData();
+    this->initViewLimits();
 }
 
 Level::~Level()
@@ -154,6 +155,40 @@ void Level::initObjectData()
         exit->setPosition(data.positon);
         this->exits.push_back(exit);
     }
+}
+
+// View related
+void Level::initViewLimits()
+{
+    sf::Vector2f mapSize = this->map->getMapTotalPixelSize();
+    sf::Vector2u windowSize = Engine::getInstance()->getBaseResolution();
+
+    this->limitLeftUp.x = this->limitRightDown.x = mapSize.x / 2;
+    this->limitLeftUp.y = this->limitRightDown.y = mapSize.y / 2;
+    if(mapSize.x > windowSize.x)
+    {
+        limitLeftUp.x       = windowSize.x/2;
+        limitRightDown.x    = mapSize.x - windowSize.x/2;
+    }
+    if(mapSize.y > windowSize.y)
+    {
+        limitLeftUp.y       = windowSize.y/2;
+        limitRightDown.y    = mapSize.y - windowSize.y/2;
+    }
+    printf("Map size is [%f,%f] and window is [%d,%d]\n",mapSize.x,mapSize.y, windowSize.x,windowSize.y);
+    printf("Limits are corners [%d,%d] to [%d,%d]\n",limitLeftUp.x,limitLeftUp.y, limitRightDown.x,limitRightDown.y);
+}
+
+void Level::adjustPlayerView()
+{
+    // Read player position and clamp it if necessary
+    sf::Vector2f playerPosition = this->player->getPosition();
+    if(playerPosition.x < limitLeftUp.x)            playerPosition.x = limitLeftUp.x;
+    else if(playerPosition.x > limitRightDown.x)    playerPosition.x = limitRightDown.x;
+    if(playerPosition.y < limitLeftUp.y)            playerPosition.y = limitLeftUp.y;
+    else if(playerPosition.y > limitRightDown.y)    playerPosition.y = limitRightDown.y;
+
+    Engine::getInstance()->setViewCenter(playerPosition);
 }
 
 // Checks
@@ -296,7 +331,7 @@ void Level::update()
     this->checkLevelExitReached();
 
     // Adjust view
-    Engine::getInstance()->setViewCenter(this->player->getPosition());
+    this->adjustPlayerView();
 }
 
 void Level::render()

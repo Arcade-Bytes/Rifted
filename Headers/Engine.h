@@ -14,6 +14,8 @@ private:
     Engine();
     ~Engine();
 
+    sf::Vector2u baseResolution;
+
     // SFML Properties
     sf::RenderWindow* window;
     sf::Clock clock;
@@ -35,10 +37,12 @@ public:
     void windowClose();
     bool isWindowOpen();
     sf::Vector2u getWindowSize();
+    sf::Vector2u getBaseResolution();
     const float& getDelta();
 
     // Views
     void setViewCenter(sf::Vector2f center);
+    void resizeViews(const float& width, const float& height);
 
     // Input related
     void resetPressedKeys();

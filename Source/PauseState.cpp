@@ -163,7 +163,7 @@ void PauseState:: render(){
     Engine* engine = Engine::getInstance();
     engine->setFollowView(false);
     //Adaptamos el filtro al tamaño de la pantalla
-    filtro->setSize(sf::Vector2f(engine->getWindowSize().x,engine->getWindowSize().y));
+    filtro->setSize(sf::Vector2f(engine->getBaseResolution().x,engine->getBaseResolution().y));
     //Dibujamos fondo y filtro en ese orden  !!!!IMPORTANTE: NO CAMBIAR EL ORDEN¡¡¡¡
     engine->renderDrawable(filtro);
 
@@ -197,19 +197,19 @@ void PauseState::drawText(){
     texto->setColor(sf::Color::White);
 
     texto->setString("Ajustes");
-    texto->setPosition(engine->getWindowSize().x/4,engine->getWindowSize().y/4);
+    texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y/4);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Atras");
-    texto->setPosition(engine->getWindowSize().x/4,engine->getWindowSize().y/4 + 150);
+    texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y/4 + 150);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Menu");
-    texto->setPosition(engine->getWindowSize().x/4,engine->getWindowSize().y/4 + 300);
+    texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y/4 + 300);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
@@ -223,15 +223,15 @@ void PauseState:: drawArrow(){
 
         switch(seleccion){
             case 1:
-                flecha_selector->setPosition(engine->getWindowSize().x/4 - 180 ,engine->getWindowSize().y/4+ 10);                     
+                flecha_selector->setPosition(engine->getBaseResolution().x/4 - 180 ,engine->getBaseResolution().y/4+ 10);                     
             break;
 
             case 2:
-                flecha_selector->setPosition(engine->getWindowSize().x/4 - 180 ,engine->getWindowSize().y/4+ 160);
+                flecha_selector->setPosition(engine->getBaseResolution().x/4 - 180 ,engine->getBaseResolution().y/4+ 160);
             break;
 
             case 3:
-                flecha_selector->setPosition(engine->getWindowSize().x/4 - 180 ,engine->getWindowSize().y/4+ 310);
+                flecha_selector->setPosition(engine->getBaseResolution().x/4 - 180 ,engine->getBaseResolution().y/4+ 310);
             break;
         }
 
@@ -263,7 +263,7 @@ void PauseState:: drawPlayerData(){
     //Score
 
     texto->setString("Score : " + std::to_string(i_score));
-    texto->setPosition(engine->getWindowSize().x/2*1.08,engine->getWindowSize().y/5);
+    texto->setPosition(engine->getBaseResolution().x/2*1.08,engine->getBaseResolution().y/5);
     texto->setCharacterSize(54);
     texto->setOrigin(0,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
@@ -271,24 +271,24 @@ void PauseState:: drawPlayerData(){
 
     //Money
 
-    coin_purse->setPosition(engine->getWindowSize().x/2*1.1,engine->getWindowSize().y/5 + 110);
+    coin_purse->setPosition(engine->getBaseResolution().x/2*1.1,engine->getBaseResolution().y/5 + 110);
     coin_purse->setScale(0.1,0.1);
     engine->renderDrawable(coin_purse);
 
     texto->setString(" : " + std::to_string(i_money));
-    texto->setPosition(engine->getWindowSize().x/2*1.12,engine->getWindowSize().y/5 + 90);
+    texto->setPosition(engine->getBaseResolution().x/2*1.12,engine->getBaseResolution().y/5 + 90);
     texto->setCharacterSize(54);
     texto->setOrigin(0,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     //Kills
 
-    kill_count->setPosition(engine->getWindowSize().x/2*1.1,engine->getWindowSize().y/5 + 210);
+    kill_count->setPosition(engine->getBaseResolution().x/2*1.1,engine->getBaseResolution().y/5 + 210);
     kill_count->setScale(0.1,0.1);
     engine->renderDrawable(kill_count);
 
     texto->setString(" : " + std::to_string(i_kills));
-    texto->setPosition(engine->getWindowSize().x/2*1.16,engine->getWindowSize().y/5 + 190);
+    texto->setPosition(engine->getBaseResolution().x/2*1.16,engine->getBaseResolution().y/5 + 190);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
@@ -298,7 +298,7 @@ void PauseState:: drawPlayerData(){
 
     texto->setString(" Mejoras Actuales ");
     texto->setStyle(sf::Text::Underlined |sf::Text::Bold );
-    texto->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 290);
+    texto->setPosition(engine->getBaseResolution().x/2*1.4,engine->getBaseResolution().y/5 + 290);
     texto->setCharacterSize(54);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
@@ -306,12 +306,12 @@ void PauseState:: drawPlayerData(){
 
     //Life
 
-    heart_upgrade->setPosition(engine->getWindowSize().x/2*1.15,engine->getWindowSize().y/5 + 410);
+    heart_upgrade->setPosition(engine->getBaseResolution().x/2*1.15,engine->getBaseResolution().y/5 + 410);
     heart_upgrade->setScale(0.1,0.1);
     engine->renderDrawable(heart_upgrade);
 
     texto->setString("Lv " + (i_life >= maxLvImprovement ? "Max" : std::to_string(i_life)));
-    texto->setPosition(engine->getWindowSize().x/4*2*1.15,engine->getWindowSize().y/5 + 450);
+    texto->setPosition(engine->getBaseResolution().x/4*2*1.15,engine->getBaseResolution().y/5 + 450);
     texto->setCharacterSize(50);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
@@ -319,12 +319,12 @@ void PauseState:: drawPlayerData(){
     //Sword
 
     if(i_damage != -1){
-        sword_upgrade->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 410);
+        sword_upgrade->setPosition(engine->getBaseResolution().x/2*1.4,engine->getBaseResolution().y/5 + 410);
         sword_upgrade->setScale(0.13,0.13);
         engine->renderDrawable(sword_upgrade);
 
         texto->setString("Lv " + (i_damage >= maxLvImprovement ? "Max" : std::to_string(i_damage)));
-        texto->setPosition(engine->getWindowSize().x/2*1.4,engine->getWindowSize().y/5 + 450);
+        texto->setPosition(engine->getBaseResolution().x/2*1.4,engine->getBaseResolution().y/5 + 450);
         texto->setCharacterSize(50);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
@@ -333,12 +333,12 @@ void PauseState:: drawPlayerData(){
 
         //Shield
 
-        shield_upgrade->setPosition(engine->getWindowSize().x/2*1.65,engine->getWindowSize().y/5 + 400);
+        shield_upgrade->setPosition(engine->getBaseResolution().x/2*1.65,engine->getBaseResolution().y/5 + 400);
         shield_upgrade->setScale(0.3,0.3);
         engine->renderDrawable(shield_upgrade);
 
         texto->setString("Lv Max");
-        texto->setPosition(engine->getWindowSize().x/2*1.65,engine->getWindowSize().y/5 + 450);
+        texto->setPosition(engine->getBaseResolution().x/2*1.65,engine->getBaseResolution().y/5 + 450);
         texto->setCharacterSize(50);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
@@ -346,12 +346,12 @@ void PauseState:: drawPlayerData(){
     if(i_hammer != -1){
         //Hammer
 
-        hammer_upgrade->setPosition(engine->getWindowSize().x/2*1.28,engine->getWindowSize().y/5 + 550);
+        hammer_upgrade->setPosition(engine->getBaseResolution().x/2*1.28,engine->getBaseResolution().y/5 + 550);
         hammer_upgrade->setScale(0.3,0.3);
         engine->renderDrawable(hammer_upgrade);
 
         texto->setString("Lv " + (i_hammer >= maxLvImprovement ? "Max" : std::to_string(i_hammer)));
-        texto->setPosition(engine->getWindowSize().x/2*1.28,engine->getWindowSize().y/5 + 600);
+        texto->setPosition(engine->getBaseResolution().x/2*1.28,engine->getBaseResolution().y/5 + 600);
         texto->setCharacterSize(50);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
@@ -362,12 +362,12 @@ void PauseState:: drawPlayerData(){
 
         //Bow
 
-        bow_upgrade->setPosition(engine->getWindowSize().x/2*1.53,engine->getWindowSize().y/5 + 550);
+        bow_upgrade->setPosition(engine->getBaseResolution().x/2*1.53,engine->getBaseResolution().y/5 + 550);
         bow_upgrade->setScale(0.3,0.3);
         engine->renderDrawable(bow_upgrade);
 
         texto->setString("Lv " + (i_bow >= maxLvImprovement ? "Max" : std::to_string(i_bow)));
-        texto->setPosition(engine->getWindowSize().x/2*1.53,engine->getWindowSize().y/5 + 600);
+        texto->setPosition(engine->getBaseResolution().x/2*1.53,engine->getBaseResolution().y/5 + 600);
         texto->setCharacterSize(50);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
@@ -379,7 +379,7 @@ void PauseState:: drawParchment(){
 
     Engine* engine = Engine::getInstance();
 
-    parchment->setPosition(engine->getWindowSize().x/4*2.8,engine->getWindowSize().y/5 + 260);
+    parchment->setPosition(engine->getBaseResolution().x/4*2.8,engine->getBaseResolution().y/5 + 260);
     parchment->setScale(0.85,0.7);
     engine->renderDrawable(parchment);
 

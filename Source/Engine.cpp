@@ -5,6 +5,7 @@ Engine* Engine::instance = 0;
 Engine::Engine()
 {
     this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Rifted Beta version");
+    baseResolution = {this->window->getSize().x,this->window->getSize().y};
     delta = 0.0f;
 
     this->view.setViewport(sf::FloatRect(0.0f,0.0f,1.0f,1.0f));
@@ -35,6 +36,11 @@ sf::Vector2u Engine::getWindowSize()
     return this->window->getSize();
 }
 
+sf::Vector2u Engine::getBaseResolution()
+{
+    return this->baseResolution;
+}
+
 const float& Engine::getDelta()
 {
     return this->delta;
@@ -45,6 +51,42 @@ void Engine::setViewCenter(sf::Vector2f center)
 {
     this->view.setCenter(center);
     this->window->setView(view);
+}
+
+
+void Engine::resizeViews(const float& width, const float& height)
+{
+    float xProportion = baseResolution.x / width;
+    float yProportion = baseResolution.y / height;
+
+    if(xProportion < yProportion)
+    {
+        float newProportion = xProportion/yProportion;
+        this->view.setViewport(sf::FloatRect(
+            (1-newProportion)/2, 0.0f,
+            1.0f * newProportion,
+            1.0f
+        ));
+        this->uiView.setViewport(sf::FloatRect(
+            (1-newProportion)/2, 0.0f,
+            1.0f * newProportion,
+            1.0f
+        ));
+    }
+    else
+    {
+        float newProportion = yProportion/xProportion;
+        this->view.setViewport(sf::FloatRect(
+            0.0f,0.0f,
+            1.0f,
+            1.0f * newProportion
+        ));
+        this->uiView.setViewport(sf::FloatRect(
+            0.0f,0.0f,
+            1.0f,
+            1.0f * newProportion
+        ));
+    }
 }
 
 // Input related
@@ -77,6 +119,9 @@ void Engine::updateSFMLEvents()
             case sf::Event::KeyPressed:
                 this->pressedKeys[event.key.code] = true;
                 break;
+            case sf::Event::Resized:
+                this->resizeViews(event.size.width, event.size.height);
+                break;  
 
             default: break;
         }
