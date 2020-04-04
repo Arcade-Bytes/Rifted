@@ -11,8 +11,6 @@ Game::Game()
     this->states.push(new GameState(&states, player));
     this->states.push(new MainMenuState(&states, player));
 
-
-
     this->updateStartTime = 0.0f;
 }
 

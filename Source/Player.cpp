@@ -4,15 +4,16 @@
 Player::Player(const float& maxHealth)
     : Entity(maxHealth)
 {
+    std::cerr<<"Creo player\n";
     this->sword = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 30, true);
+    sword->setUpgradeLvl(0);
     this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 60, 70, 60, true);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
-
     this->animation = new AnimationComponent(this->shape);
     this->animation->loadAnimationsFromJSON("animations/pengo.json");
 
     this->bow = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 20, true); //testing grounds, melee bow cha cha cha
-    ftl::LoadGame(*this);
+
 }
 
 Player::~Player()
@@ -169,6 +170,12 @@ std::string Player::getLevel()
 std::string Player::getDoor()
 {
     return std::to_string(this->i_door).c_str();
+}
+
+std::string Player::getScore(){
+
+    return std::to_string(this->i_score).c_str();
+
 }
 
 std::string Player::getHealthUpg()

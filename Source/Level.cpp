@@ -29,7 +29,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 
     // NPC init
     npcs.push_back(new NPC("cleric.png", 150,2688, true,"Hola buenos dias compañero como estas\nen este gran dia"));
-    npcs.push_back(new NPC("cleric.png", 700,2688, true,"Hey tú de qué vas payaso\nimbécil te parto la cara"));
+    npcs.push_back(new NPC("cleric.png", 700,2688, false,"Hey tú de qué vas payaso\nimbécil te parto la cara"));
 
     // Doors init
     std::vector<MapObject> doorData = this->map->getDoorData();
