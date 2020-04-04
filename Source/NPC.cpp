@@ -25,7 +25,7 @@ NPC::NPC(std::string sheetFile)
     }
 
     fclose(file);
-
+    this->dialogo.setString(this->quotes["greeting"][0]);
     this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+textureFile));
 }
 

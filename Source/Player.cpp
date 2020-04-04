@@ -273,6 +273,12 @@ std::string Player::getBowLvl()
     return std::to_string(this->bow->getUpgradeLvl()).c_str();
 }
 
+std::string Player::getNear(){
+
+        return nearDialogue;
+}
+
+
 //SET DATA SAVED
 void Player::setMony(int i_money)
 {
@@ -292,11 +298,6 @@ void Player::setDeaths(int i_deaths)
 void Player::setHealthUpg(int i_healthupg)
 {
     this->i_healthUpg = i_healthupg;
-
-    // Set new life values
-    float chunkSize = this->f_maxHealth / this->i_nchunks;
-    this->i_nchunks = 4 + this->i_healthUpg;
-    this->f_maxHealth = chunkSize * this->i_nchunks;
 }
 
 void Player::setLevel(std::string s_levelName)
@@ -327,4 +328,8 @@ void Player::setShieldLvl(int i_lvl)
 void Player::setBowLvl(int i_lvl)
 {
     this->bow->setUpgradeLvl(i_lvl);
+}
+
+void Player::setNear( std::string text){
+    this->nearDialogue = text;
 }

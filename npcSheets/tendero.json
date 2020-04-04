@@ -6,7 +6,7 @@
 		{"state":"greeting",
 		"quotes":
 		[
-			{"text":"Hola buenos dias compañero como estas\nen este gran dia"},
+			{"text":"Hola buenos dias compañero cómo estás\nen este gran dia?"},
 			{"text":"Hey. Qué pasa nen?"},
 			{"text":"Hey. Soy Bob el constructor"}
 		]

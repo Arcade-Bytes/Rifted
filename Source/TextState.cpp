@@ -39,6 +39,7 @@ TextState::~TextState(){
 
 void TextState:: update()
 { 
+    setText(player->getNear());
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
         this->changeState(GAME_STATE, false);
     }
@@ -51,5 +52,11 @@ void TextState:: render(){
 
     engine->renderDrawable(text_box);
     engine->renderDrawable(&dialogue);
+
+}
+
+void TextState::setText(std::string text){
+
+    dialogue.setString(text);
 
 }
