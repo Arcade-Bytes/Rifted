@@ -175,8 +175,6 @@ void Level::initViewLimits()
         limitLeftUp.y       = windowSize.y/2;
         limitRightDown.y    = mapSize.y - windowSize.y/2;
     }
-    printf("Map size is [%f,%f] and window is [%d,%d]\n",mapSize.x,mapSize.y, windowSize.x,windowSize.y);
-    printf("Limits are corners [%d,%d] to [%d,%d]\n",limitLeftUp.x,limitLeftUp.y, limitRightDown.x,limitRightDown.y);
 }
 
 void Level::adjustPlayerView()

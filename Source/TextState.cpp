@@ -20,7 +20,6 @@ TextState::TextState(std::stack<State*>* states, Player* player, sf::Text dialog
     dialogue.setFont(*ResourceManager::getInstance()->loadFont("resources/XOX.ttf"));
     dialogue.setCharacterSize(54);
     dialogue.setPosition(text_box->getOrigin().x,text_box->getOrigin().y);
-
 }
 
 TextState::~TextState(){

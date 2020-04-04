@@ -165,7 +165,7 @@ void Entity::checkCollisions()
                     this->movement->stop();
                     this->vf_position.x += intersection.x;
                     this->vf_position.y += intersection.y;
-                    printf("Corner (%f)!\n", difference);
+                    //printf("Corner (%f)!\n", difference);
                 }
                 if(abs(intersection.y) < abs(intersection.x))
                 {
