@@ -2,7 +2,7 @@
 NPC::NPC(std::string textureName, float x, float y,bool hasShop, std::string dialogText)
 {
     this->texture.loadFromFile("resources/"+textureName);
-    this->sprite.setTexture(texture);
+    this->sprite.setTexture(texture);//
 
     //sprite->setOrigin(sprite->getLocalBounds().width/2.0f, sprite->getLocalBounds().height);
     this->sprite.setPosition(x,y);
