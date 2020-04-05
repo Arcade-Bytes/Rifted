@@ -19,6 +19,8 @@ protected:
     bool b_isGrounded;
     bool b_facingRight;
 
+    bool b_mutexAttack;
+
     bool b_isInvulnerable;
     float f_invulnerabilityTime;
     float f_invulnerableBlinkDelta;

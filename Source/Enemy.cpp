@@ -8,7 +8,6 @@ Enemy::Enemy(Player* playerRef)
     // AI Properties and helpers
     this->player = playerRef;
     this->b_patrolLeft = false;
-    this->b_mutexAttack = false;
 
     this->f_aggroDistance = 150;
     this->f_attackDistance = 50;

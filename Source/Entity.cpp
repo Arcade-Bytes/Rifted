@@ -12,6 +12,8 @@ Entity::Entity(const float& maxHealth)
     this->b_isGrounded = false;
     this->b_facingRight = true;
 
+    this->b_mutexAttack = false;
+
     this->b_isInvulnerable = false;
     this->f_invulnerabilityTime = 0.0f;
     this->f_invulnerableBlinkDelta = 0.0f;
@@ -233,7 +235,12 @@ void Entity::updateAnimation()
     if(this->animation)
     {
         this->s_currentAnimation = "idle_right";
-        if(abs(this->movement->getSpeed().x) > 0)
+        if(this->b_mutexAttack)
+        {
+            if(this->b_facingRight) this->s_currentAnimation = "pushing_right";
+            else                    this->s_currentAnimation = "pushing_left";
+        }
+        else if(abs(this->movement->getSpeed().x) > 0)
         {
             if(this->b_facingRight) this->s_currentAnimation = "walking_right";
             else                    this->s_currentAnimation = "walking_left";
