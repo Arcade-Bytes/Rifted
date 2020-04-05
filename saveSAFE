@@ -10,7 +10,7 @@
     </upgrades>
     <level>
         <name>Prueba_Beta</name>
-        <door>0</door>
+        <door>1</door>
     </level>
 </player>
 <weapons>

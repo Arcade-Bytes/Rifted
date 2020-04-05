@@ -22,7 +22,7 @@ Entity::Entity(const float& maxHealth)
 
     this->f_jumpForce = 1200.0f;
     
-    this->movement = new MovementComponent(&this->vf_position, 400.0f, 450.33f, sf::Vector2f(400.0f, 800.0f));
+    this->movement = new MovementComponent(&this->vf_position, 400.0f, 650.33f, sf::Vector2f(400.0f, 800.0f));
     this->hitbox = NULL;
     this->animation = NULL;
 

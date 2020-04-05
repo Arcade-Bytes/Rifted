@@ -7,8 +7,8 @@
 		"quotes":
 		[
 			{"text":"Hola buenos dias compañero cómo estás\nen este gran dia?"},
-			{"text":"Hey. Qué pasa nen?"},
-			{"text":"Hey. Soy Bob el constructor"}
+			{"text":"Tan solo soy una prueba"},
+			{"text":"Ya puedes irte, hasta otra"}
 		]
 		},
 		{"state":"farewell",
