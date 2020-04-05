@@ -287,7 +287,7 @@ std::string Player::getBowLvl()
     return std::to_string(this->bow->getUpgradeLvl()).c_str();
 }
 
-std::string Player::getNear()
+std::vector<std::string> Player::getNear()
 {
     return nearDialogue;
 }
@@ -344,6 +344,7 @@ void Player::setBowLvl(int i_lvl)
     this->bow->setUpgradeLvl(i_lvl);
 }
 
-void Player::setNear( std::string text){
+void Player::setNear(std::vector<std::string> text)
+{
     this->nearDialogue = text;
 }

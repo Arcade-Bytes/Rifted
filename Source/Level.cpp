@@ -314,7 +314,7 @@ void Level::update()
                 if(this->npcs[i]->getImShop() == true)
                     this->nextState = SHOP_STATE;
                 else{
-                    this->player->setNear(npcs[i]->getDialogue().getString());
+                    this->player->setNear(npcs[i]->getDialogue());
                     this->nextState = TEXT_STATE;
                 }
             }

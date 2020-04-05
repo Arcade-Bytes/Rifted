@@ -25,7 +25,7 @@ NPC::NPC(std::string sheetFile)
     }
 
     fclose(file);
-    this->dialogo.setString(this->quotes["greeting"][0]);
+    currentQuoteSet = "greeting";
     this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+textureFile));
 }
 
@@ -55,9 +55,9 @@ void NPC::setSize(sf::Vector2f size)
     shape.setOrigin(shape.getSize().x/2.0f, shape.getSize().y/2);
 }
 
-sf::Text NPC:: getDialogue()
+std::vector<std::string> NPC:: getDialogue()
 {
-    return dialogo;
+    return this->quotes[currentQuoteSet];
 }
 
 
