@@ -59,9 +59,6 @@ std::string Door::getVinculationId()
 void Door::toggleOpenState()
 {
     this->b_isOpen = !this->b_isOpen;
-    this->shape.setFillColor(
-        b_isOpen ? sf::Color(0,150,50) : sf::Color::Green
-    );
     this->shape.setTextureRect(sf::IntRect(
         b_isOpen ? 192 : 192,
         b_isOpen ? 384 : 256,
