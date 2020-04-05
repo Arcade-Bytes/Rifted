@@ -1,22 +1,19 @@
 {
-	"textureFile": "cleric.png",
+	"textureFile": "sign.png",
 	"isShop": false,
 	"quotes":
 	[
-		{"state":"greeting",
+		{"state":"instructions",
 		"quotes":
 		[
-			{"text":"Hola buenos dias compañero cómo estás\nen este gran dia?"},
-			{"text":"Tan solo soy una prueba"},
-			{"text":"Ya puedes irte, hasta otra"}
-		]
-		},
-		{"state":"farewell",
-		"quotes":
-		[
-			{"text":"Muy bien pues, cuídate compañero"},
-			{"text":"Va, chao, que me tengo que ir a comer"},
-			{"text":"Au revoir, bon ami"}
+			{"text":"Press Enter to interact with people,\nnotes and levers"},
+			{"text":"Press Left and Right arrows to move"},
+			{"text":"Press Space or Up arrow to jump"},
+			{"text":"Press W to attack with the Hammer,\n Press R to attack with the sword"},
+			{"text":"You don't have a bow yet..., maybe\nyou can find one deeper in the dungeon"},
+			{"text":"If you find it press E to shoot arrows"},
+			{"text":"Press Q or LShift to raise your shield"},
+			{"text":"Press P or Esc to open the pause menu"}
 		]
 		}
 	]

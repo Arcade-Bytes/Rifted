@@ -7518,6 +7518,9 @@
   <object id="1" name="Prueba_Beta/0" x="1224" y="38.3333" width="30.3333" height="41.6667"/>
   <object id="6" name="Prueba_2/1" x="0" y="62.6667" width="15" height="73.3333"/>
  </objectgroup>
+ <objectgroup id="48" name="NPC">
+ <object id="50" name="tendero" x="69" y="103.333" width="33.3333" height="31.3333"/>
+ </objectgroup>
  <objectgroup id="4" name="1" locked="1">
   <object id="14" x="175" y="111" width="24" height="24"/>
   <object id="16" x="164" y="311" width="24" height="24"/>

@@ -284,7 +284,7 @@ void Level::update()
         enemy->update();
 
     // Lever testing
-    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Z))
+    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return))
         for(auto lever : levers)
         {
             sf::Vector2f diff = lever->getPosition() - this->player->getPosition();
@@ -310,7 +310,8 @@ void Level::update()
     }
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
         for(unsigned int i = 0; i< npcs.size(); i++){
-            if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 100)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 100))){
+            if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 100)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 100))
+            && (this->npcs[i]->getPosition().y < (this->player->getPosition().y + 100)) && (this->npcs[i]->getPosition().y > (this->player->getPosition().y - 100))){
                 if(this->npcs[i]->getImShop() == true)
                     this->nextState = SHOP_STATE;
                 else{

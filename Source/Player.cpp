@@ -173,20 +173,20 @@ void Player::resizeItems(sf::Vector2f scaleRatio)
 void Player::update()
 {
     // Update input
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         this->move(1);
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         this->move(-1);
     if((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
-    sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
+    sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
         this->jump(0,1);
 
-    if(!b_mutexAttack && getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+    if(!b_mutexAttack && getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
     {
         this->sword->startAttack();
         this->b_mutexAttack = true;
     }
-    else if(!b_mutexAttack && getIsWeaponUnlocked("Hammer") && sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+    else if(!b_mutexAttack && getIsWeaponUnlocked("Hammer") && sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
         this->hammer->startAttack();
         this->b_mutexAttack = true;
@@ -196,7 +196,7 @@ void Player::update()
         this->bow->startAttack();
         this->b_mutexAttack = true;
     }
-    else if(getIsWeaponUnlocked("Shield") && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+    else if(getIsWeaponUnlocked("Shield") && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)))
     {
         this->shield->RiseShield();
     }

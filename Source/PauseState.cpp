@@ -116,11 +116,11 @@ void PauseState:: update()
     //AUMENTO LAS ESTADISTICAS DE FORMA ARTIFICIAL PARA PROBAR COSAS
     if(engine->getKeyPressed(sf::Keyboard::A))
     {
-        this->player->setMony(i_money + 100);
+        this->player->setMony(i_money + 10);
         i_money = atoi(this->player->getMony().c_str());
     }
 
-    if(engine->getKeyPressed(sf::Keyboard::P)){
+    if(engine->getKeyPressed(sf::Keyboard::P) || engine->getKeyPressed(sf::Keyboard::Escape)){
         this->changeState(GAME_STATE, false);
     }
 
@@ -139,23 +139,6 @@ void PauseState:: update()
         }
         this->b_reInit = true;
     }
-
-    if(engine->getKeyPressed(sf::Keyboard::B)){
-
-        if(i_bow != 0)
-            i_bow = 0;
-        else i_bow = -1;
-
-        if(i_hammer != 0)
-            i_hammer = 0;
-        else i_hammer = -1;
-
-        if(i_shield != 0)
-            i_shield = 0;
-        else i_shield = -1;
-
-    }
-
 }
 
 void PauseState:: render(){
