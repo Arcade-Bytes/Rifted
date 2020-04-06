@@ -49,7 +49,7 @@ void GameState::update()
     }
 
     // Pause game
-    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::P))
+    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::P) || Engine::getInstance()->getKeyPressed(sf::Keyboard::Escape))
     {
         this->changeState(PAUSE_STATE, true);
     }
@@ -71,5 +71,8 @@ void GameState::update()
 
 void GameState::render()
 {
-    if(this->level) this->level->render();
+    if(!this->b_reInit)
+    {
+        if(this->level) this->level->render();
+    }
 }

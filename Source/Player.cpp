@@ -173,43 +173,52 @@ void Player::resizeItems(sf::Vector2f scaleRatio)
 void Player::update()
 {
     // Update input
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         this->move(1);
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         this->move(-1);
     if((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
-    sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
+    sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
         this->jump(0,1);
 
-    if(getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+    if(!b_mutexAttack && getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+    {
         this->sword->startAttack();
-    else if(getIsWeaponUnlocked("Hammer") && sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+        this->b_mutexAttack = true;
+    }
+    else if(!b_mutexAttack && getIsWeaponUnlocked("Hammer") && sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
         this->hammer->startAttack();
-    else if(getIsWeaponUnlocked("Bow") && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        this->b_mutexAttack = true;
+    }
+    else if(!b_mutexAttack && getIsWeaponUnlocked("Bow") && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+    {
         this->bow->startAttack();
-    else if(getIsWeaponUnlocked("Shield") && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+        this->b_mutexAttack = true;
+    }
+    else if(getIsWeaponUnlocked("Shield") && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)))
     {
         this->shield->RiseShield();
     }
     else
     {
         this->shield->RestShield();
-    }
-    
+    }   
 
     // Update the attacks
-    this->updateWeapon(sword);
-    this->updateWeapon(hammer);
-    this->updateWeapon(bow);
-
-    // Update shield state
-    this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);
+    bool endSword = this->updateWeapon(sword);
+    bool endHammer = this->updateWeapon(hammer);
+    bool endBow = this->updateWeapon(bow);
+    b_mutexAttack = (endSword || endHammer || endBow);
 
     // Update life regeneration
     this->regenerate();
 
     // Update general stuff
     this->Entity::update();
+
+    // Update shield state
+    this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);
 }
 
 void Player::render()
@@ -278,9 +287,9 @@ std::string Player::getBowLvl()
     return std::to_string(this->bow->getUpgradeLvl()).c_str();
 }
 
-std::string Player::getNear(){
-
-        return nearDialogue;
+std::vector<std::string> Player::getNear()
+{
+    return nearDialogue;
 }
 
 
@@ -335,6 +344,7 @@ void Player::setBowLvl(int i_lvl)
     this->bow->setUpgradeLvl(i_lvl);
 }
 
-void Player::setNear( std::string text){
+void Player::setNear(std::vector<std::string> text)
+{
     this->nearDialogue = text;
 }

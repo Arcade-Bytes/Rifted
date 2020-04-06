@@ -11,10 +11,12 @@ NPC::NPC(std::string sheetFile)
     std::string textureFile = document["textureFile"].GetString();
     this->b_isShop = document["isShop"].GetBool();
 
+    currentQuoteSet = "";
     for(unsigned int i = 0; i < document["quotes"].Size() ; i++)
     {
         rapidjson::Value& state = document["quotes"][i];
         std::string stateName = state["state"].GetString();
+        if(currentQuoteSet == "") currentQuoteSet = stateName;
 
         for(unsigned int j = 0; j < state["quotes"].Size() ; j++)
         {
@@ -25,7 +27,7 @@ NPC::NPC(std::string sheetFile)
     }
 
     fclose(file);
-    this->dialogo.setString(this->quotes["greeting"][0]);
+
     this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+textureFile));
 }
 
@@ -55,9 +57,9 @@ void NPC::setSize(sf::Vector2f size)
     shape.setOrigin(shape.getSize().x/2.0f, shape.getSize().y/2);
 }
 
-sf::Text NPC:: getDialogue()
+std::vector<std::string> NPC:: getDialogue()
 {
-    return dialogo;
+    return this->quotes[currentQuoteSet];
 }
 
 

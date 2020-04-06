@@ -3,6 +3,7 @@
 AnimationComponent::AnimationComponent(sf::RectangleShape& shape)
 : shape(shape)
 {
+    this->current_animation = NULL;
 }
 
 AnimationComponent::~AnimationComponent()
@@ -65,15 +66,18 @@ void AnimationComponent::addAnimation(std::string key, std::vector<Frame*> frame
 
 void AnimationComponent::playAnimation(const std::string key)
 {
-    if(!this->current_animation)
+    if(animations.find(key) != animations.end())
     {
-        this->current_animation = this->animations[key];
-    }
+        if(!this->current_animation)
+        {
+            this->current_animation = this->animations[key];
+        }
 
-    if(this->current_animation != this->animations[key])
-    {
-        this->current_animation = this->animations[key];
-        this->current_animation->reset();
+        if(this->current_animation != this->animations[key])
+        {
+            this->current_animation = this->animations[key];
+            this->current_animation->reset();
+        }
     }
 
     if(this->current_animation)

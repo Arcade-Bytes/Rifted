@@ -3,6 +3,7 @@
 
 #include "Engine.h"
 #include "Hitbox.h"
+#include "ResourceManager.h"
 
 class Shield {
 private:
@@ -15,7 +16,6 @@ private:
 
     int i_upgradeLvl;
 
-    // FALSE FACADE!!!!
     sf::RectangleShape shape;
 public:
     Shield(const float& activationTime, const float& recoveryTime, const float& parryWindow, const float& parryHeal);

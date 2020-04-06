@@ -2,9 +2,9 @@
 
 #define maxLvImprovement 3  //Nivel Maximo de mejora
 //Los precios bases de la tienda
-#define basePriceDmg 100    // Precio de la espada
-#define basePriceLife 100   // Precio de la vida
-#define basePriceArmor 100  // Precio de la armadura
+#define basePriceDmg 4  // Precio de la espada
+#define basePriceLife 4   // Precio de la vida
+#define basePriceArmor 4  // Precio de la armadura
 
 
 
@@ -249,23 +249,6 @@ void ShopState:: update(){
         this->player->setHammrLvl(i_hammer);
         this->player->setBowLvl(i_bow);
     }
-
-    if(engine->getKeyPressed(sf::Keyboard::A)){
-
-        if(i_bow != 0)
-            i_bow = 0;
-        else i_bow = -1;
-
-        if(i_hammer != 0)
-            i_hammer = 0;
-        else i_hammer = -1;
-
-        if(i_shield != 0)
-            i_shield = 0;
-        else i_shield = -1;
-
-    }
-
 }
 
 void ShopState:: render(){

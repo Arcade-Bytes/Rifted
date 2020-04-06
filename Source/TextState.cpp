@@ -1,14 +1,12 @@
 #include "TextState.h"
 
 
-TextState::TextState(std::stack<State*>* states, Player* player, sf::Text dialogo)
+TextState::TextState(std::stack<State*>* states, Player* player)
     :State(states, player)
 {
     this->Iam = TEXT_STATE;
 
     Engine* engine = Engine::getInstance();
-
-    dialogue = dialogo;
 
     text_box = new sf::Sprite(*ResourceManager::getInstance()->loadTexture("resources/text_box.png"));
     text_box->setOrigin(text_box->getLocalBounds().width/2.0f, text_box->getLocalBounds().height/2.0f);
@@ -26,11 +24,44 @@ TextState::~TextState(){
     delete text_box;
 }
 
+void TextState::initConversation()
+{
+    this->quotes = this->player->getNear();
+    currentQuote = -1;
+    this->nextQuote();
+}
+
+void TextState::setText(std::string text)
+{
+    dialogue.setString(text);
+}
+
+bool TextState::nextQuote()
+{
+    currentQuote++;
+    if(currentQuote < (int)quotes.size())
+    {
+        dialogue.setString(quotes[currentQuote]);
+        return true;
+    }
+    else
+    {
+        dialogue.setString("");
+        return false;
+    }
+}
+
 void TextState:: update()
 { 
-    setText(player->getNear());
+    if(this->b_reInit)
+    {
+        this->b_reInit = false;
+        this->initConversation();
+    }
+
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
-        this->changeState(GAME_STATE, false);
+        bool hasNextQuote = this->nextQuote();
+        if(!hasNextQuote) this->changeState(GAME_STATE, false);
     }
 }
 
@@ -41,11 +72,4 @@ void TextState:: render(){
 
     engine->renderDrawable(text_box);
     engine->renderDrawable(&dialogue);
-
-}
-
-void TextState::setText(std::string text){
-
-    dialogue.setString(text);
-
 }

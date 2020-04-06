@@ -74,7 +74,10 @@ void MovementComponent::undoMove(const float& x, const float& y)
 
 void MovementComponent::setMaxSpeed(sf::Vector2f maxSpeed)
 {
+    float xRatio = maxSpeed.x / this->vf_maxSpeed.x;
     this->vf_maxSpeed = maxSpeed;
+    this->f_acceleration *= xRatio;
+    this->f_deceleration *= xRatio;
 }
 
 void MovementComponent::resize(sf::Vector2f scaleRatio)

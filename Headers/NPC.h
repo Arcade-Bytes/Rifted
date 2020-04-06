@@ -12,11 +12,11 @@
 class NPC {
 
 private:
-    sf::Text dialogo;
 
     sf::RectangleShape shape;
 
     std::map<std::string, std::vector<std::string>> quotes;
+    std::string currentQuoteSet;
 
     bool b_isShop;
 public:
@@ -30,7 +30,7 @@ public:
     void setSize(sf::Vector2f size);
 
 
-    sf::Text getDialogue();
+    std::vector<std::string> getDialogue();
     bool getImShop();
 
     void render();

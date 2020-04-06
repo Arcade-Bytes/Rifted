@@ -9,8 +9,6 @@ class Enemy : public Entity {
 private:
     enum EnemyState {EnemyPatrolling = 0, EnemyChasing, EnemyAttacking};
 
-    bool b_mutexAttack;
-
     float f_attackDistance;
     float f_aggroDistance;
     bool b_isRanged;

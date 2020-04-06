@@ -23,7 +23,7 @@ private:
     int i_healthUpg;                // Current health level, multiplier?
     int i_score;                    // Score
     std::string s_levelName;        // Current level name
-    std::string nearDialogue;
+    std::vector<std::string> nearDialogue;
 
     Weapon* sword;
     Weapon* hammer;
@@ -46,6 +46,9 @@ public:
     void die();
     void trulyDie();
 
+    void setNear(std::vector<std::string> text);
+    std::vector<std::string> getNear();
+
     // Virtual override
     void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray);
     bool checkObstacle(Hitbox* hitbox);
@@ -64,8 +67,6 @@ public:
     std::string getShieldLvl();
     std::string getBowLvl();
     std::string getScore();
-    std::string getNear();
-    void setNear(std::string text);
     void setMony(int i_money);
     void setKills(int i_kills);
     void setDeaths(int i_deaths);

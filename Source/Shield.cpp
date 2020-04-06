@@ -7,7 +7,7 @@ Shield::Shield(const float& activationTime, const float& recoveryTime, const flo
     this->f_parryWindow = parryWindow;
     this->f_parryHeal = parryHeal;
 
-    this->shape.setFillColor(sf::Color(155,155,155));
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/shield.png"));
     this->shape.setSize(sf::Vector2f(40,40));
     this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
     this->i_upgradeLvl = -1;

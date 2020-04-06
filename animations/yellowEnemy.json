@@ -105,6 +105,58 @@
           }
         }
       ]
+    },
+    {
+      "name":"pushing_left",
+      "frames":
+      [
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 288,
+            "offset_y": 16,
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 304,
+            "offset_y": 16,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
+    },
+    {
+      "name":"pushing_right",
+      "frames":
+      [
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 352,
+            "offset_y": 16,
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 368,
+            "offset_y": 16,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
     }
   ]
 }

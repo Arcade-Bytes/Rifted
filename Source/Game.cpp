@@ -7,7 +7,7 @@ Game::Game()
     this->states.push(new MenuState(&states, player));
     this->states.push(new PauseState(&states, player));
     this->states.push(new ShopState(&states, player));
-    this->states.push(new TextState(&states, player, sf::Text()));
+    this->states.push(new TextState(&states, player));
     this->states.push(new GameState(&states, player));
     this->states.push(new MainMenuState(&states, player));
 

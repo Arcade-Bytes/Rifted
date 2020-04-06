@@ -12,6 +12,8 @@ Entity::Entity(const float& maxHealth)
     this->b_isGrounded = false;
     this->b_facingRight = true;
 
+    this->b_mutexAttack = false;
+
     this->b_isInvulnerable = false;
     this->f_invulnerabilityTime = 0.0f;
     this->f_invulnerableBlinkDelta = 0.0f;
@@ -20,11 +22,10 @@ Entity::Entity(const float& maxHealth)
 
     this->f_jumpForce = 1200.0f;
     
-    this->movement = new MovementComponent(&this->vf_position, 400.0f, 450.33f, sf::Vector2f(400.0f, 800.0f));
+    this->movement = new MovementComponent(&this->vf_position, 400.0f, 650.33f, sf::Vector2f(400.0f, 800.0f));
     this->hitbox = NULL;
     this->animation = NULL;
 
-    //this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/snobees.png"));
     this->initSize(sf::Vector2f(50,50));
     this->setPosition(350,350);
 }
@@ -159,13 +160,12 @@ void Entity::checkCollisions()
             if(intersection.x != 0.0f || intersection.y != 0.0f)
             {
                 float difference = abs(intersection.x - intersection.y);
-                if(difference <= 10)
+                if(difference <= 10.0f)
                 {
                     this->movement->undoMove(1,1);
                     this->movement->stop();
                     this->vf_position.x += intersection.x;
                     this->vf_position.y += intersection.y;
-                    //printf("Corner (%f)!\n", difference);
                 }
                 if(abs(intersection.y) < abs(intersection.x))
                 {
@@ -213,7 +213,7 @@ void Entity::checkCollisions()
                 this->movement->stopY();
                 this->knockback(
                     500.0f * (diff.x < 0 ? 1 : -1),
-                    -300.0f
+                    0.0f
                 );
 
                 this->b_isInvulnerable = true;
@@ -233,7 +233,12 @@ void Entity::updateAnimation()
     if(this->animation)
     {
         this->s_currentAnimation = "idle_right";
-        if(abs(this->movement->getSpeed().x) > 0)
+        if(this->b_mutexAttack)
+        {
+            if(this->b_facingRight) this->s_currentAnimation = "pushing_right";
+            else                    this->s_currentAnimation = "pushing_left";
+        }
+        else if(abs(this->movement->getSpeed().x) > 0)
         {
             if(this->b_facingRight) this->s_currentAnimation = "walking_right";
             else                    this->s_currentAnimation = "walking_left";
