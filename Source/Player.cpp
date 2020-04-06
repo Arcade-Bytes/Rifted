@@ -211,14 +211,14 @@ void Player::update()
     bool endBow = this->updateWeapon(bow);
     b_mutexAttack = (endSword || endHammer || endBow);
 
-    // Update shield state
-    this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);
-
     // Update life regeneration
     this->regenerate();
 
     // Update general stuff
     this->Entity::update();
+
+    // Update shield state
+    this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);
 }
 
 void Player::render()

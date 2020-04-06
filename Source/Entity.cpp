@@ -26,7 +26,6 @@ Entity::Entity(const float& maxHealth)
     this->hitbox = NULL;
     this->animation = NULL;
 
-    //this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/snobees.png"));
     this->initSize(sf::Vector2f(50,50));
     this->setPosition(350,350);
 }
@@ -161,13 +160,12 @@ void Entity::checkCollisions()
             if(intersection.x != 0.0f || intersection.y != 0.0f)
             {
                 float difference = abs(intersection.x - intersection.y);
-                if(difference <= 10)
+                if(difference <= 10.0f)
                 {
                     this->movement->undoMove(1,1);
                     this->movement->stop();
                     this->vf_position.x += intersection.x;
                     this->vf_position.y += intersection.y;
-                    //printf("Corner (%f)!\n", difference);
                 }
                 if(abs(intersection.y) < abs(intersection.x))
                 {
@@ -215,7 +213,7 @@ void Entity::checkCollisions()
                 this->movement->stopY();
                 this->knockback(
                     500.0f * (diff.x < 0 ? 1 : -1),
-                    -300.0f
+                    0.0f
                 );
 
                 this->b_isInvulnerable = true;

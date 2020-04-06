@@ -244,7 +244,7 @@ namespace ftl{
         if (getcwd(cwd, sizeof(cwd)) != NULL) {
         //printf("Current working dir: %s\n", cwd);
         }
-        int i_error = xml_saveFile.LoadFile("ds000002.sl");
+        int i_error = xml_saveFile.LoadFile(SFL_SAVE_FILE);
         
         if( i_error != 0)
         {

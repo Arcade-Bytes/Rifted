@@ -46,6 +46,7 @@ bool TextState::nextQuote()
     }
     else
     {
+        dialogue.setString("");
         return false;
     }
 }

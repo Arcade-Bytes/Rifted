@@ -71,5 +71,8 @@ void GameState::update()
 
 void GameState::render()
 {
-    if(this->level) this->level->render();
+    if(!this->b_reInit)
+    {
+        if(this->level) this->level->render();
+    }
 }

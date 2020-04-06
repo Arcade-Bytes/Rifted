@@ -7,9 +7,9 @@
 #include "../tinyxml2-master/tinyxml2.h"
 #include "Player.h"
 
-#define SFL_TEMPLATE_FILE "saveSAFE"
-#define SFL_SAVE_FILE   "ds000002.sl"
-#define SFL_EXTRA_FILE  "ds000003.sl"
+#define SFL_TEMPLATE_FILE "savedata/saveSAFE"
+#define SFL_SAVE_FILE   "savedata/ds000002.sl"
+#define SFL_EXTRA_FILE  "savedata/ds000003.sl"
 
 #define SFL_SAVE "savefile"
 #define SFL_PLAYER "player"
