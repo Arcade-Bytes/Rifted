@@ -64,6 +64,11 @@ void Enemy::setDoPatrol(bool patrol)
     this->b_doesPatrol = patrol;
 }
 
+void Enemy::overrideHitboxType(HitboxType type)
+{
+    this->hitbox->setType(type);
+}
+
 void Enemy::attack()
 {
     if(!b_mutexAttack)
@@ -138,7 +143,6 @@ bool Enemy::checkObstacle(Hitbox* hitbox)
     switch(type)
     {
         case PLATFORM:
-        case BREAKABLE_DOOR:
         case EXIT:
         result = true; break;
         default: break;

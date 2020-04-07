@@ -37,6 +37,11 @@ std::vector<Hitbox*>* Hitbox::getAllHitboxes()
 }
 
 // Game related
+void Hitbox::setType(HitboxType newType)
+{
+    this->type = newType;
+}
+
 HitboxType Hitbox::getType()
 {
     return this->type;

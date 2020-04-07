@@ -35,6 +35,7 @@ public:
     void setAIDistances(float aggro, float attack);
     void setRangedMode(bool ranged);
     void setDoPatrol(bool patrol);
+    void overrideHitboxType(HitboxType type);
 
     void attack();
 

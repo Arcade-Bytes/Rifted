@@ -143,7 +143,6 @@ bool Player::checkObstacle(Hitbox* hitbox)
     {
         case PLATFORM:
         case ENEMY:
-        case BREAKABLE_DOOR:
         result = true; break;
         default: break;
     }

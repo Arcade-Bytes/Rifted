@@ -36,19 +36,20 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             break;
         case 10: // Breakable wall
             enemy->setWeapon(0.1f, 0.0f, 0.1f, 0, 0, 0);
-            enemy->setAnimation("yellowEnemy.json");
+            enemy->setAnimation("breakableWall.json");
             enemy->setMaxSpeed(0.0f, 800.0f);
             enemy->setAIDistances(0, 0);
             enemy->setRangedMode(false);
-            enemy->setMaxHealth(1);
+            enemy->setMaxHealth(1.0f);
             enemy->setResistances(1.0f, 0.0f, 1.0f);
             enemy->setDoPatrol(false);
+            enemy->overrideHitboxType(PLATFORM);
             break;
         case 11: // Platform enemy
             enemy->setWeapon(0.1f, 0.0f, 0.1f, 0, 0, 0);
-            enemy->setAnimation("yellowEnemy.json");
+            enemy->setAnimation("platform.json");
             enemy->setMaxSpeed(500.0f, 800.0f);
-            enemy->setAIDistances(50*1.2, 0);
+            enemy->setAIDistances(50*1.1, 0);
             enemy->setRangedMode(false);
             enemy->setMaxHealth(1000);
             enemy->setResistances(1.0f, 1.0f, 1.0f);

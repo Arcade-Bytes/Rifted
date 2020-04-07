@@ -3,7 +3,7 @@
 
 #include "Engine.h"
 
-enum HitboxType {NO_COLLISION = 0, PLATFORM, PLAYER, ENEMY, LETHAL, PLAYER_ATTACK, ENEMY_ATTACK, LEVER, BREAKABLE_DOOR, EXIT};
+enum HitboxType {NO_COLLISION = 0, PLATFORM, PLAYER, ENEMY, LETHAL, PLAYER_ATTACK, ENEMY_ATTACK, LEVER, EXIT};
 enum DamageType {LIGHT_ATTACK, HEAVY_ATTACK, RANGED_ATTACK};
 
 class Hitbox {
@@ -30,6 +30,7 @@ public:
     static std::vector<Hitbox*>* getAllHitboxes();
 
     // Game related
+    void setType(HitboxType type);
     HitboxType getType();
     void setDamage(float damage);
     float getDamage();
