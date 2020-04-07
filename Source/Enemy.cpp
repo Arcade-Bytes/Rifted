@@ -8,6 +8,7 @@ Enemy::Enemy(Player* playerRef)
     // AI Properties and helpers
     this->player = playerRef;
     this->b_patrolLeft = false;
+    this->b_doesPatrol = true;
 
     this->f_aggroDistance = 150;
     this->f_attackDistance = 50;
@@ -22,16 +23,17 @@ Enemy::~Enemy()
 
 // Factory setters
 void Enemy::setWeapon(const float& cooldown, const float& timeToAttack,
-    const float& window, const float& xsize, const float& ysize, float damage)
+    const float& window, const float& xsize, const float& ysize,
+    float damage, sf::Vector2f knockback, DamageType dmgType)
 {
     if(this->weapon) delete this->weapon;
-    this->weapon = new Weapon(cooldown, timeToAttack, window, xsize, ysize, damage, false);
+    this->weapon = new Weapon(cooldown, timeToAttack, window, xsize, ysize, damage, false, knockback, dmgType);
 }
 
-void Enemy::setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage)
+void Enemy::setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage, sf::Vector2f knockback)
 {
     if(this->weapon) delete this->weapon;
-    this->weapon = new RangedWeapon(cooldown, timeToAttack, damage, false, this->b_facingRight);
+    this->weapon = new RangedWeapon(cooldown, timeToAttack, damage, false, this->b_facingRight, knockback);
 }
 
 void Enemy::setAnimation(std::string animationFile)
@@ -55,6 +57,11 @@ void Enemy::setAIDistances(float aggro, float attack)
 void Enemy::setRangedMode(bool ranged)
 {
     this->b_isRanged = ranged;
+}
+
+void Enemy::setDoPatrol(bool patrol)
+{
+    this->b_doesPatrol = patrol;
 }
 
 void Enemy::attack()
@@ -86,7 +93,7 @@ void Enemy::updateAI()
             if(this->i_nearPlatformEnd > 0 || this->i_wallCollision > 0) b_patrolLeft = true;
             if(this->i_nearPlatformEnd < 0 || this->i_wallCollision < 0) b_patrolLeft = false;
 
-            this->move(b_patrolLeft ? -1 : 1);
+            if(this->b_doesPatrol) this->move(b_patrolLeft ? -1 : 1);
             break;
     }
 }

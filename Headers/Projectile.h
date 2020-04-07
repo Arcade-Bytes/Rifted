@@ -18,7 +18,7 @@ private:
     float f_speed;
     
 public:
-    Projectile(sf::Vector2f position, sf::Vector2f direction, float speed, float damage, bool isPlayer);
+    Projectile(sf::Vector2f position, sf::Vector2f direction, float speed, float damage, bool isPlayer, sf::Vector2f knockback={0.0f,0.0f});
     ~Projectile();
 
     // static std::vector<Projectile*>* getProjectiles();

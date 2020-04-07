@@ -2,14 +2,14 @@
 
 // std::vector<Projectile*> Projectile::Projectiles;
 
-Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, float speed, float damage, bool isPlayer)
+Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, float speed, float damage, bool isPlayer, sf::Vector2f knockback)
 {
     this->vf_position = position;
     this->vf_direction = direction;
     this->f_speed = speed;
     this->b_isDestroyed = false;
 
-    this->hitbox = new Hitbox(isPlayer ? PLAYER_ATTACK : ENEMY_ATTACK, 60, 10, 0, 0, damage);
+    this->hitbox = new Hitbox(isPlayer ? PLAYER_ATTACK : ENEMY_ATTACK, 60, 10, 0, 0, damage, knockback, RANGED_ATTACK);
 
     this->shape.setPosition(this->vf_position);
     this->shape.setSize({60, 10});

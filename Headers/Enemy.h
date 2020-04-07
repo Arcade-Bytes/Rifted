@@ -18,6 +18,7 @@ private:
 
     // AI Properties
     bool b_jumpsOffPlatforms; // true if this AI ignores end of platform and keeps walking
+    bool b_doesPatrol;
 
     // AI data
     bool b_patrolLeft;
@@ -26,12 +27,14 @@ public:
     ~Enemy();
 
     // Factory setters
-    void setWeapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize, float damage);
-    void setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage);
+    void setWeapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize,
+        float damage, sf::Vector2f knockback = {0.0f,0.0f}, DamageType dmgType = LIGHT_ATTACK);
+    void setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage, sf::Vector2f knockback = {0.0f,0.0f});
     void setAnimation(std::string animationFile);
     void setMaxSpeed(const float&maxX, const float&maxY);
     void setAIDistances(float aggro, float attack);
     void setRangedMode(bool ranged);
+    void setDoPatrol(bool patrol);
 
     void attack();
 

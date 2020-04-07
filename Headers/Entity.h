@@ -32,6 +32,8 @@ protected:
 
     float f_jumpForce;
 
+    std::map<DamageType, float> resistances;
+
     std::string s_currentAnimation;
 
     sf::Vector2f vf_position;
@@ -60,8 +62,10 @@ public:
     virtual void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray) = 0;
 
     // Damage
-    void getHurt(float& damage);
-    void getHealed(float& healing);
+    void setResistances(float lightRes, float heavyRes, float rangedRes);
+    float getResistance(DamageType type);
+    virtual float getHurt(float& damage);
+    virtual float getHealed(float& healing);
     virtual void die();
     virtual void trulyDie();
     void revive();

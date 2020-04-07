@@ -84,22 +84,44 @@ Hitbox* Entity::getHitbox()
     return this->hitbox;
 }
 
-void Entity::getHurt(float& damage)
+void Entity::setResistances(float lightRes, float heavyRes, float rangedRes)
 {
+    this->resistances[LIGHT_ATTACK] = lightRes;
+    this->resistances[HEAVY_ATTACK] = heavyRes;
+    this->resistances[RANGED_ATTACK] = rangedRes;
+}
+
+float Entity::getResistance(DamageType type)
+{
+    if(resistances.find(type) != resistances.end())
+    {
+        return resistances[type];
+    }
+    else return 0.0f;
+}
+
+float Entity::getHurt(float& damage)
+{
+    float healthBefore = f_currentHealth;
+
     f_currentHealth -= damage;
     if(f_currentHealth <= 0.0f)
     {
         this->die();
     }
+    return healthBefore - this->f_currentHealth;
 }
 
-void Entity::getHealed(float& healing)
+float Entity::getHealed(float& healing)
 {
+    float healthBefore = f_currentHealth;
+
     f_currentHealth += healing;
     if(f_currentHealth >= f_maxHealth)
     {
         f_currentHealth = f_maxHealth;
     }
+    return this->f_currentHealth - healthBefore;
 }
 
 void Entity::die()
@@ -207,17 +229,24 @@ void Entity::checkCollisions()
             if(!this->b_isInvulnerable && (intersection.x != 0.0f || intersection.y != 0.0f))
             {
                 float damage = hitbox->getDamage();
-                this->getHurt(damage);
+                damage *= 1 - this->getResistance(hitbox->getDamageType());
+                float finalDamage = this->getHurt(damage);
 
                 sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
+                sf::Vector2f knockback = hitbox->getKnockback();
                 this->movement->stopY();
                 this->knockback(
-                    500.0f * (diff.x < 0 ? 1 : -1),
-                    0.0f
+                    knockback.x * (diff.x < 0 ? 1 : -1),
+                    knockback.y
                 );
 
-                this->b_isInvulnerable = true;
-                this->f_invulnerabilityTime = 1.0f;
+                if(finalDamage > 0.0f)
+                {
+                    this->b_isInvulnerable = true;
+                    this->f_invulnerabilityTime = 1.0f;
+                }
+
+                printf("I received %f damage (knockback of %f, %f)from %d\n", finalDamage, knockback.x, knockback.y, hitbox->getDamageType());
 
                 if(hitbox->getType() == LETHAL)
                 {
