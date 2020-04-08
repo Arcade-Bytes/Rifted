@@ -172,6 +172,9 @@ void Entity::checkCollisions()
 
     this->b_isGrounded = false;
     bool collidedWithPriorityHitbox = false;
+    float xThreshold = this->getSize().x/8;
+    float yThreshold = this->getSize().y/8;
+
     std::vector<Hitbox*>* hitboxes = Hitbox::getAllHitboxes();
     for(int i=hitboxes->size()-1; i>=0; i--)
     {
@@ -185,16 +188,16 @@ void Entity::checkCollisions()
             {
                 if(hitbox->getType()==PLATFORM) collidedWithPriorityHitbox = true;
 
-                /*if(difference <= 10.0f)
+                if(abs(intersection.x) <= xThreshold && abs(intersection.y) <= yThreshold)
                 {
-                    this->movement->undoMove(1,1);
+                    //this->movement->undoMove(1,1);
                     this->movement->stop();
                     this->vf_position.x += intersection.x;
                     this->vf_position.y += intersection.y;
-                }*/
+                }
                 if(abs(intersection.y) < abs(intersection.x))
                 {
-                    if(abs(intersection.y) <= this->getSize().y/8)
+                    if(abs(intersection.y) <= yThreshold)
                         this->movement->undoMove(0,1);
                     else
                         this->vf_position.y += intersection.y;
@@ -210,15 +213,10 @@ void Entity::checkCollisions()
                             else                   i_nearPlatformEnd = 1;
                         } 
                     }
-                    // Colliding with the roof
-                    else
-                    {
-                        this->vf_position.y += intersection.y;
-                    }
                 }
                 else
                 {
-                    if(abs(intersection.x) <= this->getSize().x/8)
+                    if(abs(intersection.x) <= xThreshold)
                         this->movement->undoMove(1,0);
                     else
                         this->vf_position.x += intersection.x;
