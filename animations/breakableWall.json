@@ -1,0 +1,110 @@
+{
+  "texture": "snobees.png",
+  "animations":
+  [
+    {
+      "name":"idle_left",
+      "frames":
+      [
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
+    },
+    {
+      "name":"idle_right",
+      "frames":
+      [
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
+    },
+    {
+      "name":"walking_left",
+      "frames":
+      [
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
+    },
+    {
+      "name":"walking_right",
+      "frames":
+      [
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
+    }
+  ]
+}

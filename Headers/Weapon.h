@@ -24,7 +24,8 @@ private:
     float f_baseDamage;
 
 public:
-    Weapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize, float damage, bool isPlayer);
+    Weapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize,
+        float damage, bool isPlayer, sf::Vector2f knockback = {0.0f,0.0f}, DamageType dmgType = LIGHT_ATTACK);
     virtual ~Weapon();
 
     bool isAttacking();

@@ -2,10 +2,11 @@
 
 std::vector<Hitbox*> Hitbox::hitboxes;
 
-Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const float& xpos, const float& ypos)
+Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const float& xpos, const float& ypos,
+        float damage, sf::Vector2f knockback, DamageType damageTypeVal)
+    :f_damage(damage), vf_knockback(knockback), damageType(damageTypeVal)
 {
     this->type = type;
-    this->f_damage = 0.0f;
     this->vf_position = {xpos,ypos};
     this->vf_size = {xsize,ysize};
 
@@ -15,12 +16,6 @@ Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const fl
     this->shape.setPosition(this->vf_position);
 
     hitboxes.push_back(this);
-}
-
-Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const float& xpos, const float& ypos, float damage)
-    : Hitbox(type, xsize, ysize, xpos, ypos)
-{
-    this->f_damage = damage;
 }
 
 Hitbox::~Hitbox()
@@ -41,10 +36,40 @@ std::vector<Hitbox*>* Hitbox::getAllHitboxes()
     return &hitboxes;
 }
 
-// Type related
+// Game related
+void Hitbox::setType(HitboxType newType)
+{
+    this->type = newType;
+}
+
 HitboxType Hitbox::getType()
 {
     return this->type;
+}
+
+void Hitbox::setDamage(float damage)
+{
+    this->f_damage = damage;
+}
+
+float Hitbox::getDamage()
+{
+    return this->f_damage;
+}
+
+void Hitbox::setKnockback(sf::Vector2f newKnockback)
+{
+    this->vf_knockback = newKnockback;
+}
+
+sf::Vector2f Hitbox::getKnockback()
+{
+    return this->vf_knockback;
+}
+
+DamageType Hitbox::getDamageType()
+{
+    return this->damageType;
 }
 
 // Position related
@@ -103,16 +128,6 @@ sf::Vector2f Hitbox::checkCollision(Hitbox* other)
         if(distance.y > 0) intersection.y *= -1;
     }
     return intersection;
-}
-
-void Hitbox::setDamage(float damage)
-{
-    this->f_damage = damage;
-}
-
-float Hitbox::getDamage()
-{
-    return this->f_damage;
 }
 
 sf::FloatRect Hitbox::getBounds()

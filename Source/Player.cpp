@@ -8,11 +8,12 @@ Player::Player(const float& maxHealth)
 
     this->i_nchunks = 4;
 
-    this->sword = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 30, true);
-    sword->setUpgradeLvl(0);
-    this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 60, 70, 60, true);
+    this->sword = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 30, true, {500.0f, 0.0f}, LIGHT_ATTACK);
+    this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 60, 70, 60, true, {1000.0f, 0.0f}, HEAVY_ATTACK);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
     this->bow = new RangedWeapon(0.6f, 0.1f, 20, true, this->b_facingRight);
+
+    this->setResistances(0.0f, 0.0f, 0.0f);
 
     this->animation = new AnimationComponent(this->shape);
     this->animation->loadAnimationsFromJSON("animations/pengo.json");
@@ -26,17 +27,19 @@ Player::~Player()
     delete this->shield;
 }
 
-void Player::getHurt(float& damage)
+float Player::getHurt(float& damage)
 {
     damage *= this->shield->DamageBlock();
-    this->Entity::getHurt(damage);
+    float hurtAmount = this->Entity::getHurt(damage);
     f_regenerationDelta = 0.0f;
+    return hurtAmount;
 }
 
-void Player::getHealed(float& healing)
+float Player::getHealed(float& healing)
 {
-    this->Entity::getHealed(healing);
+    float healAmount = this->Entity::getHealed(healing);
     f_regenerationDelta = 0.0f;
+    return healAmount;
 }
 
 void Player::regenerate()
@@ -140,7 +143,6 @@ bool Player::checkObstacle(Hitbox* hitbox)
     {
         case PLATFORM:
         case ENEMY:
-        case BREAKABLE_DOOR:
         result = true; break;
         default: break;
     }

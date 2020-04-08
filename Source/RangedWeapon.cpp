@@ -2,8 +2,10 @@
 
 RangedWeapon::RangedWeapon(
     const float& cooldown, const float& timeToAttack,
-    const float& damage, bool isPlayer, bool& ownerFacing) 
-: Weapon(cooldown, timeToAttack, 0, 0, 0, damage, isPlayer), b_ownerFacingRight(ownerFacing), b_isPlayer(isPlayer)
+    const float& damage, bool isPlayer, bool& ownerFacing,
+    sf::Vector2f knockback) 
+: Weapon(cooldown, timeToAttack, 0, 0, 0, damage, isPlayer, knockback, RANGED_ATTACK),
+    b_ownerFacingRight(ownerFacing), b_isPlayer(isPlayer)
 {
     this->projectileArray = NULL;
 }
@@ -27,7 +29,8 @@ void RangedWeapon::attack()
             {this->b_ownerFacingRight ? 1.f : -1.f, 0},
             1000.f,
             this->hitbox->getDamage(),
-            this->b_isPlayer
+            this->b_isPlayer,
+            this->hitbox->getKnockback()
         ));
     }
 }

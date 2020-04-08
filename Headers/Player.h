@@ -34,8 +34,8 @@ public:
     Player(const float& maxHealth);
     ~Player();
 
-    void getHurt(float& damage);
-    void getHealed(float& healing);
+    float getHurt(float& damage);
+    float getHealed(float& healing);
     void regenerate();
 
     void pickCoin(int value);
