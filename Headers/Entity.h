@@ -36,6 +36,8 @@ protected:
 
     std::string s_currentAnimation;
 
+    sf::Vector2f vf_previousPosition;
+    sf::Vector2f vf_nextPosition;
     sf::Vector2f vf_position;
 
     Hitbox* hitbox;
@@ -51,6 +53,7 @@ public:
     sf::Vector2f getPosition();
     void setPosition(const float&x, const float& y);
     void setPosition(sf::Vector2f pos);
+    void initPosition(sf::Vector2f pos);
 
     // Size
     void initSize(sf::Vector2f size);
@@ -80,6 +83,9 @@ public:
     // Collisions
     Hitbox* getHitbox();
     void checkCollisions();
+    bool checkObstacleCollision(Hitbox* hitbox);
+    bool checkInteractionCollision(Hitbox* hitbox);
+    Hitbox* makeCollisionArea();
     virtual bool checkObstacle(Hitbox* hitbox) = 0;
     virtual bool checkInteraction(Hitbox* hitbox) = 0;
 
@@ -99,7 +105,11 @@ public:
     void setMaxHealth(float f_maxHealth);
 
     void update();
-    void render();
+    void render(float frameProgress);
+
+    // Interpolation related
+    sf::Vector2f getInterpolatedPosition(float frameProgress);
+    void updateInterpolationPositions();
 };
 
 #endif

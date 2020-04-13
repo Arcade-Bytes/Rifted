@@ -79,7 +79,7 @@ public:
     void setBowLvl(int i_lvl);
 
     void update();
-    void render();
+    void render(float frameProgress);
 };
 
 #endif

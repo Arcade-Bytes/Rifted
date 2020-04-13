@@ -218,18 +218,24 @@ void Player::update()
 
     // Update general stuff
     this->Entity::update();
-
-    // Update shield state
-    this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);
 }
 
-void Player::render()
+void Player::render(float frameProgress)
 {
+    // Interpolate player position
+    sf::Vector2f pos = this->getInterpolatedPosition(frameProgress);
+    this->shape.setPosition(pos);
+
+    // Interpolate weapons and tools position
+    this->sword->setPosition(pos.x, pos.y, this->b_facingRight);
+    this->hammer->setPosition(pos.x, pos.y, this->b_facingRight);
+    this->shield->setPosition(pos.x, pos.y, this->b_facingRight);
+
+    // Render
     Engine::getInstance()->renderDrawable(&shape);
     this->sword->render();
     this->hammer->render();
     this->shield->render();
-    //this->hitbox->render();
 }
 
 //GET DATA TO SAVE

@@ -46,7 +46,7 @@ public:
 
     // View related
     void initViewLimits();
-    void adjustPlayerView();
+    void adjustPlayerView(float frameProgress);
 
     // Event checks
     void checkLevelExitReached();
@@ -62,9 +62,10 @@ public:
     // State change
     StateType getNextState();
     void resetNextState();
+    void forceInterpolationUpdate();
 
     void update();
-    void render();
+    void render(float frameProgress);
 };
 
 #endif

@@ -14,7 +14,7 @@ public:
     void initGame();
 
     void update();
-    void render();
+    void render(float frameProgress);
 };
 
 #endif

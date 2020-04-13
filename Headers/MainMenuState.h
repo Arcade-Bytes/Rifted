@@ -16,7 +16,7 @@ public:
     ~MainMenuState();
 
     void update();
-    void render();
+    void render(float frameProgress);
     void endState();
 };
 

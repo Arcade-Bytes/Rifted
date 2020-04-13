@@ -141,7 +141,7 @@ void PauseState:: update()
     }
 }
 
-void PauseState:: render(){
+void PauseState:: render(float frameProgress){
 
     Engine* engine = Engine::getInstance();
     engine->setFollowView(false);

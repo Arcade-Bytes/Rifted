@@ -46,6 +46,7 @@ public:
     void scale(sf::Vector2f scaleRatio);
 
     // Collision related
+    bool checkBooleanCollision(Hitbox* other);
     sf::Vector2f checkCollision(Hitbox* other);
     sf::FloatRect getBounds();
 

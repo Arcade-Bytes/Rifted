@@ -37,7 +37,7 @@ void Game::update()
         this->states.top()->update();
 }
 
-void Game::render()
+void Game::render(float frameProgress)
 {
     Engine* engine = Engine::getInstance();
     engine->windowClear();
@@ -47,14 +47,14 @@ void Game::render()
     {
         State* topState = this->states.top();
         this->states.pop();
-        this->states.top()->render();
+        this->states.top()->render(frameProgress);
         this->states.push(topState);
-        this->states.top()->render();
+        this->states.top()->render(frameProgress);
     }
     else
     {
         if(!this->states.empty())
-            this->states.top()->render();
+            this->states.top()->render(frameProgress);
     }
 
     engine->windowDisplay();
@@ -72,6 +72,8 @@ void Game::run()
             this->update();
             updateStartTime = engine->getUpdateTime();
         }
-        this->render();
+        float frameProgress = (engine->getUpdateTime() - updateStartTime) / (UPDATE_TIME);
+        if(frameProgress > 1.0f) frameProgress = 1.0f;
+        this->render(frameProgress);
     }
 }

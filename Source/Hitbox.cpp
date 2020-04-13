@@ -104,7 +104,14 @@ void Hitbox::scale(sf::Vector2f scaleRatio)
     this->setSize(vf_size.x, vf_size.y);
 }
 
+
 // Collision related
+bool Hitbox::checkBooleanCollision(Hitbox* other)
+{
+    sf::Vector2f col = this->checkCollision(other);
+    return (col.x!=0.0f || col.y != 0.0f);
+}
+
 sf::Vector2f Hitbox::checkCollision(Hitbox* other)
 {
     sf::Vector2f intersection = {0.0f, 0.0f};

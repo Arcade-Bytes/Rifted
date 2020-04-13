@@ -28,6 +28,7 @@ Entity::Entity(const float& maxHealth)
 
     this->initSize(sf::Vector2f(50,50));
     this->setPosition(350,350);
+    this->vf_previousPosition = this->vf_nextPosition = this->vf_position;
 }
 
 Entity::~Entity()
@@ -59,6 +60,12 @@ void Entity::setPosition(sf::Vector2f pos)
     this->vf_position = pos;
     this->shape.setPosition(this->vf_position);
     if(this->hitbox) this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
+}
+
+void Entity::initPosition(sf::Vector2f pos)
+{
+    this->setPosition(pos);
+    this->vf_previousPosition = this->vf_nextPosition = this->vf_position;
 }
 
 sf::Vector2f Entity::getSize()
@@ -169,97 +176,147 @@ void Entity::checkCollisions()
 {
     // Status info reset
     this->i_wallCollision = this->i_nearPlatformEnd = 0;
-
     this->b_isGrounded = false;
-    bool collidedWithPriorityHitbox = false;
-    float xThreshold = this->getSize().x/8;
-    float yThreshold = this->getSize().y/8;
+
+    Hitbox* collisionArea = this->makeCollisionArea();
 
     std::vector<Hitbox*>* hitboxes = Hitbox::getAllHitboxes();
     for(int i=hitboxes->size()-1; i>=0; i--)
     {
         Hitbox* hitbox = (*hitboxes)[i];
-        // Check platform collisions
-        if(this->checkObstacle(hitbox) && (hitbox->getType()==PLATFORM || !collidedWithPriorityHitbox))
+
+        //if(collisionArea->checkBooleanCollision(hitbox))
         {
-            // Check how much they collided and push the entity out of the platform
-            sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
-            if(intersection.x != 0.0f || intersection.y != 0.0f)
+            // Check platform collisions
+            bool collided = this->checkObstacleCollision(hitbox);
+            if(collided)
             {
-                if(hitbox->getType()==PLATFORM) collidedWithPriorityHitbox = true;
-
-                if(abs(intersection.x) <= xThreshold && abs(intersection.y) <= yThreshold)
-                {
-                    //this->movement->undoMove(1,1);
-                    this->movement->stop();
-                    this->vf_position.x += intersection.x;
-                    this->vf_position.y += intersection.y;
-                }
-                if(abs(intersection.y) < abs(intersection.x))
-                {
-                    if(abs(intersection.y) <= yThreshold)
-                        this->movement->undoMove(0,1);
-                    else
-                        this->vf_position.y += intersection.y;
-                    this->movement->stopY();
-
-                    // Stepping on a platform
-                    if(intersection.y < 0) {
-                        this->b_isGrounded = true;
-                        // Stepping near the platform corner
-                        if(abs(intersection.x) <= this->getSize().x)
-                        {
-                            if(intersection.x < 0) i_nearPlatformEnd = -1;
-                            else                   i_nearPlatformEnd = 1;
-                        } 
-                    }
-                }
-                else
-                {
-                    if(abs(intersection.x) <= xThreshold)
-                        this->movement->undoMove(1,0);
-                    else
-                        this->vf_position.x += intersection.x;
-                    this->movement->stopX();
-
-                    if(intersection.x > 0) i_wallCollision = -1;
-                    else                   i_wallCollision = 1;
-                }
+                // Update collision area
                 this->setPosition(this->vf_position);
+                delete collisionArea;
+                collisionArea = this->makeCollisionArea();
             }
-        }
 
-        // Check damage areas
-        if(this->checkInteraction(hitbox))
-        {
-            sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
-            if(!this->b_isInvulnerable && (intersection.x != 0.0f || intersection.y != 0.0f))
-            {
-                float damage = hitbox->getDamage();
-                damage *= 1 - this->getResistance(hitbox->getDamageType());
-                float finalDamage = this->getHurt(damage);
-
-                sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
-                sf::Vector2f knockback = hitbox->getKnockback();
-                this->movement->stopY();
-                this->knockback(
-                    knockback.x * (diff.x < 0 ? 1 : -1),
-                    knockback.y
-                );
-
-                if(finalDamage > 0.0f)
-                {
-                    this->b_isInvulnerable = true;
-                    this->f_invulnerabilityTime = 1.0f;
-                }
-
-                if(hitbox->getType() == LETHAL)
-                {
-                    this->trulyDie();
-                }
-            }
+            // Check damage areas
+            this->checkInteractionCollision(hitbox);
         }
     }
+
+    delete collisionArea;
+    collisionArea = NULL;
+}
+
+bool Entity::checkObstacleCollision(Hitbox* hitbox)
+{
+    float xThreshold = this->getSize().x/8;
+    float yThreshold = this->getSize().y/8;
+
+    if(this->checkObstacle(hitbox))
+    {
+        // Check how much they collided and push the entity out of the platform
+        sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
+        if(intersection.x != 0.0f || intersection.y != 0.0f)
+        {
+            if(abs(intersection.x) <= xThreshold && abs(intersection.y) <= yThreshold)
+            {
+                //this->movement->undoMove(1,1);
+                this->movement->stop();
+                this->vf_position.x += intersection.x;
+                this->vf_position.y += intersection.y;
+            }
+            if(abs(intersection.y) < abs(intersection.x))
+            {
+                if(abs(intersection.y) <= yThreshold)
+                    this->movement->undoMove(0,1);
+                else
+                    this->vf_position.y += intersection.y;
+                this->movement->stopY();
+
+                // Stepping on a platform
+                if(intersection.y < 0) {
+                    this->b_isGrounded = true;
+                    // Stepping near the platform corner
+                    if(abs(intersection.x) <= this->getSize().x)
+                    {
+                        if(intersection.x < 0) i_nearPlatformEnd = -1;
+                        else                   i_nearPlatformEnd = 1;
+                    } 
+                }
+            }
+            else
+            {
+                if(abs(intersection.x) <= xThreshold)
+                    this->movement->undoMove(1,0);
+                else
+                    this->vf_position.x += intersection.x;
+                this->movement->stopX();
+
+                if(intersection.x > 0) i_wallCollision = -1;
+                else                   i_wallCollision = 1;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+bool Entity::checkInteractionCollision(Hitbox* hitbox)
+{
+    if(this->checkInteraction(hitbox))
+    {
+        sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
+        if(!this->b_isInvulnerable && (intersection.x != 0.0f || intersection.y != 0.0f))
+        {
+            float damage = hitbox->getDamage();
+            damage *= 1 - this->getResistance(hitbox->getDamageType());
+            float finalDamage = this->getHurt(damage);
+
+            sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
+            sf::Vector2f knockback = hitbox->getKnockback();
+            this->movement->stopY();
+            this->knockback(
+                knockback.x * (diff.x < 0 ? 1 : -1),
+                knockback.y
+            );
+
+            if(finalDamage > 0.0f)
+            {
+                this->b_isInvulnerable = true;
+                this->f_invulnerabilityTime = 1.0f;
+            }
+
+            if(hitbox->getType() == LETHAL)
+            {
+                this->trulyDie();
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+Hitbox* Entity::makeCollisionArea()
+{
+    sf::Vector2f size;
+    sf::Vector2f pos;
+
+    // Calculate size
+    size = this->vf_position - this->vf_previousPosition;
+    size.x = abs(size.x) + this->getSize().x;
+    size.y = abs(size.y) + this->getSize().y;
+
+    // Calculate position
+    if(this->vf_position.x < this->vf_previousPosition.x)   pos.x = this->vf_position.x;
+    else                                                    pos.x = this->vf_previousPosition.x;
+    if(this->vf_position.y < this->vf_previousPosition.y)   pos.y = this->vf_position.y;
+    else                                                    pos.y = this->vf_previousPosition.y;
+
+    // Adjust position
+    pos.x -= this->getSize().x/2.0f;
+    pos.y -= this->getSize().y/2.0f;
+
+    Hitbox* hitbox = new Hitbox(NO_COLLISION, size.x,size.y, pos.x,pos.y);
+    return hitbox;
 }
 
 void Entity::updateAnimation()
@@ -334,11 +391,24 @@ void Entity::update()
     this->updateMovement();
     this->updateAnimation();
     this->updateInvulnerability();
+    this->updateInterpolationPositions();
 }
 
-void Entity::render()
+void Entity::render(float frameProgress)
 {
+    this->shape.setPosition(this->getInterpolatedPosition(frameProgress));
     Engine::getInstance()->renderDrawable(&shape);
+}
+
+sf::Vector2f Entity::getInterpolatedPosition(float frameProgress)
+{
+    return this->vf_previousPosition + (this->vf_nextPosition - this->vf_previousPosition) * frameProgress;
+}
+
+void Entity::updateInterpolationPositions()
+{
+    this->vf_previousPosition = this->vf_nextPosition;
+    this->vf_nextPosition = this->vf_position;
 }
 
 std::string Entity::getMaxHealth()

@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#define UPDATE_TIME (1.0f/30.0f)
+#define UPDATE_TIME (1.0f/15.0f)
 
 #include "Engine.h"
 #include "GameState.h"
@@ -24,7 +24,7 @@ public:
     void updateDelta();
     void updateSFMLEvents();
     void update();
-    void render();
+    void render(float frameProgress);
 };
 
 #endif
