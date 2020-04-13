@@ -188,6 +188,7 @@ void Enemy::render(float frameProgress)
     this->shape.setPosition(this->getInterpolatedPosition(frameProgress));
     Engine::getInstance()->renderDrawable(&shape);
     this->weapon->render();
+    this->collisionArea->render();
 
     if(false)
     {

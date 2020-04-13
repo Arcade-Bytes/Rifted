@@ -236,6 +236,7 @@ void Player::render(float frameProgress)
     this->sword->render();
     this->hammer->render();
     this->shield->render();
+    //this->collisionArea->render();
 }
 
 //GET DATA TO SAVE

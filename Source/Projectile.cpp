@@ -59,6 +59,7 @@ bool Projectile::checkInteraction(HitboxType type)
     {
         switch(type)
         {
+            case NO_COLLISION:
             case PLAYER_ATTACK:
             case PLAYER:
             result = false; break;
@@ -69,6 +70,7 @@ bool Projectile::checkInteraction(HitboxType type)
     {   
         switch(type)
         {
+            case NO_COLLISION:
             case ENEMY_ATTACK:
             case ENEMY:
             result = false; break;

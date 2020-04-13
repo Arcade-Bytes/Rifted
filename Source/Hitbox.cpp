@@ -15,7 +15,12 @@ Hitbox::Hitbox(HitboxType type, const float& xsize, const float& ysize, const fl
     this->shape.setOrigin(this->vf_size.x/2,this->vf_size.y/2);
     this->shape.setPosition(this->vf_position);
 
-    hitboxes.push_back(this);
+    // Platforms get added to begining of list
+    // so they have priority at collision check
+    if(this->type == PLATFORM)
+        hitboxes.insert(hitboxes.begin(), this);
+    else
+        hitboxes.push_back(this);
 }
 
 Hitbox::~Hitbox()
@@ -83,6 +88,11 @@ void Hitbox::setPosition(const float& x, const float& y)
     this->vf_position.x = x;
     this->vf_position.y = y;
     this->shape.setPosition(this->vf_position);
+}
+
+void Hitbox::setPosition(sf::Vector2f pos)
+{
+    this->setPosition(pos.x, pos.y);
 }
 
 sf::Vector2f Hitbox::getSize()

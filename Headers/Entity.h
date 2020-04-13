@@ -41,6 +41,8 @@ protected:
     sf::Vector2f vf_position;
 
     Hitbox* hitbox;
+    Hitbox* collisionArea;
+    int collisionsCalculated;
     MovementComponent* movement;
     AnimationComponent* animation;
 
@@ -85,7 +87,7 @@ public:
     void checkCollisions();
     bool checkObstacleCollision(Hitbox* hitbox);
     bool checkInteractionCollision(Hitbox* hitbox);
-    Hitbox* makeCollisionArea();
+    void calculateCollisionArea();
     virtual bool checkObstacle(Hitbox* hitbox) = 0;
     virtual bool checkInteraction(Hitbox* hitbox) = 0;
 
