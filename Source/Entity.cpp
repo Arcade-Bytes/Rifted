@@ -24,16 +24,20 @@ Entity::Entity(const float& maxHealth)
     
     this->movement = new MovementComponent(&this->vf_position, 400.0f, 650.33f, sf::Vector2f(400.0f, 800.0f));
     this->hitbox = NULL;
+    this->collisionArea = new Hitbox(NO_COLLISION, 0,0, 0,0);;
     this->animation = NULL;
+    this->collisionsCalculated = 5;
 
     this->initSize(sf::Vector2f(50,50));
     this->setPosition(350,350);
+    this->vf_previousPosition = this->vf_nextPosition = this->vf_position;
 }
 
 Entity::~Entity()
 {
     delete this->movement;
     if(this->hitbox) delete this->hitbox;
+    if(this->collisionArea) delete this->collisionArea;
     if(this->animation) delete this->animation;
 }
 
@@ -58,7 +62,13 @@ void Entity::setPosition(sf::Vector2f pos)
 {
     this->vf_position = pos;
     this->shape.setPosition(this->vf_position);
-    if(this->hitbox) this->hitbox->setPosition(this->vf_position.x, this->vf_position.y);
+    if(this->hitbox) this->hitbox->setPosition(this->vf_position);
+}
+
+void Entity::initPosition(sf::Vector2f pos)
+{
+    this->setPosition(pos);
+    this->vf_previousPosition = this->vf_nextPosition = this->vf_position;
 }
 
 sf::Vector2f Entity::getSize()
@@ -169,28 +179,56 @@ void Entity::checkCollisions()
 {
     // Status info reset
     this->i_wallCollision = this->i_nearPlatformEnd = 0;
-
     this->b_isGrounded = false;
-    bool collidedWithPriorityHitbox = false;
-    float xThreshold = this->getSize().x/8;
-    float yThreshold = this->getSize().y/8;
+
+    this->calculateCollisionArea();
 
     std::vector<Hitbox*>* hitboxes = Hitbox::getAllHitboxes();
-    for(int i=hitboxes->size()-1; i>=0; i--)
+    for(unsigned int i=0; i<hitboxes->size(); i++)
     {
         Hitbox* hitbox = (*hitboxes)[i];
-        // Check platform collisions
-        if(this->checkObstacle(hitbox) && (hitbox->getType()==PLATFORM || !collidedWithPriorityHitbox))
+
+        if(this->collisionArea->checkBooleanCollision(hitbox))
         {
+            // Check platform collisions
+            bool collided = this->checkObstacleCollision(hitbox);
+            if(collided)
+            {
+                // Update collision area
+                this->setPosition(this->vf_position);
+                this->calculateCollisionArea();
+            }
+
+            // Check damage areas
+            this->checkInteractionCollision(hitbox);
+        }
+    }
+}
+
+bool Entity::checkObstacleCollision(Hitbox* hitbox)
+{
+    float xThreshold = this->getSize().x/32;
+    float yThreshold = this->getSize().y/32;
+    bool result = false;
+
+    if(this->checkObstacle(hitbox))
+    {
+        // Copy the destination
+        sf::Vector2f currentPos = this->vf_position;
+
+        // Check collision with interpolation
+        for(int i=1; i<=collisionsCalculated && !result; i++)
+        {
+            this->setPosition(
+                this->vf_nextPosition + ((currentPos - this->vf_nextPosition) * (float)i*(1.0f/collisionsCalculated))
+            );
             // Check how much they collided and push the entity out of the platform
             sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
             if(intersection.x != 0.0f || intersection.y != 0.0f)
             {
-                if(hitbox->getType()==PLATFORM) collidedWithPriorityHitbox = true;
-
+                result = true;
                 if(abs(intersection.x) <= xThreshold && abs(intersection.y) <= yThreshold)
                 {
-                    //this->movement->undoMove(1,1);
                     this->movement->stop();
                     this->vf_position.x += intersection.x;
                     this->vf_position.y += intersection.y;
@@ -198,10 +236,11 @@ void Entity::checkCollisions()
                 if(abs(intersection.y) < abs(intersection.x))
                 {
                     if(abs(intersection.y) <= yThreshold)
-                        this->movement->undoMove(0,1);
+                        this->vf_position.y = this->vf_nextPosition.y;
                     else
                         this->vf_position.y += intersection.y;
                     this->movement->stopY();
+                    this->vf_position.x = currentPos.x;
 
                     // Stepping on a platform
                     if(intersection.y < 0) {
@@ -217,49 +256,86 @@ void Entity::checkCollisions()
                 else
                 {
                     if(abs(intersection.x) <= xThreshold)
-                        this->movement->undoMove(1,0);
+                        this->vf_position.x = this->vf_nextPosition.x;
                     else
                         this->vf_position.x += intersection.x;
                     this->movement->stopX();
+                    this->vf_position.y = currentPos.y;
 
                     if(intersection.x > 0) i_wallCollision = -1;
                     else                   i_wallCollision = 1;
                 }
-                this->setPosition(this->vf_position);
             }
         }
-
-        // Check damage areas
-        if(this->checkInteraction(hitbox))
-        {
-            sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
-            if(!this->b_isInvulnerable && (intersection.x != 0.0f || intersection.y != 0.0f))
-            {
-                float damage = hitbox->getDamage();
-                damage *= 1 - this->getResistance(hitbox->getDamageType());
-                float finalDamage = this->getHurt(damage);
-
-                sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
-                sf::Vector2f knockback = hitbox->getKnockback();
-                this->movement->stopY();
-                this->knockback(
-                    knockback.x * (diff.x < 0 ? 1 : -1),
-                    knockback.y
-                );
-
-                if(finalDamage > 0.0f)
-                {
-                    this->b_isInvulnerable = true;
-                    this->f_invulnerabilityTime = 1.0f;
-                }
-
-                if(hitbox->getType() == LETHAL)
-                {
-                    this->trulyDie();
-                }
-            }
-        }
+        if(!result) this->setPosition(currentPos);
+        else        this->setPosition(this->vf_position);
     }
+    return result;
+}
+
+bool Entity::checkInteractionCollision(Hitbox* hitbox)
+{
+    if(this->checkInteraction(hitbox))
+    {
+        sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
+        if(!this->b_isInvulnerable && (intersection.x != 0.0f || intersection.y != 0.0f))
+        {
+            float damage = hitbox->getDamage();
+            damage *= 1 - this->getResistance(hitbox->getDamageType());
+            float finalDamage = this->getHurt(damage);
+
+            sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
+            sf::Vector2f knockback = hitbox->getKnockback();
+            this->movement->stopY();
+            this->knockback(
+                knockback.x * (diff.x < 0 ? 1 : -1),
+                knockback.y
+            );
+
+            if(finalDamage > 0.0f)
+            {
+                this->b_isInvulnerable = true;
+                this->f_invulnerabilityTime = 1.0f;
+            }
+
+            if(hitbox->getType() == LETHAL)
+            {
+                this->trulyDie();
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+void Entity::calculateCollisionArea()
+{
+    sf::Vector2f size;
+    sf::Vector2f pos;
+
+    // Calculate size
+    size = this->vf_position - this->vf_nextPosition;
+    size.x = abs(size.x) + this->getSize().x;
+    size.y = abs(size.y) + this->getSize().y;
+
+    // Calculate position
+    if(this->vf_position.x < this->vf_nextPosition.x)   pos.x = this->vf_position.x;
+    else                                                    pos.x = this->vf_nextPosition.x;
+    if(this->vf_position.y < this->vf_nextPosition.y)   pos.y = this->vf_position.y;
+    else                                                    pos.y = this->vf_nextPosition.y;
+
+    // Adjust position
+    pos.x -= this->getSize().x/2.0f;
+    pos.y -= this->getSize().y/2.0f;
+    pos.x += size.x / 2.0f;
+    pos.y += size.y / 2.0f;
+
+    // Increase the size a bit
+    size.x += this->getSize().x / 4.0f;
+    size.y += this->getSize().y / 4.0f;
+
+    this->collisionArea->setSize(size.x, size.y);
+    this->collisionArea->setPosition(pos.x, pos.y);
 }
 
 void Entity::updateAnimation()
@@ -334,11 +410,24 @@ void Entity::update()
     this->updateMovement();
     this->updateAnimation();
     this->updateInvulnerability();
+    this->updateInterpolationPositions();
 }
 
-void Entity::render()
+void Entity::render(float frameProgress)
 {
+    this->shape.setPosition(this->getInterpolatedPosition(frameProgress));
     Engine::getInstance()->renderDrawable(&shape);
+}
+
+sf::Vector2f Entity::getInterpolatedPosition(float frameProgress)
+{
+    return this->vf_previousPosition + (this->vf_nextPosition - this->vf_previousPosition) * frameProgress;
+}
+
+void Entity::updateInterpolationPositions()
+{
+    this->vf_previousPosition = this->vf_nextPosition;
+    this->vf_nextPosition = this->vf_position;
 }
 
 std::string Entity::getMaxHealth()

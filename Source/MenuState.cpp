@@ -84,7 +84,7 @@ void MenuState:: update(){
     }
 }
 
-void MenuState:: render(){
+void MenuState:: render(float frameProgress){
 
     Engine* engine = Engine::getInstance();
     engine->setFollowView(false);

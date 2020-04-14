@@ -1,7 +1,5 @@
 #include "Projectile.h"
 
-// std::vector<Projectile*> Projectile::Projectiles;
-
 Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, float speed, float damage, bool isPlayer, sf::Vector2f knockback)
 {
     this->vf_position = position;
@@ -15,7 +13,7 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, float spee
     this->shape.setSize({60, 10});
     this->shape.setFillColor(sf::Color(128,90,70));
 
-    // Projectile::Projectiles.push_back(this);
+    this->vf_previousPosition = this->vf_nextPosition = this->vf_position;
 }
 
 Projectile::~Projectile()
@@ -61,6 +59,7 @@ bool Projectile::checkInteraction(HitboxType type)
     {
         switch(type)
         {
+            case NO_COLLISION:
             case PLAYER_ATTACK:
             case PLAYER:
             result = false; break;
@@ -71,6 +70,7 @@ bool Projectile::checkInteraction(HitboxType type)
     {   
         switch(type)
         {
+            case NO_COLLISION:
             case ENEMY_ATTACK:
             case ENEMY:
             result = false; break;
@@ -86,13 +86,26 @@ bool Projectile::isDestroyed()
     return this->b_isDestroyed;
 }
 
+sf::Vector2f Projectile::getInterpolatedPosition(float frameProgress)
+{
+    return this->vf_previousPosition + (this->vf_nextPosition - this->vf_previousPosition) * frameProgress;
+}
+
+void Projectile::updateInterpolationPositions()
+{
+    this->vf_previousPosition = this->vf_nextPosition;
+    this->vf_nextPosition = this->vf_position;
+}
+
 void Projectile::update()
 {
     this->updateMovement();
     this->checkCollisions();
+    this->updateInterpolationPositions();
 }
 
-void Projectile::render()
+void Projectile::render(float frameProgress)
 {
+    this->shape.setPosition(this->getInterpolatedPosition(frameProgress));
     Engine::getInstance()->renderDrawable(&this->shape);
 }

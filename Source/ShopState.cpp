@@ -251,7 +251,7 @@ void ShopState:: update(){
     }
 }
 
-void ShopState:: render(){
+void ShopState:: render(float frameProgress){
     Engine::getInstance()->setFollowView(false);
     drawParchment();
     drawPlayerData();

@@ -24,7 +24,7 @@ public:
     ~MenuState();
 
     void update();
-    void render();
+    void render(float frameProgress);
     void drawText();
     void drawArrow();
     void endState();

@@ -31,7 +31,7 @@ public:
     void setPlayer(Player* player);
 
     virtual void update() = 0;
-    virtual void render() = 0;
+    virtual void render(float frameProgress) = 0;
     void changeState(StateType target, bool reInit);
 };
 

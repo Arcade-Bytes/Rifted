@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
-#include<stdlib.h>
-#include "../tinyxml2-master/tinyxml2.h"
+#include <stdlib.h>
+#include <tinyxml2.h>
 #include "Player.h"
 
 #define SFL_TEMPLATE_FILE "savedata/saveSAFE"

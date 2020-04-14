@@ -7,6 +7,7 @@ project(Rifted)
 add_library(libModulos STATIC)
 add_subdirectory(Headers)
 add_subdirectory(tinyxml2-master)
+add_subdirectory(rapidjson-master)
 
 #Opciones a pasar al compilador de C++
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -Wall -Wextra")

@@ -8,8 +8,8 @@ Player::Player(const float& maxHealth)
 
     this->i_nchunks = 4;
 
-    this->sword = new Weapon(0.3f, 0.1f, 0.1f, 40, 60, 30, true, {500.0f, 0.0f}, LIGHT_ATTACK);
-    this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 60, 70, 60, true, {1000.0f, 0.0f}, HEAVY_ATTACK);
+    this->sword = new Weapon(0.3f, 0.1f, 0.1f, 50, 60, 30, true, {500.0f, 0.0f}, LIGHT_ATTACK);
+    this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 80, 70, 60, true, {1000.0f, 0.0f}, HEAVY_ATTACK);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
     this->bow = new RangedWeapon(0.6f, 0.1f, 20, true, this->b_facingRight);
 
@@ -218,18 +218,25 @@ void Player::update()
 
     // Update general stuff
     this->Entity::update();
-
-    // Update shield state
-    this->shield->setPosition(this->vf_position.x, this->vf_position.y, this->b_facingRight);
 }
 
-void Player::render()
+void Player::render(float frameProgress)
 {
+    // Interpolate player position
+    sf::Vector2f pos = this->getInterpolatedPosition(frameProgress);
+    this->shape.setPosition(pos);
+
+    // Interpolate weapons and tools position
+    this->sword->setPosition(pos.x, pos.y, this->b_facingRight);
+    this->hammer->setPosition(pos.x, pos.y, this->b_facingRight);
+    this->shield->setPosition(pos.x, pos.y, this->b_facingRight);
+
+    // Render
     Engine::getInstance()->renderDrawable(&shape);
     this->sword->render();
     this->hammer->render();
     this->shield->render();
-    //this->hitbox->render();
+    //this->collisionArea->render();
 }
 
 //GET DATA TO SAVE

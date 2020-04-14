@@ -65,7 +65,7 @@ void TextState:: update()
     }
 }
 
-void TextState:: render(){
+void TextState:: render(float frameProgress){
 
     Engine* engine = Engine::getInstance();
     engine->setFollowView(false);

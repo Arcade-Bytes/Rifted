@@ -19,7 +19,7 @@ public:
     bool nextQuote();
 
     void update();
-    void render();
+    void render(float frameProgress);
 };
 
 #endif

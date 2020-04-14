@@ -52,7 +52,7 @@ public:
     void resizeItems(sf::Vector2f scaleRatio);
 
     void update();
-    void render();
+    void render(float frameProgress);
 };
 
 #endif

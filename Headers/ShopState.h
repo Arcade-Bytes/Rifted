@@ -42,7 +42,7 @@ public:
     ~ShopState();
 
     void update();
-    void render();
+    void render(float frameProgress);
 
     void initPlayerData();
 

@@ -41,11 +41,13 @@ public:
     // Position related
     sf::Vector2f getPosition();
     void setPosition(const float& x, const float& y);
+    void setPosition(sf::Vector2f pos);
     sf::Vector2f getSize();
     void setSize(const float& x, const float& y);
     void scale(sf::Vector2f scaleRatio);
 
     // Collision related
+    bool checkBooleanCollision(Hitbox* other);
     sf::Vector2f checkCollision(Hitbox* other);
     sf::FloatRect getBounds();
 

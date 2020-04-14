@@ -13,7 +13,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     // Player init
     this->player = player;
     this->player->setSize(sf::Vector2f(tileSize.x*2,tileSize.y*2));
-    this->player->setPosition(
+    this->player->initPosition(
         this->map->getPlayerPosition()
     );
     this->player->linkWorldProjectiles(this->projectiles);
@@ -70,7 +70,7 @@ void Level::initObjectData()
     for(auto data : objectData)
     {
         Enemy* enemy = EnemyFactory::makeEnemy(this->player, data.size, data.type);
-        enemy->setPosition(data.positon);
+        enemy->initPosition(data.positon);
         enemy->linkWorldProjectiles(this->projectiles);
         this->enemies.push_back(enemy);
     }
@@ -177,10 +177,10 @@ void Level::initViewLimits()
     }
 }
 
-void Level::adjustPlayerView()
+void Level::adjustPlayerView(float frameProgress)
 {
     // Read player position and clamp it if necessary
-    sf::Vector2f playerPosition = this->player->getPosition();
+    sf::Vector2f playerPosition = this->player->getInterpolatedPosition(frameProgress);
     if(playerPosition.x < limitLeftUp.x)            playerPosition.x = limitLeftUp.x;
     else if(playerPosition.x > limitRightDown.x)    playerPosition.x = limitRightDown.x;
     if(playerPosition.y < limitLeftUp.y)            playerPosition.y = limitLeftUp.y;
@@ -274,6 +274,15 @@ void Level::resetNextState()
     this->nextState = GAME_STATE;
 }
 
+void Level::forceInterpolationUpdate()
+{
+    this->player->updateInterpolationPositions();
+    for(auto enemy : enemies)
+        enemy->updateInterpolationPositions();
+    for(auto projectile : projectiles)
+        projectile->updateInterpolationPositions();
+}
+
 void Level::update()
 {
     // Entity updates
@@ -318,6 +327,7 @@ void Level::update()
                     this->player->setNear(npcs[i]->getDialogue());
                     this->nextState = TEXT_STATE;
                 }
+                this->forceInterpolationUpdate();
             }
         }
     }
@@ -328,13 +338,13 @@ void Level::update()
 
     // Check level exit reached
     this->checkLevelExitReached();
-
-    // Adjust view
-    this->adjustPlayerView();
 }
 
-void Level::render()
+void Level::render(float frameProgress)
 {
+    // Adjust view
+    this->adjustPlayerView(frameProgress);
+
     Engine::getInstance()->setFollowView(true);
     this->map->render();
 
@@ -345,17 +355,17 @@ void Level::render()
         npc->render();
 
     for(auto projectile : projectiles)
-        projectile->render();
+        projectile->render(frameProgress);
 
     for(auto enemy: enemies)
-        enemy->render();
+        enemy->render(frameProgress);
 
     for(auto coin : coins)
         coin->render();
     for(auto tool : tools)
         tool->render();
 
-    this->player->render();
+    this->player->render(frameProgress);
 
     for(auto door: doors)
         door->render();

@@ -183,8 +183,9 @@ void Enemy::update()
     this->Entity::update();
 }
 
-void Enemy::render()
+void Enemy::render(float frameProgress)
 {
+    this->shape.setPosition(this->getInterpolatedPosition(frameProgress));
     Engine::getInstance()->renderDrawable(&shape);
     this->weapon->render();
 
@@ -194,14 +195,14 @@ void Enemy::render()
         aggroArea.setFillColor(sf::Color(0, 0, 0, 0));
         aggroArea.setOutlineThickness(5);
         aggroArea.setOutlineColor(sf::Color(170, 50, 0));
-        aggroArea.setPosition(this->getPosition());
+        aggroArea.setPosition(this->shape.getPosition());
         aggroArea.setOrigin(this->f_aggroDistance,this->f_aggroDistance);
 
         sf::CircleShape attackArea(this->f_attackDistance);
         attackArea.setFillColor(sf::Color(0, 0, 0, 0));
         attackArea.setOutlineThickness(5);
         attackArea.setOutlineColor(sf::Color(230, 0, 0));
-        attackArea.setPosition(this->getPosition());
+        attackArea.setPosition(this->shape.getPosition());
         attackArea.setOrigin(this->f_attackDistance,this->f_attackDistance);
 
         Engine* engine = Engine::getInstance();

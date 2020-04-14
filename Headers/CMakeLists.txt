@@ -36,5 +36,7 @@ target_sources(libModulos PRIVATE
 #Y donde se encuentran los .h
 target_include_directories(libModulos PUBLIC 
 "${CMAKE_CURRENT_SOURCE_DIR}"
+"${CMAKE_CURRENT_SOURCE_DIR}/../rapidjson-master/include/"
+"${CMAKE_CURRENT_SOURCE_DIR}/../tinyxml2-master/"
 )
 
