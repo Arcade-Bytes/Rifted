@@ -4,7 +4,7 @@
 #include "Engine.h"
 #include "Hitbox.h"
 #include "ResourceManager.h"
-#include "../tinyxml2-master/tinyxml2.h"
+#include <tinyxml2.h>
 
 using namespace tinyxml2;
 

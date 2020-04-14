@@ -6,7 +6,7 @@ Weapon::Weapon(const float& cooldown, const float& timeToAttack, const float& wi
 {
     this->vf_size = {xsize, ysize};
     this->b_isAttacking = false;
-    this->f_reach = 30.0f;
+    this->f_reach = 20.0f;
 
     this->hitbox = new Hitbox(isPlayer ? PLAYER_ATTACK : ENEMY_ATTACK, 0,0, 0,0, this->f_baseDamage, knockback, dmgType);
     this->hitbox->setColor(sf::Color(55,55,55,200));
