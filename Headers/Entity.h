@@ -71,7 +71,9 @@ public:
     float getResistance(DamageType type);
     virtual float getHurt(float& damage);
     virtual float getHealed(float& healing);
+    // Meant to be overrided: What this entity does when its life points reach 0
     virtual void die();
+    // Meant to be overrided: What this entity does when it hits a Lethal Area (Hitbox type / Map area)
     virtual void trulyDie();
     void revive();
 

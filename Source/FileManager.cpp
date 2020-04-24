@@ -178,12 +178,14 @@ namespace ftl{
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_HEALTH)->SetText(player.getHealth().c_str());
         //maxhealth
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_MAXHEALTH)->SetText(player.getMaxHealth().c_str());
+        //remaining potions
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_POTIONS)->SetText(player.getPotionsLeft().c_str());
         //kills
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_KILLS)->SetText(player.getKills().c_str());
-        //deaths?
+        //deaths
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_DEATHS)->SetText(player.getDeaths().c_str());
-        //score?
-        //  xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_)->SetText();
+        //score
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_SCORE)->SetText(player.getScore().c_str());
         //upgrades
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_UPG)->FirstChildElement(SFL_HEALTH)->SetText(player.getHealthUpg().c_str());
         //level
@@ -214,11 +216,15 @@ namespace ftl{
         //health
         player.setHealth(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_HEALTH)->GetText()));
         //maxhealth
-        player.setMaxHealth(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_MAXHEALTH)->GetText()));        
+        player.setMaxHealth(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_MAXHEALTH)->GetText())); 
+        //remaining potions
+        player.setRemainingPotions(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_POTIONS)->GetText()));       
         //kills
         player.setKills(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_KILLS)->GetText()));        
         //deaths?
-        player.setDeaths(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_DEATHS)->GetText()));        
+        player.setDeaths(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_DEATHS)->GetText()));  
+        //score
+        player.setScore(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_SCORE)->GetText()));         
         //upgrades
         player.setHealthUpg(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_UPG)->FirstChildElement(SFL_HEALTH)->GetText()));        
         //level

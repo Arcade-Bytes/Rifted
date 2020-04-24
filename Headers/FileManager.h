@@ -18,6 +18,8 @@
 #define SFL_COINS "coin"
 #define SFL_DEATHS "deaths"
 #define SFL_KILLS "kills"
+#define SFL_SCORE "score"
+#define SFL_POTIONS "potions"
 #define SFL_UPG "upgrades"
 #define SFL_LVL "level"
 #define SFL_LVLNAME "name"
