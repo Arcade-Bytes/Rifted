@@ -346,6 +346,11 @@ void Player::setDeaths(int i_deaths)
 void Player::setHealthUpg(int i_healthupg)
 {
     this->i_healthUpg = i_healthupg;
+
+    // Recalculate max life and chunks
+    float chunkSize = this->f_maxHealth / this->i_nchunks;
+    this->i_nchunks = 4 + this->i_healthUpg;
+    this->setMaxHealth(chunkSize * this->i_nchunks);
 }
 
 void Player::setLevel(std::string s_levelName)

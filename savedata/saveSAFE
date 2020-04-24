@@ -1,5 +1,4 @@
 <player>
-    <maxhealth>100.000000</maxhealth>
     <health>100.000000</health>
     <coin>0</coin>
     <potions>3</potions>

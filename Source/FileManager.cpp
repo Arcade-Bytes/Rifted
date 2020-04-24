@@ -176,8 +176,6 @@ namespace ftl{
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_COINS)->SetText(player.getMony().c_str());
         //health
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_HEALTH)->SetText(player.getHealth().c_str());
-        //maxhealth
-        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_MAXHEALTH)->SetText(player.getMaxHealth().c_str());
         //remaining potions
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_POTIONS)->SetText(player.getPotionsLeft().c_str());
         //kills
@@ -215,8 +213,6 @@ namespace ftl{
         player.setMony(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_COINS)->GetText()));
         //health
         player.setHealth(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_HEALTH)->GetText()));
-        //maxhealth
-        player.setMaxHealth(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_MAXHEALTH)->GetText())); 
         //remaining potions
         player.setRemainingPotions(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_POTIONS)->GetText()));       
         //kills
