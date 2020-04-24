@@ -136,7 +136,7 @@ bool Player::getIsWeaponUnlocked(std::string weaponName)
 
 void Player::die()
 {
-    this->f_currentHealth = this->f_maxHealth / this->i_nchunks;
+    this->f_currentHealth = 1;
     this->i_score /= 2;
 }
 
@@ -214,7 +214,7 @@ void Player::update()
         this->bow->startAttack();
         this->b_mutexAttack = true;
     }
-    else if(!b_mutexAttack && this->i_potions > 0 && Engine::getInstance()->getKeyPressed(sf::Keyboard::Y))
+    else if(!b_mutexAttack && this->i_potions > 0 && Engine::getInstance()->getKeyPressed(sf::Keyboard::Num4))
     {
         this->i_potions--;
         this->getHealed(this->f_maxHealth);
