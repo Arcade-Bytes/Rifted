@@ -10,6 +10,7 @@ private:
     bool b_isActive;
     sf::Vector2f vf_position;
     sf::RectangleShape shape;
+    sf::Clock toggleClock;
 public:
     Lever();
     ~Lever();
@@ -27,6 +28,11 @@ public:
 
     void update();
     void render();
+
+    //Toggle control
+
+    float getToggleTime();
+    void restartToggleTime();
 };
 
 #endif
