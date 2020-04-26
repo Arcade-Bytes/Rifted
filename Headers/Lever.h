@@ -29,6 +29,8 @@ public:
     void update();
     void render();
 
+    //Toggle control
+
     float getToggleTime();
     void restartToggleTime();
 };
