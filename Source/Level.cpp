@@ -180,7 +180,7 @@ void Level::initViewLimits()
         limitRightDown.y    = mapSize.y - windowSize.y/2;
     }
 }
-
+    //Adjust player view depending on player position
 void Level::adjustPlayerView(float frameProgress)
 {
     // Read player position and clamp it if necessary
@@ -193,7 +193,7 @@ void Level::adjustPlayerView(float frameProgress)
     Engine::getInstance()->setViewCenter(playerPosition);
 }
 
-// Checks
+//Checks if player collides to level exit to change map
 void Level::checkLevelExitReached()
 {
     for(unsigned int i=0; i<exits.size(); i++)
@@ -205,7 +205,7 @@ void Level::checkLevelExitReached()
         }
     }
 }
-
+//Deletes enemies marked as dead
 void Level::checkEnemyDeaths()
 {
     int killed = 0;
@@ -224,6 +224,7 @@ void Level::checkEnemyDeaths()
     this->player->addKill(killed);
 }
 
+//Deletes the bullets tagged destroyed
 void Level::checkDestroyedBullets()
 {
     for(auto iter = projectiles.begin() ; iter != projectiles.end() ; ++iter)
@@ -306,6 +307,7 @@ void Level::update()
                 lever->interact();
         }
 
+    //If the lever is hit by a player attack it toggles (and if somo time after last toogle has passed)
     for(auto lever: levers){
         for(auto box: cajas){
             if(box->getType() == PLAYER_ATTACK && lever->getToggleTime()>0.5f && box->getSize().x > 0){
@@ -335,6 +337,7 @@ void Level::update()
         }
     }
 
+    //If player is near an NPC, it interacts with it
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
         for(unsigned int i = 0; i< npcs.size(); i++){
             if(NPCisNear(npcs[i])){
@@ -371,7 +374,7 @@ void Level::render(float frameProgress)
         
     for(auto npc: npcs){
         npc->render();
-        if(NPCisNear(npc))
+        if(NPCisNear(npc)) //If there is an NPC near we render the dialogue bubble
             renderDialogueBubble(npc);    
         
     }
@@ -396,6 +399,8 @@ void Level::render(float frameProgress)
         exit->render();
 }
 
+//Checks if NPC is near player
+
 bool Level::NPCisNear(NPC* npc){
 
     bool near = false;
@@ -408,6 +413,8 @@ bool Level::NPCisNear(NPC* npc){
     return near;
 
 }
+
+//Renders the dialogue bubble
 
 void Level:: renderDialogueBubble(NPC* npc){
 

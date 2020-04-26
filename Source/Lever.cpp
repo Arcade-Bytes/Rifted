@@ -45,7 +45,7 @@ void Lever::setSize(sf::Vector2f size)
     this->shape.setSize(size);
     this->shape.setOrigin(this->shape.getSize().x/2,this->shape.getSize().y/2);
 }
-
+// Link door to lever
 void Lever::addDoor(Door* door)
 {
     v_doorPointers.push_back(door);
@@ -56,6 +56,7 @@ bool Lever::getIsActive()
     return this->b_isActive;
 }
 
+//Changes sprites of door and lever depending on state
 void Lever::interact()
 {
     b_isActive = !b_isActive;

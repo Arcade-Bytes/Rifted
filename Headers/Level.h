@@ -39,7 +39,7 @@ private:
 
     Map* map;
 
-    //SOME TESTS
+    //Variables for bubble to interact
     sf::RectangleShape keyToPress;
     sf::RectangleShape infoBox;
 
@@ -69,7 +69,7 @@ public:
     void resetNextState();
     void forceInterpolationUpdate();
 
-    //NPCs interaction tests
+    //NPCs interaction 
     bool NPCisNear(NPC* npc);
     void renderDialogueBubble(NPC* npc);
 
