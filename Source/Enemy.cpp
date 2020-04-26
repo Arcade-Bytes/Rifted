@@ -22,6 +22,7 @@ Enemy::~Enemy()
 }
 
 // Factory setters
+    //Equip physical weapon
 void Enemy::setWeapon(const float& cooldown, const float& timeToAttack,
     const float& window, const float& xsize, const float& ysize,
     float damage, sf::Vector2f knockback, DamageType dmgType)
@@ -29,36 +30,37 @@ void Enemy::setWeapon(const float& cooldown, const float& timeToAttack,
     if(this->weapon) delete this->weapon;
     this->weapon = new Weapon(cooldown, timeToAttack, window, xsize, ysize, damage, false, knockback, dmgType);
 }
-
+    //Equip ranged weapon
 void Enemy::setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage, sf::Vector2f knockback)
 {
     if(this->weapon) delete this->weapon;
     this->weapon = new RangedWeapon(cooldown, timeToAttack, damage, false, this->b_facingRight, knockback);
 }
-
+    //Animation control
 void Enemy::setAnimation(std::string animationFile)
 {
     if(this->animation) delete this->animation;
     this->animation = new AnimationComponent(this->shape);
     this->animation->loadAnimationsFromJSON("animations/"+animationFile);
 }
-
+    //Control of enemies speed
 void Enemy::setMaxSpeed(const float&maxX, const float&maxY)
 {
     this->movement->setMaxSpeed(sf::Vector2f(maxX, maxY));
 }
 
+    //Set aggro range
 void Enemy::setAIDistances(float aggro, float attack)
 {
     this->f_aggroDistance = aggro;
     this->f_attackDistance = attack;
 }
-
+    //Activating ranged state for ranged enemies
 void Enemy::setRangedMode(bool ranged)
 {
     this->b_isRanged = ranged;
 }
-
+    //Activate patrol state
 void Enemy::setDoPatrol(bool patrol)
 {
     this->b_doesPatrol = patrol;
@@ -76,7 +78,7 @@ void Enemy::attack()
         weapon->startAttack();
     }
 }
-
+//AI control related stuff
 void Enemy::updateAI()
 {
     sf::Vector2f diff = (this->player->getPosition() - this->vf_position);
@@ -119,12 +121,11 @@ void Enemy::updateAIState(const float& distance, const float& yDiff)
         state = EnemyPatrolling;
     }
 }
-
+// Death control
 void Enemy::die()
 {
     this->b_isDead = true;
 }
-
 void Enemy::trulyDie()
 {
     this->die();
