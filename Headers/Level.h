@@ -38,6 +38,11 @@ private:
     std::vector<LevelExit*> exits;
 
     Map* map;
+
+    //SOME TESTS
+    sf::RectangleShape keyToPress;
+    sf::RectangleShape infoBox;
+
 public:
     Level(Player* player, std::string mapName, const int& entranceIndex);
     ~Level();
@@ -63,6 +68,10 @@ public:
     StateType getNextState();
     void resetNextState();
     void forceInterpolationUpdate();
+
+    //NPCs interaction tests
+    bool NPCisNear(NPC* npc);
+    void renderDialogueBubble(NPC* npc);
 
     void update();
     void render(float frameProgress);

@@ -80,6 +80,7 @@ public:
 
     void update();
     void render(float frameProgress);
+
 };
 
 #endif

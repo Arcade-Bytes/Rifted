@@ -10,6 +10,7 @@ Lever::Lever()
     this->shape.setTextureRect(sf::IntRect(162,163,162,162));
     this->setSize(sf::Vector2f(70,70));
     this->shape.setPosition(this->vf_position);
+    toggleClock.restart();
 }
 
 Lever::~Lever()
@@ -78,4 +79,15 @@ void Lever::update()
 void Lever::render()
 {
     Engine::getInstance()->renderDrawable(&shape);
+}
+
+float Lever::getToggleTime(){
+
+    return toggleClock.getElapsedTime().asSeconds();
+
+}
+void Lever::restartToggleTime(){
+
+    toggleClock.restart();
+
 }
