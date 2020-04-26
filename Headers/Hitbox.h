@@ -2,6 +2,7 @@
 #define HITBOX_H
 
 #include "Engine.h"
+#include <math.h>
 
 enum HitboxType {NO_COLLISION = 0, PLATFORM, PLAYER, ENEMY, LETHAL, PLAYER_ATTACK, ENEMY_ATTACK, LEVER, EXIT};
 enum DamageType {LIGHT_ATTACK, HEAVY_ATTACK, RANGED_ATTACK};

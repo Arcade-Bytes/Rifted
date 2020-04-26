@@ -7,6 +7,7 @@ Player::Player(const float& maxHealth)
     this->hitbox = new Hitbox(PLAYER, this->shape.getSize().x,this->shape.getSize().y, this->vf_position.x,this->vf_position.y);
 
     this->i_nchunks = 4;
+    this->i_maxPotions = 3;
 
     this->sword = new Weapon(0.3f, 0.1f, 0.1f, 50, 60, 30, true, {500.0f, 0.0f}, LIGHT_ATTACK);
     this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 80, 70, 60, true, {1000.0f, 0.0f}, HEAVY_ATTACK);
@@ -32,6 +33,9 @@ float Player::getHurt(float& damage)
     damage *= this->shield->DamageBlock();
     float hurtAmount = this->Entity::getHurt(damage);
     f_regenerationDelta = 0.0f;
+
+    printf("I got hurt by %f, my life is %f / %f\n", damage, f_currentHealth, f_maxHealth);
+
     return hurtAmount;
 }
 
@@ -39,6 +43,7 @@ float Player::getHealed(float& healing)
 {
     float healAmount = this->Entity::getHealed(healing);
     f_regenerationDelta = 0.0f;
+    printf("I got healed by %f, my life is %f / %f\n", healing, f_currentHealth, f_maxHealth);
     return healAmount;
 }
 
@@ -61,6 +66,16 @@ void Player::regenerate()
         if(f_currentHealth >= i_currentChunk * chunkSize)
             f_currentHealth = i_currentChunk * chunkSize;
     }
+}
+
+int Player::getMaxPotions()
+{
+    return this->i_maxPotions;
+}
+
+int Player::getRemainingPotions()
+{
+    return this->i_potions;
 }
 
 void Player::pickCoin(int value)
@@ -121,7 +136,8 @@ bool Player::getIsWeaponUnlocked(std::string weaponName)
 
 void Player::die()
 {
-    //this->f_score /= 2;
+    this->f_currentHealth = 1;
+    this->i_score /= 2;
 }
 
 void Player::trulyDie()
@@ -198,7 +214,12 @@ void Player::update()
         this->bow->startAttack();
         this->b_mutexAttack = true;
     }
-    else if(getIsWeaponUnlocked("Shield") && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)))
+    else if(!b_mutexAttack && this->i_potions > 0 && Engine::getInstance()->getKeyPressed(sf::Keyboard::Num4))
+    {
+        this->i_potions--;
+        this->getHealed(this->f_maxHealth);
+    }
+    else if(!b_mutexAttack && getIsWeaponUnlocked("Shield") && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)))
     {
         this->shield->RiseShield();
     }
@@ -265,10 +286,14 @@ std::string Player::getDoor()
     return std::to_string(this->i_door).c_str();
 }
 
-std::string Player::getScore(){
+std::string Player::getPotionsLeft()
+{
+    return std::to_string(this->i_potions).c_str();
+}
 
+std::string Player::getScore()
+{
     return std::to_string(this->i_score).c_str();
-
 }
 
 std::string Player::getHealthUpg()
@@ -321,6 +346,11 @@ void Player::setDeaths(int i_deaths)
 void Player::setHealthUpg(int i_healthupg)
 {
     this->i_healthUpg = i_healthupg;
+
+    // Recalculate max life and chunks
+    float chunkSize = this->f_maxHealth / this->i_nchunks;
+    this->i_nchunks = 4 + this->i_healthUpg;
+    this->setMaxHealth(chunkSize * this->i_nchunks);
 }
 
 void Player::setLevel(std::string s_levelName)
@@ -351,6 +381,16 @@ void Player::setShieldLvl(int i_lvl)
 void Player::setBowLvl(int i_lvl)
 {
     this->bow->setUpgradeLvl(i_lvl);
+}
+
+void Player::setRemainingPotions(int i_pot)
+{
+    this->i_potions = i_pot;
+}
+
+void Player::setScore(int i_scr)
+{
+    this->i_score = i_scr;
 }
 
 void Player::setNear(std::vector<std::string> text)

@@ -25,7 +25,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
     switch(type)
     {
         case 1: // Basic melee
-            enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 15, {1500.0f,0.0f}, LIGHT_ATTACK);
+            enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 15, {1500.0f,500.0f}, LIGHT_ATTACK);
             enemy->setAnimation("greenEnemy.json");
             enemy->setMaxSpeed(300.0f, 800.0f);
             enemy->setAIDistances(150, 50);
