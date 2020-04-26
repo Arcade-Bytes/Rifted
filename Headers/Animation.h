@@ -32,14 +32,17 @@ public:
     Animation(sf::RectangleShape& shape, std::vector<Frame*> frames, bool looped = false);
     ~Animation();
 
+
     bool getLooped();
     bool getPaused();
     bool getDone();
+
     void setLooped(bool looped);
     void setPaused(bool paused);
     void setDone(bool done);
 
     void addFrame(Frame& frame);
+
 
     void play();
     void pause();

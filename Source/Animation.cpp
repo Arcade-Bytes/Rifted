@@ -17,7 +17,7 @@ Animation::~Animation()
 {
     
 }
-
+//State getters
 bool Animation::getLooped()
 {
     return this->isLooped;
@@ -32,7 +32,7 @@ bool Animation::getDone()
 {
     return this->isDone;
 }
-
+//State setters
 void Animation::setLooped(bool looped)
 {
     this->isLooped = looped;
@@ -57,7 +57,7 @@ void Animation::addFrame(Frame& frame)
 void Animation::play()
 {
     // TODO::
-    if(this->isPaused || this->isDone) return;
+    if(this->isPaused || this->isDone) return; //If paused or done render actual frame
 
     this->totalElapsed += Engine::getInstance()->getDelta() * 1000; // Get it as miliseconds
     
@@ -73,11 +73,11 @@ void Animation::play()
 
         if(this->currentFrameIndex >= this->frames.size())
         {
-            if(this->isLooped)
+            if(this->isLooped) // If looped restart
             {
                 this->currentFrameIndex -= this->frames.size();
             }
-            else
+            else //If not looped end
             {
                 this->isDone = true;
                 this->currentFrameIndex = this->frames.size() - 1;

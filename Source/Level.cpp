@@ -20,6 +20,10 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 
     this->initObjectData();
     this->initViewLimits();
+
+    //Dialoge box
+    keyToPress.setTexture(ResourceManager::getInstance()->loadTexture("resources/enter-key.png"));
+    infoBox.setTexture(ResourceManager::getInstance()->loadTexture("resources/text_box.png"));
 }
 
 Level::~Level()
@@ -176,7 +180,7 @@ void Level::initViewLimits()
         limitRightDown.y    = mapSize.y - windowSize.y/2;
     }
 }
-
+    //Adjust player view depending on player position
 void Level::adjustPlayerView(float frameProgress)
 {
     // Read player position and clamp it if necessary
@@ -189,7 +193,7 @@ void Level::adjustPlayerView(float frameProgress)
     Engine::getInstance()->setViewCenter(playerPosition);
 }
 
-// Checks
+//Checks if player collides to level exit to change map
 void Level::checkLevelExitReached()
 {
     for(unsigned int i=0; i<exits.size(); i++)
@@ -201,7 +205,7 @@ void Level::checkLevelExitReached()
         }
     }
 }
-
+//Deletes enemies marked as dead
 void Level::checkEnemyDeaths()
 {
     int killed = 0;
@@ -220,6 +224,7 @@ void Level::checkEnemyDeaths()
     this->player->addKill(killed);
 }
 
+//Deletes the bullets tagged destroyed
 void Level::checkDestroyedBullets()
 {
     for(auto iter = projectiles.begin() ; iter != projectiles.end() ; ++iter)
@@ -291,7 +296,7 @@ void Level::update()
     this->player->update();
     for(auto enemy: enemies)
         enemy->update();
-
+    std::vector<Hitbox *> cajas = *Hitbox::getAllHitboxes();
     // Lever testing
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return))
         for(auto lever : levers)
@@ -301,6 +306,20 @@ void Level::update()
             if(distance < lever->getSize().x)
                 lever->interact();
         }
+
+    //If the lever is hit by a player attack it toggles (and if somo time after last toogle has passed)
+    for(auto lever: levers){
+        for(auto box: cajas){
+            if(box->getType() == PLAYER_ATTACK && lever->getToggleTime()>0.5f && box->getSize().x > 0){
+                sf::Vector2f diff = lever->getPosition() - box->getPosition();
+                float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
+                if(distance < lever->getSize().x){
+                    lever->interact();
+                    lever->restartToggleTime();
+                }
+            }
+        }
+    }
 
     // Interactables
     for(auto coin : coins) {
@@ -317,10 +336,11 @@ void Level::update()
             this->player->unlockWeapon(tool->getName());
         }
     }
+
+    //If player is near an NPC, it interacts with it
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
         for(unsigned int i = 0; i< npcs.size(); i++){
-            if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 100)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 100))
-            && (this->npcs[i]->getPosition().y < (this->player->getPosition().y + 100)) && (this->npcs[i]->getPosition().y > (this->player->getPosition().y - 100))){
+            if(NPCisNear(npcs[i])){
                 if(this->npcs[i]->getImShop() == true)
                     this->nextState = SHOP_STATE;
                 else{
@@ -346,13 +366,18 @@ void Level::render(float frameProgress)
     this->adjustPlayerView(frameProgress);
 
     Engine::getInstance()->setFollowView(true);
+
     this->map->render();
 
     for(auto lever: levers)
         lever->render();
         
-    for(auto npc: npcs)
+    for(auto npc: npcs){
         npc->render();
+        if(NPCisNear(npc)) //If there is an NPC near we render the dialogue bubble
+            renderDialogueBubble(npc);    
+        
+    }
 
     for(auto projectile : projectiles)
         projectile->render(frameProgress);
@@ -372,4 +397,36 @@ void Level::render(float frameProgress)
 
     for(auto exit: exits)
         exit->render();
+}
+
+//Checks if NPC is near player
+
+bool Level::NPCisNear(NPC* npc){
+
+    bool near = false;
+
+    sf::Vector2f diff = npc->getPosition() - this->player->getPosition();
+    float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
+    if(distance < npc->getSize().x)
+        near = true;
+
+    return near;
+
+}
+
+//Renders the dialogue bubble
+
+void Level:: renderDialogueBubble(NPC* npc){
+
+    Engine* engine = Engine::getInstance();
+
+    keyToPress.setSize(sf::Vector2f(1.5 * npc->getSize().x/4, 1.5 * npc->getSize().y/4));
+    infoBox.setSize(sf::Vector2f(3 * npc->getSize().x/4, 3 * npc->getSize().y/4));
+    keyToPress.setOrigin(keyToPress.getSize().x/2,keyToPress.getSize().y/2);
+    keyToPress.setPosition(npc->getPosition().x, npc->getPosition().y - npc->getSize().y);
+    infoBox.setOrigin(infoBox.getSize().x/2,infoBox.getSize().y/2);
+    infoBox.setPosition(npc->getPosition().x, npc->getPosition().y - npc->getSize().y);
+    engine->renderDrawable(&infoBox);
+    engine->renderDrawable(&keyToPress);
+
 }
