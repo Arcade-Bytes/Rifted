@@ -440,6 +440,15 @@ std::string Entity::getHealth()
     return std::to_string(this->f_currentHealth).c_str();
 }
 
+float Entity::getFloatHealth() 
+{
+    return this->f_currentHealth;
+}
+float Entity::getFloatMaxHealth() 
+{
+    return this->f_maxHealth;
+}
+
 void Entity::setHealth(float f_health)
 {
     this->f_currentHealth = f_health;
