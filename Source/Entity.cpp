@@ -175,6 +175,11 @@ void Entity::knockback(const float& xforce, const float& yforce)
     this->movement->jump(xforce, yforce);
 }
 
+void Entity::stopSpeed()
+{
+    this->movement->stop();
+}
+
 void Entity::checkCollisions()
 {
     // Status info reset

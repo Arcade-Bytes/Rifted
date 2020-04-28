@@ -83,6 +83,7 @@ public:
     void move(const float& xdir);
     void jump(const float& xnormalized, const float& ynormalized);
     void knockback(const float& xforce, const float& yforce);
+    void stopSpeed();
 
     // Collisions
     Hitbox* getHitbox();

@@ -302,19 +302,45 @@ std::vector<MapObject> Map::getExitData()
 
 void Map::render()
 {
+    // Background and Front
+    this->renderBackground();
+    this->renderFront();
+
+    // Debug Hitbox
+    //for(auto hitbox : v_mapHitboxes)
+    //    hitbox->render();
+}
+
+void Map::renderBackground()
+{
     Engine* engine = Engine::getInstance();
 
     // Background
     if(this->background) engine->renderDrawable(this->background);
 
+    // Layer count
+    unsigned int layersTmp = this->layers;
+    if(this->layers > 1) layersTmp--;
+
     // Tile map
-    for (unsigned int l = 0; l < this->layers; l++)
+    for (unsigned int l = 0; l < layersTmp; l++)
         for (int x = 0; x < this->v_gridSize.x; x++)
             for (int y = 0; y < this->v_gridSize.y; y++)
                 if(this->map[l][x][y])
                     engine->renderDrawable(this->map[l][x][y]);
+}
 
-    // Debug Hitbox
-    //for(auto hitbox : v_mapHitboxes)
-    //    hitbox->render();
+void Map::renderFront()
+{
+    Engine* engine = Engine::getInstance();
+
+    // Layer count
+    if(this->layers > 1)
+    {
+        int l=this->layers-1;
+        for (int x = 0; x < this->v_gridSize.x; x++)
+            for (int y = 0; y < this->v_gridSize.y; y++)
+                if(this->map[l][x][y])
+                    engine->renderDrawable(this->map[l][x][y]);
+    }        
 }
