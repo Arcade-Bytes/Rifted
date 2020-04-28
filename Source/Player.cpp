@@ -7,7 +7,12 @@ Player::Player(const float& maxHealth)
     this->hitbox = new Hitbox(PLAYER, this->shape.getSize().x,this->shape.getSize().y, this->vf_position.x,this->vf_position.y);
 
     this->i_nchunks = 4;
-    this->i_maxPotions = 3;
+    this->i_maxPotions = 2;
+
+    this->f_regenerationDelta = 0.0f;
+    this->f_regenerationCooldown = 2.0f;
+    this->f_regenerationSpeed = 0.3f;
+    this->f_regenerationAmount = 0.5f;
 
     this->sword = new Weapon(0.3f, 0.1f, 0.1f, 50, 60, 30, true, {500.0f, 0.0f}, LIGHT_ATTACK);
     this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 80, 70, 60, true, {1000.0f, 0.0f}, HEAVY_ATTACK);
@@ -53,7 +58,7 @@ void Player::regenerate()
 
     // Get current life chunk
     float chunkSize = f_maxHealth / i_nchunks;
-    int i_currentChunk = ceil(f_maxHealth / chunkSize);
+    int i_currentChunk = ceil(f_currentHealth / chunkSize);
 
     f_regenerationDelta += delta;
     if(f_regenerationDelta >= f_regenerationCooldown && f_currentHealth < i_currentChunk*chunkSize)
@@ -65,6 +70,7 @@ void Player::regenerate()
         // Cap the life regen to avoid skipping chunks
         if(f_currentHealth >= i_currentChunk * chunkSize)
             f_currentHealth = i_currentChunk * chunkSize;
+        printf("Current Health is %f\n", f_currentHealth);
     }
 }
 
@@ -351,6 +357,7 @@ void Player::setHealthUpg(int i_healthupg)
     float chunkSize = this->f_maxHealth / this->i_nchunks;
     this->i_nchunks = 4 + this->i_healthUpg;
     this->setMaxHealth(chunkSize * this->i_nchunks);
+    this->f_currentHealth = this->f_maxHealth;
 }
 
 void Player::setLevel(std::string s_levelName)

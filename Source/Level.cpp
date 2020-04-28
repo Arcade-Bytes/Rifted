@@ -4,7 +4,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 {
     this->levelName = mapName;
 
-    this->b_playerLeaves = false;
+    this->b_playerHasLeft = false;
     this->resetNextState();
 
     sf::Vector2i tileSize = {32,32};
@@ -200,8 +200,9 @@ void Level::checkLevelExitReached()
     {
         if(exits[i]->checkPlayerCollision(this->player))
         {
-            this->b_playerLeaves = true;
+            this->b_playerHasLeft = true;
             this->i_exitIndex = i;
+            this->forceInterpolationUpdate();
         }
     }
 }
@@ -243,7 +244,7 @@ void Level::checkDestroyedBullets()
 // Level exit related
 bool Level::didPlayerLeave()
 {
-    return this->b_playerLeaves;
+    return this->b_playerHasLeft;
 }
 
 LevelExit* Level::getActiveExit()
@@ -288,14 +289,19 @@ void Level::forceInterpolationUpdate()
         projectile->updateInterpolationPositions();
 }
 
+void Level::entityUpdate()
+{
+    this->player->update();
+    for(auto enemy: enemies)
+        enemy->update();
+}
+
 void Level::update()
 {
     // Entity updates
     for(auto projectile : projectiles)
         projectile->update();
-    this->player->update();
-    for(auto enemy: enemies)
-        enemy->update();
+    this->entityUpdate();
     std::vector<Hitbox *> cajas = *Hitbox::getAllHitboxes();
     // Lever testing
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return))
@@ -367,7 +373,7 @@ void Level::render(float frameProgress)
 
     Engine::getInstance()->setFollowView(true);
 
-    this->map->render();
+    this->map->renderBackground();
 
     for(auto lever: levers)
         lever->render();
@@ -376,7 +382,6 @@ void Level::render(float frameProgress)
         npc->render();
         if(NPCisNear(npc)) //If there is an NPC near we render the dialogue bubble
             renderDialogueBubble(npc);    
-        
     }
 
     for(auto projectile : projectiles)
@@ -397,6 +402,8 @@ void Level::render(float frameProgress)
 
     for(auto exit: exits)
         exit->render();
+
+    this->map->renderFront();
 }
 
 //Checks if NPC is near player
@@ -428,5 +435,4 @@ void Level:: renderDialogueBubble(NPC* npc){
     infoBox.setPosition(npc->getPosition().x, npc->getPosition().y - npc->getSize().y);
     engine->renderDrawable(&infoBox);
     engine->renderDrawable(&keyToPress);
-
 }

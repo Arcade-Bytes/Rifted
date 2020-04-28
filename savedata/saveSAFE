@@ -1,7 +1,7 @@
 <player>
     <health>100.000000</health>
     <coin>0</coin>
-    <potions>3</potions>
+    <potions>2</potions>
     <kills>0</kills>
     <score>0</score>
     <deaths>0</deaths>

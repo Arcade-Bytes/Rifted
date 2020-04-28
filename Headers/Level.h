@@ -16,7 +16,7 @@
 
 class Level {
 private:
-    bool b_playerLeaves;
+    bool b_playerHasLeft;
     int i_exitIndex;
 
     StateType nextState;
@@ -42,7 +42,6 @@ private:
     //Variables for bubble to interact
     sf::RectangleShape keyToPress;
     sf::RectangleShape infoBox;
-
 public:
     Level(Player* player, std::string mapName, const int& entranceIndex);
     ~Level();
@@ -73,6 +72,7 @@ public:
     bool NPCisNear(NPC* npc);
     void renderDialogueBubble(NPC* npc);
 
+    void entityUpdate();
     void update();
     void render(float frameProgress);
 };

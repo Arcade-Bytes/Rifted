@@ -59,6 +59,8 @@ public:
     std::vector<MapObject> getExitData();
 
     void render();
+    void renderBackground();
+    void renderFront();
 };
 
 #endif
