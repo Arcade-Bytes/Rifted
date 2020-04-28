@@ -101,8 +101,10 @@ public:
 
     // Returns the current entity's health
     std::string getHealth();
+    float getFloatHealth();
     // Returns the maximun health the entity can have
     std::string getMaxHealth();
+    float getFloatMaxHealth();
     // Sets the current entity's health
     void setHealth(float f_health);
     // Sets the maximun health the entity can have
