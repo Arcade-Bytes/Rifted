@@ -21,6 +21,7 @@ MainMenuState::MainMenuState(std::stack<State*>* states, Player* player)
 
     i = 0;
     dir = true;
+
 }
 MainMenuState::~MainMenuState(){
     delete fondoIni;
@@ -30,6 +31,7 @@ MainMenuState::~MainMenuState(){
 
 void MainMenuState:: update()
 {
+    ResourceManager::getInstance()->playMainMenu();
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
         this->changeState(MENU_STATE, false);
     }

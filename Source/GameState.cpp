@@ -14,13 +14,17 @@ GameState::~GameState()
 
 void GameState::initGame()
 {
+    ResourceManager::getInstance()->stopMainMenu();                             //stop the main menu music
+    ResourceManager::getInstance()->playLevelMusic(this->player->getLevel());   //play the main level music
     if(this->level) delete this->level;
     ftl::LoadGame(*this->player);
     this->level = new Level(player, player->getLevel(), atoi(player->getDoor().c_str()));
+    
 }
 
 void GameState::update()
 {
+    ResourceManager::getInstance()->musicUpdate();  //update the music, loops and stuff
     if(this->b_reInit)
     {
         this->b_reInit = false;
