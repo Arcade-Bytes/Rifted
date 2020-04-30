@@ -42,6 +42,10 @@ private:
     //Variables for bubble to interact
     sf::RectangleShape keyToPress;
     sf::RectangleShape infoBox;
+
+    //Coins picked and not saved
+    int pickedCoins;
+
 public:
     Level(Player* player, std::string mapName, const int& entranceIndex);
     ~Level();
@@ -71,6 +75,7 @@ public:
     //NPCs interaction 
     bool NPCisNear(NPC* npc);
     void renderDialogueBubble(NPC* npc);
+    
 
     void entityUpdate();
     void update();
