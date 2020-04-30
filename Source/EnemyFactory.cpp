@@ -12,7 +12,7 @@ EnemyFactory::~EnemyFactory()
 
 Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
 {
-    Enemy* enemy = new Enemy(player);
+    Enemy* enemy = new Enemy(player,type);
 
     // Esqueleto melee (light)
     // Esqueleto arquero (ranged)

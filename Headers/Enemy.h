@@ -11,6 +11,8 @@ public:
 private:
     enum EnemyState {EnemyPatrolling = 0, EnemyChasing, EnemyAttacking};
 
+    int pointType;
+
     float f_attackDistance;
     float f_aggroDistance;
     bool b_isRanged;
@@ -26,7 +28,7 @@ private:
     // AI data
     bool b_patrolLeft;
 public:
-    Enemy(Player* playerRef);
+    Enemy(Player* playerRef, int type);
     ~Enemy();
 
     // Factory setters
@@ -48,6 +50,8 @@ public:
 
     void die();
     void trulyDie();
+
+    int getType();
 
     // Virtual override
     void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray);

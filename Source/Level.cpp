@@ -1,5 +1,12 @@
 #include "Level.h"
 
+//Point constants multiplyers
+
+#define CoinPointMultiplyer 500         //Defienes points when picking coins
+#define EnemiesPointMultiplyer 100      // Defines points when killing enemies
+#define DeathPointReduction 0.1f
+
+
 Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 {
     this->levelName = mapName;
@@ -24,6 +31,9 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     //Dialoge box
     keyToPress.setTexture(ResourceManager::getInstance()->loadTexture("resources/enter-key.png"));
     infoBox.setTexture(ResourceManager::getInstance()->loadTexture("resources/text_box.png"));
+
+    //For coins picked but not saved
+    pickedCoins = 0;
 }
 
 Level::~Level()
@@ -201,6 +211,7 @@ void Level::checkLevelExitReached()
         if(exits[i]->checkPlayerCollision(this->player))
         {
             this->b_playerHasLeft = true;
+            this->pickedCoins = 0;
             this->i_exitIndex = i;
             this->forceInterpolationUpdate();
         }
@@ -216,6 +227,7 @@ void Level::checkEnemyDeaths()
 
         if(enemies[position]->isDead())
         {
+            player->addPoints(enemies[position]->getType()* EnemiesPointMultiplyer);
             delete enemies[position];
             enemies.erase(iter);
             killed++;
@@ -265,7 +277,17 @@ void Level::saveLevelData()
 bool Level::didPlayerDie()
 {
     bool dead = this->player->isDead();
-    if(dead) this->player->revive();
+    if(dead){
+       
+        this->player->revive();
+        //std::cerr<<"Me mori wey \n";
+        this->player->substractPoints(CoinPointMultiplyer*pickedCoins); //We take the point from the non saved coins
+        this->player->substractPoints(player->getPoints()*DeathPointReduction);// Penalty for dying
+        pickedCoins = 0;
+        //std::cerr<<"Tengo "<<player->getPoints()<< " puntos, y antes tenia "<<player->getPoints()+100<< "puntos\n";
+        ftl::SaveGame(*this->player);
+        //std::cerr<<"He guardado\n";
+    }
     return dead;
 }
 
@@ -333,8 +355,11 @@ void Level::update()
         {
             coin->setIsPicked(true);
             this->player->pickCoin(1);
+            this->player->addPoints(CoinPointMultiplyer); //You get point from coins
+            pickedCoins++; //To substract points if you die without saving the coins
         }
     }
+
     for(auto tool : tools) {
         if(!tool->getIsPicked() && tool->isWithinReach(this->player->getPosition()))
         {

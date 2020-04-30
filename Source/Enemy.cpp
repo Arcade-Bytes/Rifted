@@ -1,9 +1,11 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Player* playerRef)
+Enemy::Enemy(Player* playerRef, int type)
     : Entity(100.0f)
 {
     this->hitbox = new Hitbox(ENEMY, this->shape.getSize().x,this->shape.getSize().y, this->vf_position.x,this->vf_position.y);
+
+    this->pointType = type;
 
     // AI Properties and helpers
     this->player = playerRef;
@@ -172,6 +174,12 @@ bool Enemy::checkInteraction(Hitbox* hitbox)
     }
 
     return result;
+}
+
+int Enemy::getType(){
+
+    return pointType;
+
 }
 
 void Enemy::resizeItems(sf::Vector2f scaleRatio)

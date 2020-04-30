@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "FileManager.h"
 
+//Point variables 
+
 Player::Player(const float& maxHealth)
     : Entity(maxHealth)
 {
@@ -38,6 +40,9 @@ float Player::getHurt(float& damage)
     damage *= this->shield->DamageBlock();
     float hurtAmount = this->Entity::getHurt(damage);
     f_regenerationDelta = 0.0f;
+
+    if(damage < f_maxHealth)//If it does not get hurt by spikes or instakills (theoretycaly only spikes)
+        this->substractPoints(damage);
 
     return hurtAmount;
 }
@@ -139,13 +144,13 @@ bool Player::getIsWeaponUnlocked(std::string weaponName)
 void Player::die()
 {
     this->f_currentHealth = 1;
-    this->i_score /= 2;
 }
 
 void Player::trulyDie()
 {
     this->die();
     this->b_isDead = true;
+
 }
 
 void Player::linkWorldProjectiles(std::vector<Projectile*>& proyectileArray)
@@ -363,6 +368,25 @@ std::vector<std::string> Player::getNear()
     return nearDialogue;
 }
 
+void Player::addPoints(int add){
+
+    this->i_score += add;
+
+}
+
+void Player::substractPoints(int substract){
+
+    if(substract < i_score)
+        this->i_score -= substract;
+    else this->i_score = 0;
+
+}
+
+int Player::getPoints(){
+
+    return this->i_score;
+
+}
 
 //SET DATA SAVED
 void Player::setMony(int i_money)

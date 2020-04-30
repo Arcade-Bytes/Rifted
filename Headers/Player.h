@@ -77,6 +77,10 @@ public:
     bool checkInteraction(Hitbox* hitbox);
     // Virtual override: Resizes items to match the new size. Mainly used to adapt the base absolute entity to the tile size of the current map. Includes weapon size and reach, jump height, etc...
     void resizeItems(sf::Vector2f scaleRatio);
+    // In game point modification
+    void addPoints(int add);
+    void substractPoints(int substract);
+    int getPoints();
 
     // Save data getters and setters
     std::string getMony();
