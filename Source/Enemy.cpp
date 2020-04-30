@@ -10,6 +10,8 @@ Enemy::Enemy(Player* playerRef)
     this->b_patrolLeft = false;
     this->b_doesPatrol = true;
 
+    this->type = BasicMelee;
+
     this->f_aggroDistance = 150;
     this->f_attackDistance = 50;
     this->weapon = NULL;
@@ -64,6 +66,11 @@ void Enemy::setRangedMode(bool ranged)
 void Enemy::setDoPatrol(bool patrol)
 {
     this->b_doesPatrol = patrol;
+}
+
+void Enemy::setEnemyType(EnemyType type)
+{
+    this->type = type;
 }
 
 void Enemy::overrideHitboxType(HitboxType type)
@@ -172,6 +179,53 @@ void Enemy::resizeItems(sf::Vector2f scaleRatio)
     this->weapon->scale(scaleRatio);
     this->f_aggroDistance *= scaleRatio.x;
     this->f_attackDistance *= scaleRatio.x;
+}
+
+void Enemy::updateAnimation()
+{
+    if(!this->animation) return;
+
+    if(this->type == Enemy::EnemyType::BasicRanged)
+    {
+        // Entity::updateAnimation();
+        // return; // temporary fix for the ranged one until I put it's sheet
+
+        this->s_currentAnimation = "idle";
+
+        if(this->b_mutexAttack)
+        {
+            this->s_currentAnimation = "attack";
+        }
+        else if(abs(this->movement->getSpeed().x) > 0)
+        {
+            this->s_currentAnimation = "walk";
+        }
+        else
+        {
+            this->s_currentAnimation = "idle";
+        }
+
+    }
+    else if(this->type == Enemy::EnemyType::BasicMelee)
+    {
+        this->s_currentAnimation = "standup";
+
+        if(this->b_mutexAttack)
+        {
+            this->s_currentAnimation = "attack";
+        }
+        else if(abs(this->movement->getSpeed().x) > 0)
+        {
+            this->s_currentAnimation = "walk";
+        }
+        else
+        {
+            this->s_currentAnimation = "standup";
+        }
+
+    }
+
+    this->animation->playAnimation(this->s_currentAnimation, b_facingRight ? false : true);  
 }
 
 void Enemy::update()

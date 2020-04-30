@@ -14,15 +14,15 @@ Player::Player(const float& maxHealth)
     this->f_regenerationSpeed = 0.3f;
     this->f_regenerationAmount = 0.5f;
 
-    this->sword = new Weapon(0.3f, 0.1f, 0.1f, 50, 60, 30, true, {500.0f, 0.0f}, LIGHT_ATTACK);
-    this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 80, 70, 60, true, {1000.0f, 0.0f}, HEAVY_ATTACK);
+    this->sword = new Weapon(0.3f, 0.1f, 0.1f, 55, 60, 30, true, {500.0f, 400.0f}, LIGHT_ATTACK);
+    this->hammer = new Weapon(1.5f, 0.7f, 0.2f, 120, 65, 60, true, {1000.0f, 500.0f}, HEAVY_ATTACK);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
     this->bow = new RangedWeapon(0.6f, 0.1f, 20, true, this->b_facingRight);
 
     this->setResistances(0.0f, 0.0f, 0.0f);
 
     this->animation = new AnimationComponent(this->shape);
-    this->animation->loadAnimationsFromJSON("animations/pengo.json");
+    this->animation->loadAnimationsFromJSON("animations/player.json");
 }
 
 Player::~Player()
@@ -39,8 +39,6 @@ float Player::getHurt(float& damage)
     float hurtAmount = this->Entity::getHurt(damage);
     f_regenerationDelta = 0.0f;
 
-    printf("I got hurt by %f, my life is %f / %f\n", damage, f_currentHealth, f_maxHealth);
-
     return hurtAmount;
 }
 
@@ -48,7 +46,6 @@ float Player::getHealed(float& healing)
 {
     float healAmount = this->Entity::getHealed(healing);
     f_regenerationDelta = 0.0f;
-    printf("I got healed by %f, my life is %f / %f\n", healing, f_currentHealth, f_maxHealth);
     return healAmount;
 }
 
@@ -70,7 +67,6 @@ void Player::regenerate()
         // Cap the life regen to avoid skipping chunks
         if(f_currentHealth >= i_currentChunk * chunkSize)
             f_currentHealth = i_currentChunk * chunkSize;
-        printf("Current Health is %f\n", f_currentHealth);
     }
 }
 
@@ -194,6 +190,42 @@ void Player::resizeItems(sf::Vector2f scaleRatio)
     this->shield->scale(scaleRatio);
 }
 
+void Player::updateMovement()
+{
+    if(this->b_mutexAttack && this->movement->isYStopped()) this->movement->stopX(); // NEW, stop x speed if attacking and in ground only
+
+    Entity::updateMovement();
+}
+
+void Player::updateAnimation()
+{
+    if(this->animation)
+    {
+        this->s_currentAnimation = "idle";
+        
+        if(this->b_mutexAttack)
+        {
+            if(this->sword && this->sword->isAttacking()) this->s_currentAnimation = "attacking_sword";
+            if(this->bow && this->bow->isAttacking()) this->s_currentAnimation = "attacking_bow";
+            if(this->hammer && this->hammer->isAttacking()) this->s_currentAnimation = "attacking_hammer";
+        }
+        else if(this->movement->getSpeed().y < 0)
+        {
+            this->s_currentAnimation = "jumping";
+        }
+        else if(this->movement->getSpeed().y > 280) // NEW, hardcoded little gap so it doesn't get weird when hitting the ground
+        {
+            this->s_currentAnimation = "falling";
+        }
+        else if(abs(this->movement->getSpeed().x) > 0)
+        {
+            this->s_currentAnimation = "walking";
+        }
+
+        this->animation->playAnimation(this->s_currentAnimation, !b_facingRight); // NEW, if I am facing right, don't mirror; else mirror
+    }
+}
+
 void Player::update()
 {
     // Update input
@@ -263,7 +295,6 @@ void Player::render(float frameProgress)
     this->sword->render();
     this->hammer->render();
     this->shield->render();
-    //this->collisionArea->render();
 }
 
 //GET DATA TO SAVE

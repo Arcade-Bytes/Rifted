@@ -17,7 +17,7 @@ Animation::~Animation()
 {
     
 }
-//State getters
+
 bool Animation::getLooped()
 {
     return this->isLooped;
@@ -32,7 +32,7 @@ bool Animation::getDone()
 {
     return this->isDone;
 }
-//State setters
+
 void Animation::setLooped(bool looped)
 {
     this->isLooped = looped;
@@ -54,10 +54,10 @@ void Animation::addFrame(Frame& frame)
     this->frames.push_back(std::move(frame));
 }
 
-void Animation::play()
+void Animation::play(bool mirror)
 {
     // TODO::
-    if(this->isPaused || this->isDone) return; //If paused or done render actual frame
+    if(this->isPaused || this->isDone) return;
 
     this->totalElapsed += Engine::getInstance()->getDelta() * 1000; // Get it as miliseconds
     
@@ -73,11 +73,11 @@ void Animation::play()
 
         if(this->currentFrameIndex >= this->frames.size())
         {
-            if(this->isLooped) // If looped restart
+            if(this->isLooped)
             {
                 this->currentFrameIndex -= this->frames.size();
             }
-            else //If not looped end
+            else
             {
                 this->isDone = true;
                 this->currentFrameIndex = this->frames.size() - 1;
@@ -86,6 +86,18 @@ void Animation::play()
         }
 
     }
+
+    float scaleX = this->shape.getScale().x;
+    if(mirror)
+    {
+        scaleX = scaleX > 0 ? -scaleX : scaleX;
+    }
+    else
+    {
+        scaleX = scaleX < 0 ? -scaleX : scaleX;
+    }
+    this->shape.setScale(scaleX, this->shape.getScale().y); // NEW
+
     this->shape.setTextureRect(this->frames.at(this->currentFrameIndex).rect);
 }
 

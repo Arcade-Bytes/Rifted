@@ -104,6 +104,9 @@ public:
     void setRemainingPotions(int i_scr);
     void setScore(int i_scr);
 
+    void updateMovement();
+    void updateAnimation();
+
     void update();
     void render(float frameProgress);
 

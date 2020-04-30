@@ -12,7 +12,7 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 
     // Player init
     this->player = player;
-    this->player->setSize(sf::Vector2f(tileSize.x*2,tileSize.y*2));
+    this->player->setSize(sf::Vector2f(tileSize.x*3,tileSize.y*3));
     this->player->initPosition(
         this->map->getPlayerPosition()
     );

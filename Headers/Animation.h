@@ -22,6 +22,7 @@ private:
     float totalElapsed;
     unsigned int currentFrameIndex;
 
+    bool isMirrored;
     bool isLooped;
     bool isPaused;
     bool isDone;
@@ -32,19 +33,16 @@ public:
     Animation(sf::RectangleShape& shape, std::vector<Frame*> frames, bool looped = false);
     ~Animation();
 
-
     bool getLooped();
     bool getPaused();
     bool getDone();
-
     void setLooped(bool looped);
     void setPaused(bool paused);
     void setDone(bool done);
 
     void addFrame(Frame& frame);
 
-
-    void play();
+    void play(bool mirror = false);
     void pause();
     void resume();
     void stop();
