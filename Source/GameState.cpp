@@ -142,6 +142,7 @@ void GameState::update()
         if(this->level->didPlayerDie())
         {
             this->b_reInit = true;
+            //std::cerr<<"Y ahora vuelvo a cargar\n";
         }
     }
 
