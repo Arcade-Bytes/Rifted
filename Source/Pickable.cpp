@@ -51,7 +51,7 @@ bool Pickable::isWithinReach(sf::Vector2f pos)
 {
     sf::Vector2f diff = pos - this->getPosition();
     float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
-    return (distance < this->getSize().x / 2.0f);
+    return (distance < this->getSize().x);
 }
 
 //Return name

@@ -40,6 +40,7 @@ void GameState::initGame()
     if(this->level) delete this->level;
     ftl::LoadGame(*this->player);
     this->initLevel();
+    this->changePotionShape();
 }
 
 void GameState::initLevel()

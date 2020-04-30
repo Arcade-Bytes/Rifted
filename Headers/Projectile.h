@@ -1,6 +1,7 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
+#include "ResourceManager.h"
 #include "Hitbox.h"
 
 class Projectile

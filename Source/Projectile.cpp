@@ -9,9 +9,9 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, float spee
 
     this->hitbox = new Hitbox(isPlayer ? PLAYER_ATTACK : ENEMY_ATTACK, 60, 10, 0, 0, damage, knockback, RANGED_ATTACK);
 
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/arrow.png"));
     this->shape.setPosition(this->vf_position);
     this->shape.setSize({60, 10});
-    this->shape.setFillColor(sf::Color(128,90,70));
 
     this->vf_previousPosition = this->vf_nextPosition = this->vf_position;
 }

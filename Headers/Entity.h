@@ -95,8 +95,8 @@ public:
     virtual bool checkInteraction(Hitbox* hitbox) = 0;
 
     // Updates
-    void updateAnimation();
-    void updateMovement();
+    virtual void updateAnimation();
+    virtual void updateMovement();
     void updateInvulnerability();
     bool updateWeapon(Weapon* weapon);
 

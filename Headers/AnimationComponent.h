@@ -29,7 +29,7 @@ public:
     void loadAnimationsFromJSON(const std::string& filepath);
 
     void addAnimation(std::string key, std::vector<Frame*> frames, bool looped = false);
-    void playAnimation(const std::string key);
+    void playAnimation(const std::string key, bool mirror = false);
 };
 
 #endif

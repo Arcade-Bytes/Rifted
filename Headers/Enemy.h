@@ -6,15 +6,18 @@
 #include "Player.h"
 
 class Enemy : public Entity {
+public:
+    enum EnemyType {BasicMelee = 1, BasicRanged = 2};
 private:
     enum EnemyState {EnemyPatrolling = 0, EnemyChasing, EnemyAttacking};
 
-    int type;
+    int pointType;
 
     float f_attackDistance;
     float f_aggroDistance;
     bool b_isRanged;
     EnemyState state;
+    EnemyType type;
     Player* player;
     Weapon* weapon;
 
@@ -37,6 +40,7 @@ public:
     void setAIDistances(float aggro, float attack);
     void setRangedMode(bool ranged);
     void setDoPatrol(bool patrol);
+    void setEnemyType(EnemyType type);
     void overrideHitboxType(HitboxType type);
 
     void attack();
@@ -55,6 +59,7 @@ public:
     bool checkInteraction(Hitbox* hitbox);
     void resizeItems(sf::Vector2f scaleRatio);
 
+    void updateAnimation();
     void update();
     void render(float frameProgress);
 };

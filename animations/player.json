@@ -1,0 +1,486 @@
+{
+  "texture": "player.png",
+  "scale": 40,
+  "animations":
+  [
+    {
+      "name":"idle",
+      "looped": true,
+      "frames":
+      [
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 180,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 360,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 540,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 720,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 900,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 1080,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 1260,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 1440,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 1620,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 1800,
+            "offset_y": 360,
+            "width": 180,
+            "height": 180
+          }
+        }
+      ]
+    },
+    {
+      "name":"jumping",
+      "looped": false,
+      "frames":
+      [
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 1080,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 180,
+            "offset_y": 1080,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 360,
+            "offset_y": 1080,
+            "width": 180,
+            "height": 180
+          }
+        }
+      ]
+    },
+    {
+      "name":"falling",
+      "looped": false,
+      "frames":
+      [
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 1260,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 180,
+            "offset_y": 1260,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 360,
+            "offset_y": 1260,
+            "width": 180,
+            "height": 180
+          }
+        }
+      ]
+    },
+    {
+      "name":"walking",
+      "looped": true,
+      "frames":
+      [
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 540,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 180,
+            "offset_y": 540,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 360,
+            "offset_y": 540,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 540,
+            "offset_y": 540,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 720,
+            "offset_y": 540,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 900,
+            "offset_y": 540,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 1080,
+            "offset_y": 540,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 1260,
+            "offset_y": 540,
+            "width": 180,
+            "height": 180
+          }
+        }
+      ]
+    },
+    {
+      "name":"attacking_sword",
+      "looped": false,
+      "frames":
+      [
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 0,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 180,
+            "offset_y": 0,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 360,
+            "offset_y": 0,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 540,
+            "offset_y": 0,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 720,
+            "offset_y": 0,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 900,
+            "offset_y": 0,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 1080,
+            "offset_y": 0,
+            "width": 180,
+            "height": 180
+          }
+        }
+      ]
+    },
+    {
+      "name":"attacking_bow",
+      "looped": false,
+      "frames":
+      [
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 1440,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 180,
+            "offset_y": 1440,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 360,
+            "offset_y": 1440,
+            "width": 180,
+            "height": 180
+          }
+        }
+      ]
+    },
+    {
+      "name":"attacking_hammer",
+      "looped": false,
+      "frames":
+      [
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 1620,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 180,
+            "offset_y": 1620,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 360,
+            "offset_y": 1620,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 200,
+          "rect":
+          {
+            "offset_x": 540,
+            "offset_y": 1620,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 720,
+            "offset_y": 1620,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 900,
+            "offset_y": 1620,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 1080,
+            "offset_y": 1620,
+            "width": 180,
+            "height": 180
+          }
+        },
+        {
+          "duration": 100,
+          "rect":
+          {
+            "offset_x": 1260,
+            "offset_y": 1620,
+            "width": 180,
+            "height": 180
+          }
+        }
+      ]
+    }
+  ]
+}
