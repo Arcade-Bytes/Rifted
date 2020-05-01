@@ -13,6 +13,8 @@ Projectile::Projectile(sf::Vector2f position, sf::Vector2f direction, float spee
     this->shape.setPosition(this->vf_position);
     this->shape.setSize({60, 10});
 
+    if(this->vf_direction.x < 0) this->shape.setScale(-1,1);
+
     this->vf_previousPosition = this->vf_nextPosition = this->vf_position;
 }
 

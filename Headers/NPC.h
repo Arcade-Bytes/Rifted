@@ -19,6 +19,7 @@ private:
     std::string currentQuoteSet;
 
     bool b_isShop;
+    int i_isKey;
 public:
 
     NPC(std::string sheetFile);
@@ -32,6 +33,8 @@ public:
 
     std::vector<std::string> getDialogue();
     bool getImShop();
+    bool getImKey();
+    int getKeyType();
 
     void render();
 };

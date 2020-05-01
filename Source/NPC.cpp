@@ -9,7 +9,16 @@ NPC::NPC(std::string sheetFile)
     document.ParseStream<0, rapidjson::UTF8<>, rapidjson::FileReadStream>(is);
 
     std::string textureFile = document["textureFile"].GetString();
-    this->b_isShop = document["isShop"].GetBool();
+
+    if(document.HasMember("isShop"))
+        this->b_isShop = document["isShop"].GetBool();
+    else
+        this->b_isShop = false;
+
+    if(document.HasMember("isKey"))
+        this->i_isKey = document["isKey"].GetInt();
+    else
+        this->i_isKey = -1;
 
     currentQuoteSet = "";
     for(unsigned int i = 0; i < document["quotes"].Size() ; i++)
@@ -63,9 +72,19 @@ std::vector<std::string> NPC:: getDialogue()
 }
 
 
-bool NPC:: getImShop()
+bool NPC::getImShop()
 {
     return this->b_isShop;
+}
+
+bool NPC::getImKey()
+{
+    return this->i_isKey >= 0;
+}
+
+int NPC::getKeyType()
+{
+    return this->i_isKey;
 }
 
 void NPC:: render(){

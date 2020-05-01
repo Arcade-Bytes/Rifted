@@ -57,16 +57,40 @@ void GameState::changeLevel()
     std::string mapFile = exit->getDestination();
     int entranceIndex = exit->getEntranceIndex();
 
+    // Check if we need an animation
+    bool hasAnimation = this->level->getIfAnimationBeforeNextLevel();
+
+    // Regenerate potions
+    this->player->setRemainingPotions(this->player->getMaxPotions());
+    this->changePotionShape();
+
     // Save game data
     this->player->setLevel(mapFile);
     this->player->setDoor(entranceIndex);
     this->player->stopSpeed();
+
+        // If a boss Key was received
+    int bossKey = this->level->getBossKeyIndex();
+    if(bossKey >= 0) this->player->setKeyUnlocked(true, bossKey);
+
     ftl::SaveGame(*this->player);
     this->level->saveLevelData();
 
-    // Reset level
-    delete this->level;
-    this->initLevel();
+    // If it is a normal level change, we just init the level here
+    if(!hasAnimation)
+    {
+        // Reset level
+        delete this->level;
+        this->initLevel();
+    }
+    // If it has a previous animation, we change to AnimationState.
+    // Level will be initialized on this state's reinit later when we come back
+    else
+    {
+        // Temporary
+        delete this->level;
+        this->initLevel();
+    }
 }
 
 void GameState::transitionUpdate()
@@ -143,7 +167,6 @@ void GameState::update()
         if(this->level->didPlayerDie())
         {
             this->b_reInit = true;
-            //std::cerr<<"Y ahora vuelvo a cargar\n";
         }
     }
 

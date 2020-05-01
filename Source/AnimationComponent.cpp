@@ -35,9 +35,7 @@ void AnimationComponent::loadAnimationsFromJSON(const std::string& filepath)
     if(document.HasMember("scale"))
     {
         scaleFactor = (float)(document["scale"].GetDouble());
-        printf("Scale factor %f\n", scaleFactor);
         scaleFactor /= 10.0f;
-        printf("Scale factor divided by 10 %f\n", scaleFactor);
     }
 
     rapidjson::Value& animations = document["animations"];

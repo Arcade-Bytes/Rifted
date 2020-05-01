@@ -16,11 +16,15 @@ Player::Player(const float& maxHealth)
     this->f_regenerationSpeed = 0.3f;
     this->f_regenerationAmount = 0.5f;
 
+    // Progress key init
+    this->vb_mainKeys[0] = this->vb_mainKeys[1] = this->vb_mainKeys[2] = false;
+
     this->sword = new Weapon(0.3f, 0.1f, 0.1f, 55, 60, 30, true, {500.0f, 400.0f}, LIGHT_ATTACK);
     this->hammer = new Weapon(1.5f, 0.7f, 0.2f, 120, 65, 60, true, {1000.0f, 500.0f}, HEAVY_ATTACK);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
     this->bow = new RangedWeapon(0.6f, 0.1f, 20, true, this->b_facingRight);
 
+    this->movement->setMaxSpeed(sf::Vector2f(600.0f, 800.0f));
     this->setResistances(0.0f, 0.0f, 0.0f);
 
     this->animation = new AnimationComponent(this->shape);
@@ -150,7 +154,6 @@ void Player::trulyDie()
 {
     this->die();
     this->b_isDead = true;
-
 }
 
 void Player::linkWorldProjectiles(std::vector<Projectile*>& proyectileArray)
@@ -165,7 +168,6 @@ bool Player::checkObstacle(Hitbox* hitbox)
     switch(type)
     {
         case PLATFORM:
-        case ENEMY:
         result = true; break;
         default: break;
     }
@@ -338,6 +340,19 @@ std::string Player::getScore()
     return std::to_string(this->i_score).c_str();
 }
 
+std::string Player::getKeyUnlocked(int index)
+{
+    if(index >= 0 && index < 3)
+    {
+        int unlocked = this->vb_mainKeys[index] ? 1 : 0;
+        return std::to_string(unlocked).c_str();
+    }
+    else
+    {
+        return "0";
+    }
+}
+
 std::string Player::getHealthUpg()
 {
     return std::to_string(this->i_healthUpg).c_str();
@@ -453,6 +468,14 @@ void Player::setRemainingPotions(int i_pot)
 void Player::setScore(int i_scr)
 {
     this->i_score = i_scr;
+}
+
+void Player::setKeyUnlocked(bool unlocked, int keyIndex)
+{
+    if(keyIndex >= 0 && keyIndex < 3)
+    {
+        this->vb_mainKeys[keyIndex] = unlocked;
+    }
 }
 
 void Player::setNear(std::vector<std::string> text)

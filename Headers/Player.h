@@ -13,7 +13,7 @@ private:
     float f_regenerationDelta;      // Time since last damage/healing action
     float f_regenerationCooldown;   // Necessary time to start regenerating
     float f_regenerationSpeed;      // Time between regen and regen once you're already regenerating
-    float f_regenerationAmount;     // Amount of life regenerated every update
+    float f_regenerationAmount;     // Amount of life regenerated every time
     int i_nchunks;                  // Number of chunks the lifebar is divided in
 
     // Potion properties
@@ -28,6 +28,9 @@ private:
     int i_score;                    // Score
     std::string s_levelName;        // Current level name
     std::vector<std::string> nearDialogue;
+
+    // Game progress
+    bool vb_mainKeys[3];
 
     Weapon* sword;
     Weapon* hammer;
@@ -56,7 +59,7 @@ public:
     void addKill(int amount);
     // Unlocks the specified weapon so you can use it. An unrecognized weapon string will do nothing
     void unlockWeapon(std::string weaponName);
-    // Return if the specified weapon is unlocked. An unrecognized weapon string will return false
+    // Return true if the specified weapon is unlocked. An unrecognized weapon string will return false
     bool getIsWeaponUnlocked(std::string weaponName);
 
     // Virtual override: Function called when life points reach 0. In player's case this just means losing points, not death
@@ -77,9 +80,12 @@ public:
     bool checkInteraction(Hitbox* hitbox);
     // Virtual override: Resizes items to match the new size. Mainly used to adapt the base absolute entity to the tile size of the current map. Includes weapon size and reach, jump height, etc...
     void resizeItems(sf::Vector2f scaleRatio);
-    // In game point modification
+
+    // In game point modification, add specified points
     void addPoints(int add);
+    // Substracts specified points, points cannot go below 0
     void substractPoints(int substract);
+    // Returns the score (integer)
     int getPoints();
 
     // Save data getters and setters
@@ -95,6 +101,7 @@ public:
     std::string getBowLvl();
     std::string getPotionsLeft();
     std::string getScore();
+    std::string getKeyUnlocked(int index);
     void setMony(int i_money);
     void setKills(int i_kills);
     void setDeaths(int i_deaths);
@@ -107,6 +114,7 @@ public:
     void setBowLvl(int i_lvl);
     void setRemainingPotions(int i_scr);
     void setScore(int i_scr);
+    void setKeyUnlocked(bool unlocked, int i_keyIndex);
 
     void updateMovement();
     void updateAnimation();

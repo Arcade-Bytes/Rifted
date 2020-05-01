@@ -17,7 +17,6 @@ Pickable::Pickable(bool isPicked, std::string newName)
     else
         pickableFile = "coin";
 
-
     this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+pickableFile+".png"));
 }
 

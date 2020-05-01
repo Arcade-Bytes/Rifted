@@ -12,6 +12,8 @@
         <name>Prueba_Beta</name>
         <door>0</door>
     </level>
+    <progress>
+    </progress>
 </player>
 <weapons>
     <sword>
