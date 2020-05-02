@@ -135,7 +135,7 @@ void ShopState:: loadAssets(){
     hammer_upgrade = new sf::Sprite(*resources->loadTexture("resources/hammer.png"));
     hammer_upgrade->setOrigin(hammer_upgrade->getLocalBounds().width/2.0f, hammer_upgrade->getLocalBounds().height/2.0f);
 
-    //Cargamos el martillo
+    //Cargamos el arco
     bow_upgrade = new sf::Sprite(*resources->loadTexture("resources/bow.png"));
     bow_upgrade->setOrigin(bow_upgrade->getLocalBounds().width/2.0f, bow_upgrade->getLocalBounds().height/2.0f);
 
@@ -400,7 +400,7 @@ void ShopState:: drawPlayerData(){
 
 }
 
-void ShopState:: drawParchment(){
+void ShopState::drawParchment(){
 
     Engine* engine = Engine::getInstance();
     

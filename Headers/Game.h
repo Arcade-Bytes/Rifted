@@ -10,6 +10,8 @@
 #include "MenuState.h"
 #include "TextState.h"
 #include "PauseState.h"
+#include "SummaryState.h"
+#include "CreditsState.h"
 
 class Game {
 private:

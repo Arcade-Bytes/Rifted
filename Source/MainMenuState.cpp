@@ -30,8 +30,13 @@ MainMenuState::~MainMenuState(){
 
 void MainMenuState:: update()
 {
-    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
+    Engine* engine = Engine::getInstance();
+    if(engine->getKeyPressed(sf::Keyboard::Return)){
         this->changeState(MENU_STATE, false);
+    }
+    else if(engine->getKeyPressed(sf::Keyboard::Escape))
+    {
+        engine->windowClose();
     }
 }
 

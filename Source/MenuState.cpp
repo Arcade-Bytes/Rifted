@@ -82,6 +82,11 @@ void MenuState:: update(){
             case 4: engine->windowClose(); break;//Opcion Exit
         }
     }
+
+    if(engine->getKeyPressed(sf::Keyboard::Escape))
+    {
+        this->changeState(MAINMENU_STATE, true);
+    }
 }
 
 void MenuState:: render(float frameProgress){

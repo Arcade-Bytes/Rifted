@@ -87,7 +87,7 @@ void GameState::changeLevel()
     // Level will be initialized on this state's reinit later when we come back
     else
     {
-        // Temporary
+        // Temporary, may add something here
         delete this->level;
         this->initLevel();
     }
@@ -168,8 +168,13 @@ void GameState::update()
         {
             this->b_reInit = true;
         }
-    }
 
+        // Summary state hack
+        if(Engine::getInstance()->getKeyPressed(sf::Keyboard::J))
+        {
+            this->changeState(SUMMARY_STATE, true);
+        }
+    }
 }
 
 void GameState::changeDamageEffects() {

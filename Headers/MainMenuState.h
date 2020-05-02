@@ -6,7 +6,6 @@
 class MainMenuState : public State {
 private:
     sf::Sprite* fondoIni;
-    sf::Font fuente;
     sf::Text* texto;
     sf::Clock* clock;
     int i ; //Controla la trasparencia del Mensaje

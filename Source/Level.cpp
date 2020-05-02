@@ -400,11 +400,6 @@ void Level::update()
             this->player->unlockWeapon(tool->getName());
         }
     }
-    // Zone end Keys
-    if(Engine::getInstance()->getKeyPressed(sf::Keyboard::J))
-    {
-        
-    }
 
     //If player is near an NPC, it interacts with it
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
