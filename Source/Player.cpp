@@ -299,9 +299,9 @@ void Player::render(float frameProgress)
 
     // Render
     Engine::getInstance()->renderDrawable(&shape);
-    this->sword->render();
-    this->hammer->render();
-    this->shield->render();
+    //this->sword->render();
+    //this->hammer->render();
+    //this->shield->render();
 }
 
 //GET DATA TO SAVE

@@ -7,48 +7,40 @@ MenuState::MenuState(std::stack<State*>* states, Player* player)
 
     clock = new sf::Clock();
 
+    Engine* engine = Engine::getInstance();
     ResourceManager* resources = ResourceManager::getInstance();
-    sf::Texture* riftTex = resources->loadTexture("resources/TheRift.jpg");
-    fondoIni = new sf::Sprite(*riftTex);
+    sf::Vector2f baseResolution = sf::Vector2f(engine->getBaseResolution().x,engine->getBaseResolution().y);
 
-    fondoIni->setScale(2,2);
-
-    fondoIni->setTextureRect(sf::IntRect(0,0,riftTex->getSize().x,riftTex->getSize().y) );
+    this->fondoIni = new sf::RectangleShape();
+    this->fondoIni->setTexture(resources->loadTexture("resources/TheRift.jpg"));
+    this->fondoIni->setSize(baseResolution);
 
     flecha_selectorR = new sf::Sprite(*resources->loadTexture("resources/pixel-arrow-png-18.png"));
-
     flecha_selectorR->setScale(0.4,0.4);
-
     flecha_selectorR->setOrigin(flecha_selectorR->getLocalBounds().width/2.0f, flecha_selectorR->getLocalBounds().height/2.0f);
 
     flecha_selectorL = new sf::Sprite(*resources->loadTexture("resources/pixel-arrow-png-18.png"));
-
     flecha_selectorL->setScale(0.4,0.4);
-
     flecha_selectorL->setOrigin(flecha_selectorL->getLocalBounds().width/2.0f, flecha_selectorL->getLocalBounds().height/2.0f);
-
     flecha_selectorL->rotate(180);
 
     texto = new sf::Text();
 
     texto->setFont(*resources->loadFont("resources/XOX.ttf"));
 
-    i = 0;
+    arrowMovement = prevArrowMovement = 0;
 
     dir = true;
 
     seleccion = 1;
-
 }
 
 MenuState::~MenuState(){
-
     delete fondoIni;
     delete texto;
     delete clock;
     delete flecha_selectorL;
     delete flecha_selectorR; 
-
 }
 
 void MenuState:: update(){
@@ -87,6 +79,22 @@ void MenuState:: update(){
     {
         this->changeState(MAINMENU_STATE, true);
     }
+
+    if(clock->getElapsedTime().asMilliseconds()>(0.004f)){  //0.00004
+        int steps = clock->getElapsedTime().asSeconds() / 0.004f;
+        prevArrowMovement = arrowMovement;
+        if(dir==true)
+            arrowMovement+=steps;
+        else 
+            arrowMovement-=steps;
+
+        if(arrowMovement>30)arrowMovement=30;
+        if(arrowMovement<-30)arrowMovement=-30;
+        
+        clock->restart();
+
+        if(arrowMovement>=30) dir=false; else if(arrowMovement<=-30) dir = true;
+    }
 }
 
 void MenuState:: render(float frameProgress){
@@ -96,8 +104,7 @@ void MenuState:: render(float frameProgress){
 
     engine->renderDrawable(fondoIni);
     drawText();
-    drawArrow();
-
+    drawArrow(frameProgress);
 }
 
 void MenuState:: drawText(){
@@ -108,31 +115,31 @@ void MenuState:: drawText(){
 
     texto->setString("Nueva Partida");
     texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2);
-    texto->setCharacterSize(54);
+    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Continuar Partida");
-    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + 100);
-    texto->setCharacterSize(54);
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.1);
+    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Ajustes");
-    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + 200);
-    texto->setCharacterSize(54);
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.2);
+    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Salir");
-    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + 300);
-    texto->setCharacterSize(54);
+    texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.3);
+    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     //TITLE
     texto->setString("Rifted");
-    texto->setCharacterSize(216);
+    texto->setCharacterSize(engine->getBaseResolution().x*0.1125f);
     texto->setColor(sf::Color::White);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/4);
@@ -143,76 +150,36 @@ void MenuState:: drawText(){
 }
 
 
-void MenuState:: drawArrow(){
+void MenuState:: drawArrow(float frameProgress){
 
     Engine* engine = Engine::getInstance();
 
         switch(seleccion){
             case 1:
-
                 flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 300 ,engine->getBaseResolution().y/2+ 10);
-                
-
                 flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 300 ,engine->getBaseResolution().y/2+ 10);
-                     
-            
-            break;
+                break;
 
             case 2:
-
-                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 380 ,engine->getBaseResolution().y/2+ 110);
-                
-
-                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 380 ,engine->getBaseResolution().y/2+ 110);
-                
-            
-            break;
+                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 380 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.1+10);
+                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 380 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.1+10);
+                break;
 
             case 3:
-
-                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 200 ,engine->getBaseResolution().y/2+ 210);
-                
-
-                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 200 ,engine->getBaseResolution().y/2+ 210);
-                
-
-            
-            break;
+                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 200 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.2+10);
+                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 200 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.2+10);
+                break;
 
             case 4:
-
-                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 170 ,engine->getBaseResolution().y/2+ 310);
-                
-
-                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 170 ,engine->getBaseResolution().y/2+ 310);
-                
-            
-            break;
+                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 170 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.3+10);
+                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 170 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.3+10);
+                break;
         }
 
-       if(clock->getElapsedTime().asSeconds()>(0.00004)){
-
-            if(dir==true)
-                i++;
-            
-            else i--;
-
-            flecha_selectorL->move(i,0);
-            flecha_selectorR->move(-i,0);
-            
-            clock->restart();
-
-            if(i==30) dir=false; else if(i==-30) dir = true;
-
-        }
+        int finalMove = this->prevArrowMovement + (this->arrowMovement - this->prevArrowMovement) * frameProgress;
+        flecha_selectorL->move(finalMove,0);
+        flecha_selectorR->move(-finalMove,0);
 
         engine->renderDrawable(flecha_selectorR);
         engine->renderDrawable(flecha_selectorL);
-
-        
-
-}
-
-void MenuState:: endState(){
-
 }
