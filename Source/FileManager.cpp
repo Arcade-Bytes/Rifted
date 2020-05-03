@@ -121,7 +121,7 @@ namespace ftl{
             level->InsertEndChild(xml_doc.NewElement(s_LeverId.c_str()));
             leverData = level->FirstChildElement(s_LeverId.c_str());
         }
-        leverData->SetText(state ? "1" : "0");      
+        leverData->SetText(state ? "1" : "0");     
         
         CloseSaveFile(xml_doc); 
     }
@@ -200,9 +200,22 @@ namespace ftl{
         //sword?
         xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_SWD)->FirstChildElement(SFL_UPG)->SetText(player.getSwordLvl().c_str());
 
+        // Key progress
+        for(int i=0; i<3; i++)
+        {
+            std::string keyUnlocked = player.getKeyUnlocked(i);
+            std::string nodeName = "a"+std::to_string(i);
+
+            XMLElement* key = xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_PROGRESS)->FirstChildElement(nodeName.c_str());
+            if(!key)
+            {
+                xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_PROGRESS)->InsertEndChild(xml_doc.NewElement(nodeName.c_str()));
+                key = xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_PROGRESS)->FirstChildElement(nodeName.c_str());
+            }
+            key->SetText(keyUnlocked.c_str());
+        }
+
         CloseSaveFile(xml_doc);
-
-
     }
 
     void LoadGame(Player &player)
@@ -236,8 +249,23 @@ namespace ftl{
         player.setBowLvl(std::stoi(xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_BOW)->FirstChildElement(SFL_UPG)->GetText()));
         //sword?
         player.setSwordLvl(std::stoi(xml_doc.FirstChildElement(SFL_WPN)->FirstChildElement(SFL_SWD)->FirstChildElement(SFL_UPG)->GetText()));
-        CloseSaveFile(xml_doc);
-        
+
+        // Key progress
+        for(int i=0; i<3; i++)
+        {
+            std::string keyUnlocked = "0";
+            std::string nodeName = "a"+std::to_string(i);
+
+            XMLElement* key = xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_PROGRESS)->FirstChildElement(nodeName.c_str());
+            if(key)
+            {
+                keyUnlocked = key->GetText();
+            }
+
+            player.setKeyUnlocked(keyUnlocked=="0"?0:1, i);
+        }
+
+        CloseSaveFile(xml_doc);   
     }
 
 

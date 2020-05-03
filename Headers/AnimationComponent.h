@@ -30,6 +30,9 @@ public:
 
     void addAnimation(std::string key, std::vector<Frame*> frames, bool looped = false);
     void playAnimation(const std::string key, bool mirror = false);
+    void stopCurrentAnimation();
+    void resetCurrentAnimation();
+    void skipCurrentAnimation();
 };
 
 #endif

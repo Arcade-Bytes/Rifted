@@ -105,10 +105,12 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             enemy->setMaxHealth(1000);
             enemy->setResistances(1.0f, 1.0f, 1.0f);
             enemy->setDoPatrol(false);
+            enemy->overrideHitboxType(PLATFORM);
             break;
         default: 
-            enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 15, {1500.0f,0.0f}, HEAVY_ATTACK);
-            enemy->setAnimation("greenEnemy.json");
+            enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 15, {1500.0f,500.0f}, LIGHT_ATTACK);
+            enemy->setEnemyType( Enemy::EnemyType::BasicMelee );
+            enemy->setAnimation("melee_enemy.json");
             enemy->setMaxSpeed(300.0f, 800.0f);
             enemy->setAIDistances(150, 50);
             enemy->setRangedMode(false);

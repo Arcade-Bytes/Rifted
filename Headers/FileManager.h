@@ -29,6 +29,7 @@
 #define SFL_BOW "bow"
 #define SFL_SWD "sword"
 #define SFL_WPN "weapons"
+#define SFL_PROGRESS "progress"
 
 using namespace tinyxml2;   //fuck off long string >:((
     

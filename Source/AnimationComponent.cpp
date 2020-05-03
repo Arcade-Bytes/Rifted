@@ -35,9 +35,7 @@ void AnimationComponent::loadAnimationsFromJSON(const std::string& filepath)
     if(document.HasMember("scale"))
     {
         scaleFactor = (float)(document["scale"].GetDouble());
-        printf("Scale factor %f\n", scaleFactor);
         scaleFactor /= 10.0f;
-        printf("Scale factor divided by 10 %f\n", scaleFactor);
     }
 
     rapidjson::Value& animations = document["animations"];
@@ -100,4 +98,22 @@ void AnimationComponent::playAnimation(const std::string key, bool mirror)
 
     if(this->current_animation)
         this->current_animation->play(mirror);
+}
+
+void AnimationComponent::stopCurrentAnimation()
+{
+    if(this->current_animation)
+        this->current_animation->stop();
+}
+
+void AnimationComponent::resetCurrentAnimation()
+{
+    if(this->current_animation)
+        this->current_animation->reset();
+}
+
+void AnimationComponent::skipCurrentAnimation()
+{
+    if(this->current_animation)
+        this->current_animation->skip();
 }

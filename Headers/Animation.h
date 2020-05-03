@@ -47,6 +47,7 @@ public:
     void resume();
     void stop();
     void reset();
+    void skip(); // Skips to last frame
 };
 
 #endif

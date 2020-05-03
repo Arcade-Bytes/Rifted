@@ -12,10 +12,14 @@ GameState::GameState(std::stack<State*>* states, Player* player)
     this->changePotionShape();
 
     this->EfectoShape.setSize({(float)Engine::getInstance()->getBaseResolution().x,(float)Engine::getInstance()->getBaseResolution().y});
-    this->EfectoShape.setOrigin({this->EfectoShape.getSize().x/2.0f,this->EfectoShape.getSize().y/2.0f});
-    this->EfectoShape.setPosition({Engine::getInstance()->getBaseResolution().x/2.0f,Engine::getInstance()->getBaseResolution().y/2.0f});
     this->EfectoShape.setTexture(ResourceManager::getInstance()->loadTexture("resources/GrayScale.png"));
     this->EfectoShape.setFillColor(sf::Color(255,255,255,0));
+
+    this->healingEffectShape.setSize({(float)Engine::getInstance()->getBaseResolution().x,(float)Engine::getInstance()->getBaseResolution().y});
+    this->healingEffectManager = new AnimationComponent(healingEffectShape);
+    this->healingEffectManager->loadAnimationsFromJSON("animations/screenheal.json");
+    this->healingEffectManager->playAnimation("heal");
+    this->healingEffectManager->skipCurrentAnimation();
 
     // Transition init
     this->f_transitionTime = 1.0f;
@@ -33,6 +37,7 @@ GameState::GameState(std::stack<State*>* states, Player* player)
 GameState::~GameState()
 {
     delete this->level;
+    delete this->healingEffectManager;
 }
 
 void GameState::initGame()
@@ -57,16 +62,47 @@ void GameState::changeLevel()
     std::string mapFile = exit->getDestination();
     int entranceIndex = exit->getEntranceIndex();
 
+    // Check if we need an animation
+    bool hasAnimation = this->level->getIfAnimationBeforeNextLevel();
+
+    // Regenerate potions
+    this->player->setRemainingPotions(this->player->getMaxPotions());
+    this->changePotionShape();
+
     // Save game data
     this->player->setLevel(mapFile);
     this->player->setDoor(entranceIndex);
     this->player->stopSpeed();
+
+        // If a boss Key was received
+    int bossKey = this->level->getBossKeyIndex();
+    if(bossKey >= 0) this->player->setKeyUnlocked(true, bossKey);
+
     ftl::SaveGame(*this->player);
     this->level->saveLevelData();
 
-    // Reset level
-    delete this->level;
-    this->initLevel();
+    // If it is a normal level change, we just init the level here
+    if(!hasAnimation)
+    {
+        // Reset level
+        delete this->level;
+        this->initLevel();
+    }
+    // If it has a previous animation, we change to AnimationState.
+    // Level will be initialized on this state's reinit later when we come back
+    else
+    {
+        // Temporary, may add something here
+        delete this->level;
+        this->initLevel();
+    }
+}
+
+void GameState::beatTheGame()
+{
+    this->player->setLevel("Prueba_Beta");
+    this->player->setDoor(0);
+    this->changeState(SUMMARY_STATE, true);
 }
 
 void GameState::transitionUpdate()
@@ -116,12 +152,20 @@ void GameState::update()
         this->level->update();
         this->changePotionShape(); 
         this->changeDamageEffects();
+        this->healingEffectManager->playAnimation("heal");
+
+        // Healing effect
+        if(this->player->usedPotionInLastFrame())
+        {
+            this->healingEffectManager->resetCurrentAnimation();
+        }
 
         // Check level change
         if(this->level->didPlayerLeave())
         {
             this->b_isLeaving = true;
             this->b_isTransitioning = true;
+            this->healingEffectManager->skipCurrentAnimation();
         }
 
         // Pause game
@@ -143,10 +187,14 @@ void GameState::update()
         if(this->level->didPlayerDie())
         {
             this->b_reInit = true;
-            //std::cerr<<"Y ahora vuelvo a cargar\n";
+        }
+
+        // Summary state hack
+        if(Engine::getInstance()->getKeyPressed(sf::Keyboard::J))
+        {
+            this->beatTheGame();
         }
     }
-
 }
 
 void GameState::changeDamageEffects() {
@@ -177,6 +225,7 @@ void GameState::render(float frameProgress)
             Engine::getInstance()->setFollowView(false);
             Engine::getInstance()->renderDrawable(&this->PocionesShape);
             Engine::getInstance()->renderDrawable(&this->EfectoShape);
+            Engine::getInstance()->renderDrawable(&this->healingEffectShape);
             Engine::getInstance()->renderDrawable(&this->fadeOutPanel);
         }
     }

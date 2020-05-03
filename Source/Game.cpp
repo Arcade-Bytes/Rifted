@@ -9,6 +9,8 @@ Game::Game()
     this->states.push(new ShopState(&states, player));
     this->states.push(new TextState(&states, player));
     this->states.push(new GameState(&states, player));
+    this->states.push(new SummaryState(&states, player));
+    this->states.push(new CreditsState(&states, player));
     this->states.push(new MainMenuState(&states, player));
 
     this->updateStartTime = 0.0f;

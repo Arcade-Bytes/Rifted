@@ -14,10 +14,14 @@ private:
     sf::Sprite* sword_upgrade;// Indica las mejoras de espada actuales
     sf::Sprite* coin_purse;// Indica las monedas actuales
     sf::Sprite* kill_count;// Indica las kills actuales
-    sf::Sprite* parchment;// Fondo para los datos del jugador
+    sf::RectangleShape* parchment;// Fondo para los datos del jugador
     sf::Sprite* shield_upgrade;// Indica el nivel de escudo
     sf::Sprite* bow_upgrade;// Indica el nivel de bow
     sf::Sprite* hammer_upgrade;// Indica el nivel de hammer
+
+    sf::RectangleShape* mineKey; // The key icon that shows if you have the mine key
+    sf::RectangleShape* cementeryKey; // The key icon that shows if you have the cementery key
+    sf::RectangleShape* towerKey; // The key icon that shows if you have the tower key
 
     sf::Clock* clock;
 
@@ -36,17 +40,17 @@ public:
     PauseState(std::stack<State*>* states, Player* player);
     ~PauseState();
 
+    void loadAssets();
+    void initPlayerData();
+
     void update();
     void render(float frameProgress);
-
-    void initPlayerData();
 
     void drawText();
     void drawArrow();
     void drawPlayerData();
     void drawParchment();
 
-    void loadAssets();
 };
 
 #endif

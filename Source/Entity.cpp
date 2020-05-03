@@ -283,24 +283,27 @@ bool Entity::checkInteractionCollision(Hitbox* hitbox)
     if(this->checkInteraction(hitbox))
     {
         sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
-        if(!this->b_isInvulnerable && (intersection.x != 0.0f || intersection.y != 0.0f))
+        if(intersection.x != 0.0f || intersection.y != 0.0f)
         {
-            float damage = hitbox->getDamage();
-            damage *= 1 - this->getResistance(hitbox->getDamageType());
-            float finalDamage = this->getHurt(damage);
-
-            sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
-            sf::Vector2f knockback = hitbox->getKnockback();
-            this->movement->stopY();
-            this->knockback(
-                knockback.x * (diff.x < 0 ? 1 : -1),
-                knockback.y
-            );
-
-            if(finalDamage > 0.0f)
+            if(!this->b_isInvulnerable)
             {
-                this->b_isInvulnerable = true;
-                this->f_invulnerabilityTime = 1.0f;
+                float damage = hitbox->getDamage();
+                damage *= 1 - this->getResistance(hitbox->getDamageType());
+                float finalDamage = this->getHurt(damage);
+
+                sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
+                sf::Vector2f knockback = hitbox->getKnockback();
+                this->movement->stopY();
+                this->knockback(
+                    knockback.x * (diff.x < 0 ? 1 : -1),
+                    knockback.y
+                );
+
+                if(finalDamage > 0.0f)
+                {
+                    this->b_isInvulnerable = true;
+                    this->f_invulnerabilityTime = 1.0f;
+                }
             }
 
             if(hitbox->getType() == LETHAL)

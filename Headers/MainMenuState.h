@@ -5,11 +5,12 @@
 
 class MainMenuState : public State {
 private:
-    sf::Sprite* fondoIni;
-    sf::Font fuente;
-    sf::Text* texto;
+    sf::RectangleShape* fondoIni;
+    sf::Text* textoTitle;
+    sf::Text* textoPressEnter;
     sf::Clock* clock;
-    int i ; //Controla la trasparencia del Mensaje
+    int alpha ; //Controla la trasparencia del Mensaje
+    int prevAlpha;
     bool dir; //Controla la direccion de la trasparencia
 public:
     MainMenuState(std::stack<State*>* states, Player* player);

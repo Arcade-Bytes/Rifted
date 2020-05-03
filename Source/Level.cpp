@@ -1,21 +1,21 @@
 #include "Level.h"
 
-//Point constants multiplyers
-
+//Point constants multipliers
 #define CoinPointMultiplyer 500         //Defienes points when picking coins
 #define EnemiesPointMultiplyer 100      // Defines points when killing enemies
-#define DeathPointReduction 0.1f
-
 
 Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 {
-    this->levelName = mapName;
+    this->s_levelName = mapName;
 
     this->b_playerHasLeft = false;
+    this->b_hasAnimationBeforeNextLevel = false;
+    this->i_bossKeyIndex = -1;
     this->resetNextState();
 
     sf::Vector2i tileSize = {32,32};
     this->map = new Map(mapName, tileSize, entranceIndex);
+    this->s_zone = map->getMetadataValue("zona");
 
     // Player init
     this->player = player;
@@ -94,9 +94,17 @@ void Level::initObjectData()
     for(auto data : objectData)
     {
         NPC* npc = new NPC(data.name);
-        npc->setSize(data.size);
-        npc->setPosition(data.positon);
-        this->npcs.push_back(npc);
+
+        if(npc->getImKey() && this->player->getKeyUnlocked(npc->getKeyType())=="1")
+        {
+            delete npc;
+        }
+        else
+        {
+            npc->setSize(data.size);
+            npc->setPosition(data.positon);
+            this->npcs.push_back(npc);
+        }
     }
 
     // Doors init
@@ -124,11 +132,26 @@ void Level::initObjectData()
             if(door->getVinculationId() == data.name)
                 lever->addDoor(door);
 
-        bool active = ftl::GetLeverState(this->levelName, counter);
+        bool active = ftl::GetLeverState(this->s_levelName, counter);
         if(active) lever->interact();
 
         this->levers.push_back(lever);
         counter = this->levers.size();
+    }
+
+    // Exit init
+    objectData = this->map->getExitData();
+    for(auto data : objectData)
+    {
+        int splitter = data.name.find("/");
+        std::string mapFile = data.name.substr(0,splitter);
+        std::string index = data.name.substr(splitter+1);
+        int entrance = atoi(index.c_str());
+        
+        LevelExit* exit = new LevelExit(mapFile, entrance);
+        exit->setSize(data.size);
+        exit->setPosition(data.positon);
+        this->exits.push_back(exit);
     }
 
     // Coin init
@@ -136,7 +159,7 @@ void Level::initObjectData()
     objectData = this->map->getCoinData();
     for(auto data : objectData)
     {
-        bool picked = ftl::GetCoinState(this->levelName, counter);
+        bool picked = ftl::GetCoinState(this->s_levelName, counter);
         Pickable* coin = new Pickable(picked);
         coin->setSize(data.size);
         coin->setPosition(data.positon);
@@ -153,21 +176,6 @@ void Level::initObjectData()
         tool->setSize(data.size);
         tool->setPosition(data.positon);
         this->tools.push_back(tool);
-    }
-
-    // Exit init
-    objectData = this->map->getExitData();
-    for(auto data : objectData)
-    {
-        int splitter = data.name.find("/");
-        std::string mapFile = data.name.substr(0,splitter);
-        std::string index = data.name.substr(splitter+1);
-        int entrance = atoi(index.c_str());
-        
-        LevelExit* exit = new LevelExit(mapFile, entrance);
-        exit->setSize(data.size);
-        exit->setPosition(data.positon);
-        this->exits.push_back(exit);
     }
 }
 
@@ -210,10 +218,7 @@ void Level::checkLevelExitReached()
     {
         if(exits[i]->checkPlayerCollision(this->player))
         {
-            this->b_playerHasLeft = true;
-            this->pickedCoins = 0;
-            this->i_exitIndex = i;
-            this->forceInterpolationUpdate();
+            this->exitLevel(i);
         }
     }
 }
@@ -253,6 +258,16 @@ void Level::checkDestroyedBullets()
     }
 }
 
+std::string Level::getLevelName()
+{
+    return s_levelName;
+}
+
+std::string Level::getLevelZone()
+{
+    return s_zone;
+}
+
 // Level exit related
 bool Level::didPlayerLeave()
 {
@@ -264,14 +279,34 @@ LevelExit* Level::getActiveExit()
     return this->exits[this->i_exitIndex];
 }
 
+bool Level::getIfAnimationBeforeNextLevel()
+{
+    bool result = this->b_hasAnimationBeforeNextLevel;
+    this->b_hasAnimationBeforeNextLevel = false;
+    return result;
+}
+
+int Level::getBossKeyIndex()
+{
+    return this->i_bossKeyIndex;
+}
+
+void Level::exitLevel(int exitIndex)
+{
+    this->b_playerHasLeft = true;
+    this->pickedCoins = 0;
+    this->i_exitIndex = exitIndex;
+    this->forceInterpolationUpdate();
+}
+
 void Level::saveLevelData()
 {
     // Save lever and coin data
     for(unsigned int i=0; i<levers.size(); i++)
-        ftl::SetLeverState(levelName, i, levers[i]->getIsActive());
+        ftl::SetLeverState(s_levelName, i, levers[i]->getIsActive());
     
     for(unsigned int i=0; i<coins.size(); i++)
-        ftl::SetCoinState(levelName, i, coins[i]->getIsPicked());
+        ftl::SetCoinState(s_levelName, i, coins[i]->getIsPicked());
 }
 
 bool Level::didPlayerDie()
@@ -280,13 +315,7 @@ bool Level::didPlayerDie()
     if(dead){
        
         this->player->revive();
-        //std::cerr<<"Me mori wey \n";
-        this->player->substractPoints(CoinPointMultiplyer*pickedCoins); //We take the point from the non saved coins
-        this->player->substractPoints(player->getPoints()*DeathPointReduction);// Penalty for dying
-        pickedCoins = 0;
-        //std::cerr<<"Tengo "<<player->getPoints()<< " puntos, y antes tenia "<<player->getPoints()+100<< "puntos\n";
-        ftl::SaveGame(*this->player);
-        //std::cerr<<"He guardado\n";
+        this->pickedCoins = 0;
     }
     return dead;
 }
@@ -324,18 +353,21 @@ void Level::update()
     for(auto projectile : projectiles)
         projectile->update();
     this->entityUpdate();
-    std::vector<Hitbox *> cajas = *Hitbox::getAllHitboxes();
+
     // Lever testing
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return))
         for(auto lever : levers)
         {
             sf::Vector2f diff = lever->getPosition() - this->player->getPosition();
             float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
-            if(distance < lever->getSize().x)
+            if(distance < lever->getSize().x && lever->getToggleTime()>0.5f){
                 lever->interact();
+                lever->restartToggleTime();
+            }
         }
 
-    //If the lever is hit by a player attack it toggles (and if somo time after last toogle has passed)
+    //If the lever is hit by a player attack it toggles (and if some time after last toogle has passed)
+    std::vector<Hitbox *> cajas = *Hitbox::getAllHitboxes();
     for(auto lever: levers){
         for(auto box: cajas){
             if(box->getType() == PLAYER_ATTACK && lever->getToggleTime()>0.5f && box->getSize().x > 0){
@@ -350,16 +382,17 @@ void Level::update()
     }
 
     // Interactables
+    // Coins
     for(auto coin : coins) {
         if(!coin->getIsPicked() && coin->isWithinReach(this->player->getPosition()))
         {
             coin->setIsPicked(true);
             this->player->pickCoin(1);
-            this->player->addPoints(CoinPointMultiplyer); //You get point from coins
+            this->player->addPoints(CoinPointMultiplyer); //You get points from coins
             pickedCoins++; //To substract points if you die without saving the coins
         }
     }
-
+    // Tools
     for(auto tool : tools) {
         if(!tool->getIsPicked() && tool->isWithinReach(this->player->getPosition()))
         {
@@ -371,10 +404,33 @@ void Level::update()
     //If player is near an NPC, it interacts with it
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
         for(unsigned int i = 0; i< npcs.size(); i++){
-            if(NPCisNear(npcs[i])){
-                if(this->npcs[i]->getImShop() == true)
+            if(NPCisNear(npcs[i]))
+            {
+                // A Boss Key "NPC"
+                if(this->npcs[i]->getImKey())
+                {
+                    // Assign the boss key
+                    this->i_bossKeyIndex = this->npcs[i]->getKeyType();
+
+                    // Mark that an animation should play
+                    this->b_hasAnimationBeforeNextLevel = true;
+
+                    // Prepare the exit to return to the lobby
+                    LevelExit* exit = new LevelExit("Prueba_Beta", 0);
+                    exit->setSize(sf::Vector2f(0.0f,0.0f));
+                    this->exits.push_back(exit);
+
+                    // Level finished
+                    this->exitLevel(this->exits.size()-1);
+                }
+                // A Shop NPC
+                else if(this->npcs[i]->getImShop())
+                {
                     this->nextState = SHOP_STATE;
-                else{
+                }
+                // A regular talking/note NPC
+                else
+                {
                     this->player->setNear(npcs[i]->getDialogue());
                     this->nextState = TEXT_STATE;
                 }
