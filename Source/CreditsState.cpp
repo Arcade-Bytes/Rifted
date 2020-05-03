@@ -90,7 +90,7 @@ void CreditsState::update()
 
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Escape) || this->f_timeCounter >= this->f_creditsTime)
     {
-        this->changeState(MENU_STATE, true);
+        this->changeState(MAINMENU_STATE, true);
     }
 }
 

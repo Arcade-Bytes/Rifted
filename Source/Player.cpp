@@ -304,15 +304,15 @@ void Player::render(float frameProgress)
     this->shape.setPosition(pos);
 
     // Interpolate weapons and tools position
+    this->shield->setPosition(pos.x, pos.y, this->b_facingRight);
     this->sword->setPosition(pos.x, pos.y, this->b_facingRight);
     this->hammer->setPosition(pos.x, pos.y, this->b_facingRight);
-    this->shield->setPosition(pos.x, pos.y, this->b_facingRight);
 
     // Render
     Engine::getInstance()->renderDrawable(&shape);
+    this->shield->render();
     //this->sword->render();
     //this->hammer->render();
-    //this->shield->render();
 }
 
 //GET DATA TO SAVE

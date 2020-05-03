@@ -21,15 +21,15 @@ ShopState::ShopState(std::stack<State*>* states, Player* player)
     clock = new sf::Clock();
     //Paramentros para la animacion de la flecha
     dir = true;
-    i = 0;
+    arrowMove = prevArrowMove = 0;
     max_seleccion = 2;//Vida y money nunca seran -1
 
     loadAssets();
     loadDialogue();
 }
 
-ShopState::~ShopState(){
-
+ShopState::~ShopState()
+{
     delete parchment;
     delete texto; 
     delete flecha_selector;
@@ -95,7 +95,9 @@ void ShopState:: loadDialogue(){
 }
 
 void ShopState:: loadAssets(){
+    Engine* engine = Engine::getInstance();
     ResourceManager* resources = ResourceManager::getInstance();
+    sf::Vector2f baseRes = sf::Vector2f(engine->getBaseResolution().x,engine->getBaseResolution().y);
 
     //Cargamos la fuente de texto
     texto= new sf::Text();
@@ -111,9 +113,11 @@ void ShopState:: loadAssets(){
     flecha_selector->setOrigin(flecha_selector->getLocalBounds().width/2.0f, flecha_selector->getLocalBounds().height/2.0f);
 
     //Cargamos la flecha
-    parchment = new sf::Sprite(*resources->loadTexture("resources/parchment.png"));
-    parchment->setOrigin(parchment->getLocalBounds().width/2.0f, parchment->getLocalBounds().height/2.0f);
+    parchment = new sf::RectangleShape();
+    parchment->setTexture(resources->loadTexture("resources/parchment.png"));
     parchment->rotate(90);
+    parchment->setSize(sf::Vector2f(baseRes.x*0.9f,baseRes.y*1.53f));
+    parchment->setPosition(baseRes.x*1.05f,-baseRes.y*0.34f);
 
     //Cargamos las mejoras de vida
     heart_upgrade = new sf::Sprite(*resources->loadTexture("resources/health_upgrade.png"));
@@ -140,14 +144,16 @@ void ShopState:: loadAssets(){
     bow_upgrade->setOrigin(bow_upgrade->getLocalBounds().width/2.0f, bow_upgrade->getLocalBounds().height/2.0f);
 
     //Cargamos al tendero
-    npc_cleric = new sf::Sprite(*resources->loadTexture("resources/cleric.png"));
-    npc_cleric->setOrigin(npc_cleric->getLocalBounds().width/2.0f, npc_cleric->getLocalBounds().height/2.0f);
+    npc_cleric = new sf::RectangleShape();
+    npc_cleric->setTexture(resources->loadTexture("resources/cleric.png"));
+    npc_cleric->setSize(sf::Vector2f(baseRes.x*0.28f,baseRes.y*0.537f));
+    npc_cleric->setPosition(baseRes.x*0.f,baseRes.y*0.45f);
 
     //Cargamos la caja de texto
-    text_box = new sf::Sprite(*resources->loadTexture("resources/text_box.png"));
-    text_box->setOrigin(text_box->getLocalBounds().width/2.0f, text_box->getLocalBounds().height/2.0f);
-
-
+    text_box = new sf::RectangleShape();
+    text_box->setTexture(resources->loadTexture("resources/text_box.png"));
+    text_box->setSize(sf::Vector2f(baseRes.x*0.27f,baseRes.y*0.37f));
+    text_box->setPosition(baseRes.x*0.f,baseRes.y*0.05f);
 }
 
 void ShopState:: update(){
@@ -173,12 +179,11 @@ void ShopState:: update(){
         }
     }
 
-    if(engine->getKeyPressed(sf::Keyboard::Return)){
+    if(engine->getKeyPressed(sf::Keyboard::Return))
+    {
         switch(seleccion){
-
             case 1: //SI LE DA AL BOTON DE SALIR ....
                 texto_render = textoTienda_v5[random()%textoTienda_v5.size()]; //CARGAMOS UNA DESPEDIDA
-                this->b_reInit = true;
                 this->changeState(GAME_STATE, false);
             break;
             
@@ -249,6 +254,29 @@ void ShopState:: update(){
         this->player->setHammrLvl(i_hammer);
         this->player->setBowLvl(i_bow);
     }
+    else if(engine->getKeyPressed(sf::Keyboard::Escape))
+    {
+        this->changeState(GAME_STATE, false);
+    }
+
+    // Arrow movement
+    if(seleccion==1){
+        if(clock->getElapsedTime().asMilliseconds()>(0.004f)){  //0.00004
+            int steps = clock->getElapsedTime().asSeconds() / 0.004f;
+            prevArrowMove = arrowMove;
+            if(dir==true)
+                arrowMove+=steps;
+            else 
+                arrowMove-=steps;
+
+            if(arrowMove>30)arrowMove=30;
+            if(arrowMove<-30)arrowMove=-30;
+            
+            clock->restart();
+
+            if(arrowMove>=30) dir=false; else if(arrowMove<=-30) dir = true;
+        }
+    }
 }
 
 void ShopState:: render(float frameProgress){
@@ -256,7 +284,7 @@ void ShopState:: render(float frameProgress){
     drawParchment();
     drawPlayerData();
     drawText();
-    drawArrow();
+    drawArrow(frameProgress);
     drawPrices();
 }
 
@@ -320,65 +348,33 @@ void ShopState::drawText(){
 
 }
 
-void ShopState:: drawArrow(){
-
+void ShopState:: drawArrow(float frameProgress)
+{
     Engine* engine = Engine::getInstance();
-
     switch(seleccion){
-            case 1:
-
-                flecha_selector->setPosition(engine->getBaseResolution().x/4 + 180,engine->getBaseResolution().y/8+10);                     
-            
+        case 1:
+            flecha_selector->setPosition(engine->getBaseResolution().x/4 + 180,engine->getBaseResolution().y/8+10);                     
             break;
-
-            case 2:
-
-                flecha_selector->setPosition(engine->getBaseResolution().x/4*1.45 -20,engine->getBaseResolution().y/5 + 330);
-            
+        case 2:
+            flecha_selector->setPosition(engine->getBaseResolution().x/4*1.45 -20,engine->getBaseResolution().y/5 + 330);
             break;
-
-            case 3:
-
-                flecha_selector->setPosition(engine->getBaseResolution().x/4*2.1 -20,engine->getBaseResolution().y/5 + 330);
-
+        case 3:
+            flecha_selector->setPosition(engine->getBaseResolution().x/4*2.1 -20,engine->getBaseResolution().y/5 + 330);
             break;
-
-            case 4:
-
-                flecha_selector->setPosition(engine->getBaseResolution().x/4*2.75 -20 ,engine->getBaseResolution().y/5+ 330);
-
+        case 4:
+            flecha_selector->setPosition(engine->getBaseResolution().x/4*2.75 -20 ,engine->getBaseResolution().y/5+ 330);
             break;
-
-            case 5:
-
-                flecha_selector->setPosition(engine->getBaseResolution().x/4*1.77 -20 ,engine->getBaseResolution().y/5+ 630);
-
+        case 5:
+            flecha_selector->setPosition(engine->getBaseResolution().x/4*1.77 -20 ,engine->getBaseResolution().y/5+ 630);
             break;
-
-            case 6:
-
-                flecha_selector->setPosition(engine->getBaseResolution().x/4*2.42 -20 ,engine->getBaseResolution().y/5+ 630);
-
+        case 6:
+            flecha_selector->setPosition(engine->getBaseResolution().x/4*2.42 -20 ,engine->getBaseResolution().y/5+ 630);
             break;
-        }
-    if(seleccion==1){
-       if(clock->getElapsedTime().asSeconds()>(0.00004)){
-
-            if(dir==true)
-                i++;
-            
-            else i--;
-
-            flecha_selector->move(i,0);
-            
-            clock->restart();
-
-            if(i==30) dir=false; else if(i==-30) dir = true;
-
-        }
     }
 
-        engine->renderDrawable(flecha_selector);
+    int finalMove = this->prevArrowMove + (this->arrowMove - this->prevArrowMove) * frameProgress;
+    flecha_selector->move(finalMove,0);
+    engine->renderDrawable(flecha_selector);
 
 }
 
@@ -404,16 +400,8 @@ void ShopState::drawParchment(){
 
     Engine* engine = Engine::getInstance();
     
-    parchment->setPosition(engine->getBaseResolution().x/2+200,engine->getBaseResolution().y/2);
-    parchment->setScale(1.5,1.2);
     engine->renderDrawable(parchment);
-
-    npc_cleric->setPosition(engine->getBaseResolution().x/10+60,engine->getBaseResolution().y/10*8-50);
-    npc_cleric->setScale(2,2);
     engine->renderDrawable(npc_cleric);
-
-    text_box->setPosition(engine->getBaseResolution().x/10+70,engine->getBaseResolution().y/10*3-50);
-    text_box->setScale(1,2);
     engine->renderDrawable(text_box);
 
     heart_upgrade->setPosition(engine->getBaseResolution().x/4*1.75,engine->getBaseResolution().y/5 + 210);

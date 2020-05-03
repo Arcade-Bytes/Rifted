@@ -6,7 +6,7 @@
 
 class ShopState : public State {
 private:
-    sf::Sprite* parchment;// Fondo para los datos del jugador
+    sf::RectangleShape* parchment;// Fondo para los datos del jugador
     sf::Text* texto; // Variable para contener el texto
     sf::Sprite* flecha_selector;// Flecha que indica la opcion seleccionada
     sf::Sprite* heart_upgrade;// Indica las mejoras de vida actuales
@@ -15,8 +15,8 @@ private:
     sf::Sprite* hammer_upgrade;// Indica las mejoras de hammer actuales
     sf::Sprite* bow_upgrade;// Indica las mejoras de bow actuales
     sf::Sprite* shield_upgrade;// Indica las mejoras de shield actuales
-    sf::Sprite* npc_cleric;// Indica el sprite del tendero actuales
-    sf::Sprite* text_box;// Indica el sprite de la caja de texto
+    sf::RectangleShape* npc_cleric;// Indica el sprite del tendero actuales
+    sf::RectangleShape* text_box;// Indica el sprite de la caja de texto
     sf::Clock* clock;
 
     std::vector<sf::Text> textoTienda_v1; //Opciones de bienvenida
@@ -34,7 +34,8 @@ private:
     int i_shield;
     int i_bow;
     bool dir; //Direccion de la animacion de la flecha
-    int i; //COntrol para animacion de la flecha
+    int arrowMove; //Control para animacion de la flecha
+    int prevArrowMove; //Control para animacion de la flecha interpolado
     int max_seleccion;
     
 public:
@@ -51,7 +52,7 @@ public:
     void selectionUp();
 
     void drawText();
-    void drawArrow();
+    void drawArrow(float frameProgress);
     void drawPlayerData();
     void drawParchment();
     void drawPrices();
