@@ -28,6 +28,7 @@ private:
     int i_score;                    // Score
     std::string s_levelName;        // Current level name
     std::vector<std::string> nearDialogue;
+    bool b_usedPotionLastFrame;
 
     // Game progress
     bool vb_mainKeys[3];
@@ -52,6 +53,8 @@ public:
     int getMaxPotions();
     // Returns the (integer) amount of potions the player currently has
     int getRemainingPotions();
+    // Returns if the player used a potion on this frame. Used to activate the healing screen effect
+    bool usedPotionInLastFrame();
 
     // Adds N coins to the player's money counter
     void pickCoin(int value);

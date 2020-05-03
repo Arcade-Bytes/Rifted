@@ -122,3 +122,10 @@ void Animation::reset()
     this->setPaused(false);
     this->currentFrameIndex = this->totalElapsed = 0;
 }
+
+void Animation::skip()
+{
+    this->currentFrameIndex = this->frames.size()-1;
+    this->shape.setTextureRect(this->frames.at(this->currentFrameIndex).rect);
+    this->setDone(true);
+}

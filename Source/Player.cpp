@@ -15,6 +15,7 @@ Player::Player(const float& maxHealth)
     this->f_regenerationCooldown = 2.0f;
     this->f_regenerationSpeed = 0.3f;
     this->f_regenerationAmount = 0.5f;
+    this->b_usedPotionLastFrame = false;
 
     // Progress key init
     this->vb_mainKeys[0] = this->vb_mainKeys[1] = this->vb_mainKeys[2] = false;
@@ -87,6 +88,11 @@ int Player::getMaxPotions()
 int Player::getRemainingPotions()
 {
     return this->i_potions;
+}
+
+bool Player::usedPotionInLastFrame()
+{
+    return this->b_usedPotionLastFrame;
 }
 
 void Player::pickCoin(int value)
@@ -241,9 +247,10 @@ void Player::update()
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         this->move(-1);
     if((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
-    sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
         this->jump(0,1);
 
+    this->b_usedPotionLastFrame = false; // Potion effect reset
     if(!b_mutexAttack && getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
     {
         this->sword->startAttack();
@@ -259,10 +266,14 @@ void Player::update()
         this->bow->startAttack();
         this->b_mutexAttack = true;
     }
-    else if(!b_mutexAttack && this->i_potions > 0 && Engine::getInstance()->getKeyPressed(sf::Keyboard::Num4))
+    else if(!b_mutexAttack && this->i_potions > 0 &&
+        this->f_currentHealth < this->f_maxHealth &&
+        Engine::getInstance()->getKeyPressed(sf::Keyboard::Num4)
+    )
     {
         this->i_potions--;
         this->getHealed(this->f_maxHealth);
+        this->b_usedPotionLastFrame = true; // Potion effect activate
     }
     else if(!b_mutexAttack && getIsWeaponUnlocked("Shield") && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)))
     {

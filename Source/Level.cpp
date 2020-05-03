@@ -406,6 +406,7 @@ void Level::update()
         for(unsigned int i = 0; i< npcs.size(); i++){
             if(NPCisNear(npcs[i]))
             {
+                // A Boss Key "NPC"
                 if(this->npcs[i]->getImKey())
                 {
                     // Assign the boss key
@@ -422,10 +423,12 @@ void Level::update()
                     // Level finished
                     this->exitLevel(this->exits.size()-1);
                 }
+                // A Shop NPC
                 else if(this->npcs[i]->getImShop())
                 {
                     this->nextState = SHOP_STATE;
                 }
+                // A regular talking/note NPC
                 else
                 {
                     this->player->setNear(npcs[i]->getDialogue());

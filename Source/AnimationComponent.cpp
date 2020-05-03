@@ -99,3 +99,21 @@ void AnimationComponent::playAnimation(const std::string key, bool mirror)
     if(this->current_animation)
         this->current_animation->play(mirror);
 }
+
+void AnimationComponent::stopCurrentAnimation()
+{
+    if(this->current_animation)
+        this->current_animation->stop();
+}
+
+void AnimationComponent::resetCurrentAnimation()
+{
+    if(this->current_animation)
+        this->current_animation->reset();
+}
+
+void AnimationComponent::skipCurrentAnimation()
+{
+    if(this->current_animation)
+        this->current_animation->skip();
+}
