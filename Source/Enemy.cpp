@@ -9,8 +9,14 @@ Enemy::Enemy(Player* playerRef, int type)
 
     // AI Properties and helpers
     this->player = playerRef;
-    this->b_patrolLeft = false;
+    this->b_isDying = false;
     this->b_doesPatrol = true;
+    this->f_deathTime = 1.5f;
+    this->f_attackCooldown = 2.0f;
+
+    this->b_patrolLeft = false;
+    this->f_attackCooldownCounter = 0.0f;
+    this->f_deathTimeCounter = 0.0f;
 
     this->type = BasicMelee;
 
@@ -26,7 +32,7 @@ Enemy::~Enemy()
 }
 
 // Factory setters
-    //Equip physical weapon
+
 void Enemy::setWeapon(const float& cooldown, const float& timeToAttack,
     const float& window, const float& xsize, const float& ysize,
     float damage, sf::Vector2f knockback, DamageType dmgType)
@@ -34,40 +40,50 @@ void Enemy::setWeapon(const float& cooldown, const float& timeToAttack,
     if(this->weapon) delete this->weapon;
     this->weapon = new Weapon(cooldown, timeToAttack, window, xsize, ysize, damage, false, knockback, dmgType);
 }
-    //Equip ranged weapon
+
 void Enemy::setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage, sf::Vector2f knockback)
 {
     if(this->weapon) delete this->weapon;
     this->weapon = new RangedWeapon(cooldown, timeToAttack, damage, false, this->b_facingRight, knockback);
 }
-    //Animation control
+
+void Enemy::setAttackCooldown(float cooldown)
+{
+    this->f_attackCooldown = cooldown;
+}
+
 void Enemy::setAnimation(std::string animationFile)
 {
     if(this->animation) delete this->animation;
     this->animation = new AnimationComponent(this->shape);
     this->animation->loadAnimationsFromJSON("animations/"+animationFile);
 }
-    //Control of enemies speed
+
 void Enemy::setMaxSpeed(const float&maxX, const float&maxY)
 {
     this->movement->setMaxSpeed(sf::Vector2f(maxX, maxY));
 }
 
-    //Set aggro range
+//Set aggro range
 void Enemy::setAIDistances(float aggro, float attack)
 {
     this->f_aggroDistance = aggro;
     this->f_attackDistance = attack;
 }
-    //Activating ranged state for ranged enemies
+
 void Enemy::setRangedMode(bool ranged)
 {
     this->b_isRanged = ranged;
 }
-    //Activate patrol state
+
 void Enemy::setDoPatrol(bool patrol)
 {
     this->b_doesPatrol = patrol;
+}
+
+void Enemy::setDeathAnimationTime(float deathTime)
+{
+    this->f_deathTime = deathTime;
 }
 
 void Enemy::setEnemyType(EnemyType type)
@@ -82,7 +98,7 @@ void Enemy::overrideHitboxType(HitboxType type)
 
 void Enemy::attack()
 {
-    if(!b_mutexAttack)
+    if(!b_mutexAttack && this->f_attackCooldownCounter <= 0.0f)
     {
         weapon->startAttack();
     }
@@ -133,7 +149,7 @@ void Enemy::updateAIState(const float& distance, const float& yDiff)
 // Death control
 void Enemy::die()
 {
-    this->b_isDead = true;
+    this->b_isDying = true;
 }
 void Enemy::trulyDie()
 {
@@ -200,7 +216,11 @@ void Enemy::updateAnimation()
 
         this->s_currentAnimation = "idle";
 
-        if(this->b_mutexAttack)
+        if(this->b_isDying)
+        {
+            this->s_currentAnimation = "dead";
+        }
+        else if(this->b_mutexAttack)
         {
             this->s_currentAnimation = "attack";
         }
@@ -218,7 +238,11 @@ void Enemy::updateAnimation()
     {
         this->s_currentAnimation = "standup";
 
-        if(this->b_mutexAttack)
+        if(this->b_isDying)
+        {
+            this->s_currentAnimation = "dead";
+        }
+        else if(this->b_mutexAttack)
         {
             this->s_currentAnimation = "attack";
         }
@@ -230,7 +254,15 @@ void Enemy::updateAnimation()
         {
             this->s_currentAnimation = "standup";
         }
-
+    }
+    else if(this->type == Enemy::EnemyType::BreakableWall)
+    {
+        this->s_currentAnimation = "idle";
+        if(this->b_isDying) this->s_currentAnimation = "dead";
+    }
+    else if(this->type == Enemy::EnemyType::Platform)
+    {
+        this->s_currentAnimation = "idle";
     }
 
     this->animation->playAnimation(this->s_currentAnimation, b_facingRight ? false : true);  
@@ -238,9 +270,32 @@ void Enemy::updateAnimation()
 
 void Enemy::update()
 {
-    this->updateAI();
-    bool finsihedAttacking = this->updateWeapon(this->weapon);
-    this->b_mutexAttack = finsihedAttacking;
+    if(this->b_isDying)
+    {
+        this->f_deathTimeCounter += Engine::getInstance()->getDelta();
+        if(this->f_deathTimeCounter >= this->f_deathTime)
+        {
+            this->b_isDead = true;
+        }
+    }
+    else
+    {        
+        this->updateAI();
+        bool isAttacking = this->updateWeapon(this->weapon);
+        if(b_mutexAttack && !isAttacking)
+        {
+            // Attack cooldown starts when last attack started
+            this->f_attackCooldownCounter = this->f_attackCooldown;
+        }
+        this->b_mutexAttack = isAttacking;
+
+        // Cooldown update
+        if(this->f_attackCooldownCounter > 0.0f)
+        {
+            this->f_attackCooldownCounter -= Engine::getInstance()->getDelta();
+            if(this->f_attackCooldownCounter < 0.0f) this->f_attackCooldownCounter = 0.0f;
+        }
+    }
 
     // Update general stuff
     this->Entity::update();
