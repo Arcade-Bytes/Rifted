@@ -26,6 +26,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
     {
         case 1: // Basic melee
             enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 15, {1500.0f,500.0f}, LIGHT_ATTACK);
+            enemy->setAttackCooldown(2.5f);
             enemy->setEnemyType( Enemy::EnemyType::BasicMelee );
             enemy->setAnimation("melee_enemy.json");
             enemy->setMaxSpeed(300.0f, 800.0f);
@@ -36,6 +37,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             break;
         case 2: // Basic ranged
             enemy->setRangedWeapon(2.0f, 0.1f, 10);
+            enemy->setAttackCooldown(1.0f);
             enemy->setEnemyType( Enemy::EnemyType::BasicRanged );
             enemy->setAnimation("archer.json");
             enemy->setMaxSpeed(500.0f, 800.0f);
@@ -46,6 +48,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             break;
         case 3: // Heavy melee
             enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 30, {1500.0f,0.0f}, HEAVY_ATTACK);
+            enemy->setAttackCooldown(3.0f);
             enemy->setEnemyType( Enemy::EnemyType::BasicMelee );
             enemy->setAnimation("melee_enemy.json");
             enemy->setMaxSpeed(300.0f, 800.0f);
@@ -56,6 +59,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             break;
         case 4: // Heavy ranged
             enemy->setRangedWeapon(2.0f, 0.1f, 20);
+            enemy->setAttackCooldown(1.5f);
             enemy->setEnemyType( Enemy::EnemyType::BasicRanged );
             enemy->setAnimation("archer.json");
             enemy->setMaxSpeed(500.0f, 800.0f);
@@ -66,6 +70,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             break;
         case 5: // Mine Golem
             enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 40, {2000.0f,700.0f}, HEAVY_ATTACK);
+            enemy->setAttackCooldown(3.5f);
             enemy->setEnemyType( Enemy::EnemyType::BasicMelee );
             enemy->setAnimation("melee_enemy.json");
             enemy->setMaxSpeed(200.0f, 800.0f);
@@ -76,6 +81,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             break;
         case 6: // Automatic Turret
             enemy->setRangedWeapon(2.0f, 0.1f, 20);
+            enemy->setAttackCooldown(0.5f);
             enemy->setEnemyType( Enemy::EnemyType::BasicRanged );
             enemy->setAnimation("archer.json");
             enemy->setMaxSpeed(0.0f, 800.0f);
@@ -87,6 +93,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             break;
         case 10: // Breakable wall
             enemy->setWeapon(0.1f, 0.0f, 0.1f, 0, 0, 0);
+            enemy->setEnemyType( Enemy::EnemyType::BreakableWall );
             enemy->setAnimation("breakableWall.json");
             enemy->setMaxSpeed(0.0f, 800.0f);
             enemy->setAIDistances(0, 0);
@@ -94,10 +101,12 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             enemy->setMaxHealth(1.0f);
             enemy->setResistances(1.0f, 0.0f, 1.0f);
             enemy->setDoPatrol(false);
+            enemy->setDeathAnimationTime(2.0f);
             enemy->overrideHitboxType(PLATFORM);
             break;
         case 11: // Platform enemy
             enemy->setWeapon(0.1f, 0.0f, 0.1f, 0, 0, 0);
+            enemy->setEnemyType( Enemy::EnemyType::Platform );
             enemy->setAnimation("platform.json");
             enemy->setMaxSpeed(500.0f, 800.0f);
             enemy->setAIDistances(50*1.1, 0);
@@ -109,6 +118,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type)
             break;
         default: 
             enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 15, {1500.0f,500.0f}, LIGHT_ATTACK);
+            enemy->setAttackCooldown(2.5f);
             enemy->setEnemyType( Enemy::EnemyType::BasicMelee );
             enemy->setAnimation("melee_enemy.json");
             enemy->setMaxSpeed(300.0f, 800.0f);
