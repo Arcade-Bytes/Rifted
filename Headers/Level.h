@@ -14,6 +14,11 @@
 #include "BreakableDoor.h"
 #include "LevelExit.h"
 
+#define LOBBY_NAME "Prueba_Beta"
+#define LOBBY_DOOR 0
+#define FINAL_ROOM_NAME "Prueba_3"
+#define FINAL_ROOM_DOOR 1
+
 class Level {
 private:
     bool b_playerHasLeft;
@@ -25,6 +30,7 @@ private:
 
     std::string s_levelName;
     std::string s_zone;
+    bool b_isFinalBossRoom;
 
     // View properties
     sf::Vector2i limitLeftUp;
@@ -55,18 +61,27 @@ public:
 
     void initObjectData();
 
-    // View related
+    // Calculate view limits to limit the view movement later
     void initViewLimits();
+    //Adjust player view depending on player position
     void adjustPlayerView(float frameProgress);
 
     // Event checks
+    //Checks if player collides to level exit to change map
     void checkLevelExitReached();
+    //Deletes enemies marked as dead
     void checkEnemyDeaths();
+    //Deletes the bullets tagged as destroyed
     void checkDestroyedBullets();
 
-    // Map data related
+    // Returns the level name. Level name is the .tmx map name, without extension
+    // (example: Test.tmx defines a level named Test)
     std::string getLevelName();
+    // Return the level zone, specified in the map's metadata. Zones are "tutorial","mina","cementerio" or "tower"
     std::string getLevelZone();
+    // Returns true if this level is the final boss' room, as specified in the map's metadata
+    // and the level has zero enemies, thus beating the game
+    bool gameHasBeenBeaten();
 
     // Level exit related
     bool didPlayerLeave();

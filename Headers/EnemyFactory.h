@@ -11,7 +11,7 @@ public:
     EnemyFactory();
     ~EnemyFactory();
 
-    static Enemy* makeEnemy(Player* player, sf::Vector2f size, int type);
+    static Enemy* makeEnemy(Player* player, sf::Vector2f size, int type, float statsFactor=1.0f);
 };
 
 #endif

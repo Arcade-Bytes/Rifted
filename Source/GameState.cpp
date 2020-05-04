@@ -26,6 +26,7 @@ GameState::GameState(std::stack<State*>* states, Player* player)
     this->f_transitionCounter = 0.0f;
     this->b_isTransitioning = true;
     this->b_isLeaving = false;
+    this->b_gameBeaten = false;
 
     this->fadeOutPanel.setSize({
         (float)Engine::getInstance()->getBaseResolution().x,
@@ -100,9 +101,23 @@ void GameState::changeLevel()
 
 void GameState::beatTheGame()
 {
-    this->player->setLevel("Prueba_Beta");
-    this->player->setDoor(0);
+    this->player->setLevel(LOBBY_NAME);
+    this->player->setDoor(LOBBY_DOOR);
+    ftl::SaveGame(*this->player);
     this->changeState(SUMMARY_STATE, true);
+}
+
+void GameState::checkBeatTheGame()
+{
+    if(this->level->gameHasBeenBeaten())
+    {
+        // Mark the game as beaten
+        this->b_gameBeaten = true;
+
+        // Fade out transition init
+        this->b_isLeaving = true;
+        this->b_isTransitioning = true;
+    }
 }
 
 void GameState::transitionUpdate()
@@ -119,8 +134,14 @@ void GameState::transitionUpdate()
         // Reset the counter
         this->f_transitionCounter = 0.0f;
 
+        // Player beat the game
+        if(this->b_gameBeaten)
+        {
+            this->beatTheGame();
+            this->b_isLeaving = false;
+        }
         // Player is leaving the level
-        if(this->b_isLeaving)
+        else if(this->b_isLeaving)
         {
             this->changeLevel();
             this->b_isLeaving = false;
@@ -189,11 +210,8 @@ void GameState::update()
             this->b_reInit = true;
         }
 
-        // Summary state hack
-        if(Engine::getInstance()->getKeyPressed(sf::Keyboard::J))
-        {
-            this->beatTheGame();
-        }
+        // Check end of game
+        this->checkBeatTheGame();
     }
 }
 

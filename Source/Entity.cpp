@@ -465,5 +465,5 @@ void Entity::setHealth(float f_health)
 void Entity::setMaxHealth(float maxHealth)
 {
     this->f_maxHealth = maxHealth;
-    if(f_currentHealth > f_maxHealth) this->f_currentHealth = f_maxHealth;
+    this->f_currentHealth = this->f_maxHealth;
 }

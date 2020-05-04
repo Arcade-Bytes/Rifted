@@ -40,7 +40,7 @@ public:
     void setWeapon(const float& cooldown, const float& timeToAttack, const float& window, const float& xsize, const float& ysize,
         float damage, sf::Vector2f knockback = {0.0f,0.0f}, DamageType dmgType = LIGHT_ATTACK);
     // Factory setter: Sets the ranged weapon data (use setRangedMode to true for correct behavior)
-    void setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage, sf::Vector2f knockback = {0.0f,0.0f});
+    void setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage, float yOffsetPrecentage, sf::Vector2f knockback = {0.0f,0.0f});
     // Factory setter: Sets the cooldown time the enemy must wait between the end of an attack and the start of the next
     void setAttackCooldown(float cooldown);
     // Factory setter: Sets the .json animation file with the animation data

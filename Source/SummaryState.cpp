@@ -114,7 +114,11 @@ void SummaryState::initState()
     upgrades[2] = atoi(this->player->getHammrLvl().c_str());
     upgrades[3] = atoi(this->player->getBowLvl().c_str());
 
-    int totalPoints = points + kills*20 + coins*10;
+    int totalPoints = points;
+    // 1000 extra pts for every purchased upgrade
+    for(int i=0; i<4; i++) totalPoints += upgrades[i]*1000;
+    // 5000 pts for beating the game
+    totalPoints += 5000;
 
     // Text setup
     this->v_texts[0].setString("Base points: "+std::to_string(points));

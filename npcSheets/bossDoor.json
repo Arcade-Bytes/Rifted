@@ -1,0 +1,13 @@
+{
+	"textureFile": "bossDoor.png",
+	"isFinalBossDoor": true,
+	"quotes":
+	[
+		{"state":"",
+		"quotes":
+		[
+
+		]
+		}
+	]
+}
