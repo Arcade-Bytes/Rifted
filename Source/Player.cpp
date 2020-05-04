@@ -23,7 +23,7 @@ Player::Player(const float& maxHealth)
     this->sword = new Weapon(0.3f, 0.1f, 0.1f, 55, 60, 30, true, {500.0f, 400.0f}, LIGHT_ATTACK);
     this->hammer = new Weapon(1.5f, 0.7f, 0.2f, 120, 65, 60, true, {1000.0f, 500.0f}, HEAVY_ATTACK);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
-    this->bow = new RangedWeapon(0.6f, 0.1f, 20, true, this->b_facingRight);
+    this->bow = new RangedWeapon(0.6f, 0.1f, 20, -20, true, this->b_facingRight);
 
     this->movement->setMaxSpeed(sf::Vector2f(600.0f, 800.0f));
     this->setResistances(0.0f, 0.0f, 0.0f);
@@ -438,7 +438,6 @@ void Player::setHealthUpg(int i_healthupg)
     float chunkSize = this->f_maxHealth / this->i_nchunks;
     this->i_nchunks = 4 + this->i_healthUpg;
     this->setMaxHealth(chunkSize * this->i_nchunks);
-    this->f_currentHealth = this->f_maxHealth;
 }
 
 void Player::setLevel(std::string s_levelName)

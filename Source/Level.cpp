@@ -17,6 +17,12 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     this->map = new Map(mapName, tileSize, entranceIndex);
     this->s_zone = map->getMetadataValue("zona");
 
+    std::string final = map->getMetadataValue("esFinal");
+    if(final == "true")
+        this->b_isFinalBossRoom = true;
+    else
+        this->b_isFinalBossRoom = false;
+
     // Player init
     this->player = player;
     this->player->setSize(sf::Vector2f(tileSize.x*3,tileSize.y*3));
@@ -83,7 +89,11 @@ void Level::initObjectData()
     std::vector<MapObject> objectData = this->map->getEnemyData();
     for(auto data : objectData)
     {
-        Enemy* enemy = EnemyFactory::makeEnemy(this->player, data.size, data.type);
+        float statsScaleFactor = 1.0f;
+        if(this->s_zone == "cementerio") statsScaleFactor *= 2.0f;
+        if(this->s_zone == "torre") statsScaleFactor *= 3.0f;
+
+        Enemy* enemy = EnemyFactory::makeEnemy(this->player, data.size, data.type, statsScaleFactor);
         enemy->initPosition(data.positon);
         enemy->linkWorldProjectiles(this->projectiles);
         this->enemies.push_back(enemy);
@@ -101,6 +111,17 @@ void Level::initObjectData()
         }
         else
         {
+            // Final boss door is only active when we have the 3 boss keys
+            if(npc->getImFinalDoor())
+            {
+                bool enabled = true;
+                for(int i=0; i<3; i++)
+                    if(player->getKeyUnlocked(i)=="0")
+                        enabled = false;
+
+                npc->setInteractable(enabled);
+            }
+
             npc->setSize(data.size);
             npc->setPosition(data.positon);
             this->npcs.push_back(npc);
@@ -179,7 +200,6 @@ void Level::initObjectData()
     }
 }
 
-// View related
 void Level::initViewLimits()
 {
     sf::Vector2f mapSize = this->map->getMapTotalPixelSize();
@@ -198,7 +218,6 @@ void Level::initViewLimits()
         limitRightDown.y    = mapSize.y - windowSize.y/2;
     }
 }
-    //Adjust player view depending on player position
 void Level::adjustPlayerView(float frameProgress)
 {
     // Read player position and clamp it if necessary
@@ -211,7 +230,6 @@ void Level::adjustPlayerView(float frameProgress)
     Engine::getInstance()->setViewCenter(playerPosition);
 }
 
-//Checks if player collides to level exit to change map
 void Level::checkLevelExitReached()
 {
     for(unsigned int i=0; i<exits.size(); i++)
@@ -222,7 +240,7 @@ void Level::checkLevelExitReached()
         }
     }
 }
-//Deletes enemies marked as dead
+
 void Level::checkEnemyDeaths()
 {
     int killed = 0;
@@ -242,7 +260,6 @@ void Level::checkEnemyDeaths()
     this->player->addKill(killed);
 }
 
-//Deletes the bullets tagged destroyed
 void Level::checkDestroyedBullets()
 {
     for(auto iter = projectiles.begin() ; iter != projectiles.end() ; ++iter)
@@ -266,6 +283,11 @@ std::string Level::getLevelName()
 std::string Level::getLevelZone()
 {
     return s_zone;
+}
+
+bool Level::gameHasBeenBeaten()
+{
+    return this->b_isFinalBossRoom && (int)enemies.size()<=0;
 }
 
 // Level exit related
@@ -360,7 +382,8 @@ void Level::update()
         {
             sf::Vector2f diff = lever->getPosition() - this->player->getPosition();
             float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
-            if(distance < lever->getSize().x && lever->getToggleTime()>0.5f){
+            if(distance < lever->getSize().x && lever->getToggleTime()>0.5f)
+            {
                 lever->interact();
                 lever->restartToggleTime();
             }
@@ -406,35 +429,48 @@ void Level::update()
         for(unsigned int i = 0; i< npcs.size(); i++){
             if(NPCisNear(npcs[i]))
             {
-                // A Boss Key "NPC"
-                if(this->npcs[i]->getImKey())
+                // NPC can be interacted with
+                if(this->npcs[i]->isInteractable())
                 {
-                    // Assign the boss key
-                    this->i_bossKeyIndex = this->npcs[i]->getKeyType();
+                    // The final room's door NPC
+                    if(this->npcs[i]->getImFinalDoor())
+                    {
+                        // Prepare the exit to go to the boss' room
+                        LevelExit* exit = new LevelExit(FINAL_ROOM_NAME, FINAL_ROOM_DOOR);
+                        exit->setSize(sf::Vector2f(0.0f,0.0f));
+                        this->exits.push_back(exit);
+                        this->exitLevel(this->exits.size()-1);
+                    }
+                    // A Boss Key "NPC"
+                    else if(this->npcs[i]->getImKey())
+                    {
+                        // Assign the boss key
+                        this->i_bossKeyIndex = this->npcs[i]->getKeyType();
 
-                    // Mark that an animation should play
-                    this->b_hasAnimationBeforeNextLevel = true;
+                        // Mark that an animation should play
+                        this->b_hasAnimationBeforeNextLevel = true;
 
-                    // Prepare the exit to return to the lobby
-                    LevelExit* exit = new LevelExit("Prueba_Beta", 0);
-                    exit->setSize(sf::Vector2f(0.0f,0.0f));
-                    this->exits.push_back(exit);
+                        // Prepare the exit to return to the lobby
+                        LevelExit* exit = new LevelExit(LOBBY_NAME, LOBBY_DOOR);
+                        exit->setSize(sf::Vector2f(0.0f,0.0f));
+                        this->exits.push_back(exit);
 
-                    // Level finished
-                    this->exitLevel(this->exits.size()-1);
+                        // Level finished
+                        this->exitLevel(this->exits.size()-1);
+                    }
+                    // A Shop NPC
+                    else if(this->npcs[i]->getImShop())
+                    {
+                        this->nextState = SHOP_STATE;
+                    }
+                    // A regular talking/note NPC
+                    else
+                    {
+                        this->player->setNear(npcs[i]->getDialogue());
+                        this->nextState = TEXT_STATE;
+                    }
+                    this->forceInterpolationUpdate();
                 }
-                // A Shop NPC
-                else if(this->npcs[i]->getImShop())
-                {
-                    this->nextState = SHOP_STATE;
-                }
-                // A regular talking/note NPC
-                else
-                {
-                    this->player->setNear(npcs[i]->getDialogue());
-                    this->nextState = TEXT_STATE;
-                }
-                this->forceInterpolationUpdate();
             }
         }
     }
@@ -461,8 +497,23 @@ void Level::render(float frameProgress)
         
     for(auto npc: npcs){
         npc->render();
-        if(NPCisNear(npc)) //If there is an NPC near we render the dialogue bubble
+        if(NPCisNear(npc))
+        {
+            if(npc->isInteractable())
+            {
+                // Set the interact UI button to grey, so it says "Nope you can't interact with me"
+                this->keyToPress.setFillColor(sf::Color(255,255,255,255));
+                this->infoBox.setFillColor(sf::Color(255,255,255,255));
+            }
+            else
+            {
+                // Set the interact UI button to grey, so it says "Nope you can't interact with me"
+                this->keyToPress.setFillColor(sf::Color(100,100,100,255));
+                this->infoBox.setFillColor(sf::Color(100,100,100,255));
+            }
+            //If there is an NPC near we render the dialogue bubble
             renderDialogueBubble(npc);    
+        }
     }
 
     for(auto projectile : projectiles)

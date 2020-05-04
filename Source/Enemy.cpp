@@ -41,10 +41,10 @@ void Enemy::setWeapon(const float& cooldown, const float& timeToAttack,
     this->weapon = new Weapon(cooldown, timeToAttack, window, xsize, ysize, damage, false, knockback, dmgType);
 }
 
-void Enemy::setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage, sf::Vector2f knockback)
+void Enemy::setRangedWeapon(const float& cooldown, const float& timeToAttack, float damage, float yOffset, sf::Vector2f knockback)
 {
     if(this->weapon) delete this->weapon;
-    this->weapon = new RangedWeapon(cooldown, timeToAttack, damage, false, this->b_facingRight, knockback);
+    this->weapon = new RangedWeapon(cooldown, timeToAttack, damage, yOffset, false, this->b_facingRight, knockback);
 }
 
 void Enemy::setAttackCooldown(float cooldown)

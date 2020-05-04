@@ -16,6 +16,7 @@ private:
     sf::RectangleShape fadeOutPanel;
     bool b_isTransitioning;
     bool b_isLeaving;
+    bool b_gameBeaten;
     float f_transitionCounter;
     float f_transitionTime;
 public:
@@ -37,6 +38,8 @@ public:
     // Activates what needs to be activated when the game detects that the player beat the game
     // Used only when the final boss is defeated and the game can be considered beaten
     void beatTheGame();
+    // Checks end of game (final boss beaten), and starts the transition towards the SummaryState
+    void checkBeatTheGame();
 
     // Updates the fade out/in animation when the player leave/enter a level
     void transitionUpdate();

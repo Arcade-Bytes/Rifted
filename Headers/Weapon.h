@@ -37,7 +37,7 @@ public:
     void startAttack();
     void updateAttack();
 
-    void scale(sf::Vector2f scaleRatio);
+    virtual void scale(sf::Vector2f scaleRatio);
 
     int getUpgradeLvl();
     void setUpgradeLvl(int i_lvl);

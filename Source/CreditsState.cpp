@@ -37,11 +37,11 @@ CreditsState::CreditsState(std::stack<State*>* states, Player* player)
     // Text string init
     int i=0;
     this->v_texts[i++].setString("Rifted");
-    this->v_texts[i++].setString("Alex Macia Fiteni\n   - Morwen y Dora");
-    this->v_texts[i++].setString("Borja Martin Rodriguez\n   - Seven Eleven");
-    this->v_texts[i++].setString("Ivan Pomares Rastrollo\n   - Kriegger (?)");
-    this->v_texts[i++].setString("Jose Miguel Brotons Valero\n   - Vendrick");
-    this->v_texts[i++].setString("Lucas Mataix Garrigos\n   - Abascal Semental");
+    this->v_texts[i++].setString("Alex Macia Fiteni\n   \"Morwen y Dora\"");
+    this->v_texts[i++].setString("Borja Martin Rodriguez\n   \"Seven Eleven\"");
+    this->v_texts[i++].setString("Ivan Pomares Rastrollo\n   \"Krieger y Esqueletos\"");
+    this->v_texts[i++].setString("Jose Miguel Brotons Valero\n   \"Vendrick");
+    this->v_texts[i++].setString("Lucas Mataix Garrigos\n   \"Abascal\"");
     this->v_texts[i++].setString("\n\nSiempre te recordaremos, Orianna");
     this->v_texts[i++].setString("\nY que Grimaldus guie tu camino");
     this->v_texts[i++].setString("\n\n\nBy Arcade Bytes");
