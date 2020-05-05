@@ -85,8 +85,8 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type, floa
             enemy->setRangedWeapon(2.0f, 0.1f, 20*statsScaleFactor, -5.0f);
             enemy->setAttackCooldown(0.5f);
             enemy->setEnemyType( Enemy::EnemyType::BasicRanged );
-            enemy->setAnimation("archer.json");
-            enemy->setMaxSpeed(0.0f, 800.0f);
+            enemy->setAnimation("turret.json");
+            enemy->setMaxSpeed(0.0f, 600.0f);
             enemy->setAIDistances(650, 600);
             enemy->setRangedMode(true);
             enemy->setMaxHealth(120*statsScaleFactor);
@@ -103,19 +103,19 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type, floa
             enemy->setMaxHealth(1.0f);
             enemy->setResistances(1.0f, 0.0f, 1.0f);
             enemy->setDoPatrol(false);
-            enemy->setDeathAnimationTime(2.0f);
+            enemy->setDeathAnimationTime(0.7f);
             enemy->overrideHitboxType(PLATFORM);
             break;
         case 11: // Platform enemy
             enemy->setWeapon(0.1f, 0.0f, 0.1f, 0, 0, 0);
             enemy->setEnemyType( Enemy::EnemyType::Platform );
             enemy->setAnimation("platform.json");
-            enemy->setMaxSpeed(500.0f, 800.0f);
+            enemy->setMaxSpeed(800.0f, 0.0f);
             enemy->setAIDistances(50*1.1, 0);
-            enemy->setRangedMode(false);
+            enemy->setRangedMode(true);
             enemy->setMaxHealth(1000);
             enemy->setResistances(1.0f, 1.0f, 1.0f);
-            enemy->setDoPatrol(false);
+            enemy->setDoPatrol(true);
             enemy->overrideHitboxType(PLATFORM);
             break;
         default: 

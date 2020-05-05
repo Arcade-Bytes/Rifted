@@ -150,6 +150,7 @@ void Enemy::updateAIState(const float& distance, const float& yDiff)
 void Enemy::die()
 {
     this->b_isDying = true;
+    this->hitbox->setType(NO_COLLISION);
 }
 void Enemy::trulyDie()
 {
