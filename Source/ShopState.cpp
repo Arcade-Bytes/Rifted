@@ -260,22 +260,20 @@ void ShopState:: update(){
     }
 
     // Arrow movement
-    if(seleccion==1){
-        if(clock->getElapsedTime().asMilliseconds()>(0.004f)){  //0.00004
-            int steps = clock->getElapsedTime().asSeconds() / 0.004f;
-            prevArrowMove = arrowMove;
-            if(dir==true)
-                arrowMove+=steps;
-            else 
-                arrowMove-=steps;
+    if(clock->getElapsedTime().asMilliseconds()>(0.004f)){  //0.00004
+        int steps = clock->getElapsedTime().asSeconds() / 0.004f;
+        prevArrowMove = arrowMove;
+        if(dir==true)
+            arrowMove+=steps;
+        else 
+            arrowMove-=steps;
 
-            if(arrowMove>30)arrowMove=30;
-            if(arrowMove<-30)arrowMove=-30;
-            
-            clock->restart();
+        if(arrowMove>30)arrowMove=30;
+        if(arrowMove<-30)arrowMove=-30;
+        
+        clock->restart();
 
-            if(arrowMove>=30) dir=false; else if(arrowMove<=-30) dir = true;
-        }
+        if(arrowMove>=30) dir=false; else if(arrowMove<=-30) dir = true;
     }
 }
 

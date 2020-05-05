@@ -251,6 +251,7 @@ void Player::update()
         this->jump(0,1);
 
     this->b_usedPotionLastFrame = false; // Potion effect reset
+    bool restingShield = false; // True if we are resting the shield
     if(!b_mutexAttack && getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
     {
         this->sword->startAttack();
@@ -282,13 +283,15 @@ void Player::update()
     else
     {
         this->shield->RestShield();
+        restingShield = true;
     }   
 
     // Update the attacks
     bool endSword = this->updateWeapon(sword);
     bool endHammer = this->updateWeapon(hammer);
     bool endBow = this->updateWeapon(bow);
-    b_mutexAttack = (endSword || endHammer || endBow);
+    bool shieldIsUp = this->shield->isUp() && restingShield;
+    b_mutexAttack = (endSword || endHammer || endBow || shieldIsUp);
 
     // Update life regeneration
     this->regenerate();
@@ -436,7 +439,7 @@ void Player::setHealthUpg(int i_healthupg)
 
     // Recalculate max life and chunks
     float chunkSize = this->f_maxHealth / this->i_nchunks;
-    this->i_nchunks = 4 + this->i_healthUpg;
+    this->i_nchunks = 4 + this->i_healthUpg*2;
     this->setMaxHealth(chunkSize * this->i_nchunks);
 }
 

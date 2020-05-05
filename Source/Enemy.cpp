@@ -150,6 +150,7 @@ void Enemy::updateAIState(const float& distance, const float& yDiff)
 void Enemy::die()
 {
     this->b_isDying = true;
+    this->hitbox->setType(NO_COLLISION);
 }
 void Enemy::trulyDie()
 {
@@ -236,7 +237,7 @@ void Enemy::updateAnimation()
     }
     else if(this->type == Enemy::EnemyType::BasicMelee)
     {
-        this->s_currentAnimation = "standup";
+        this->s_currentAnimation = "ready";
 
         if(this->b_isDying)
         {
@@ -252,7 +253,7 @@ void Enemy::updateAnimation()
         }
         else
         {
-            this->s_currentAnimation = "standup";
+            this->s_currentAnimation = "ready";
         }
     }
     else if(this->type == Enemy::EnemyType::BreakableWall)

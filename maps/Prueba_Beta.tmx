@@ -20052,6 +20052,10 @@
   <object id="42" x="273" y="290" width="446" height="30"/>
   <object id="43" x="-1" y="312.5" width="273.5" height="7.5"/>
   <object id="53" x="432" y="763" width="368.5" height="12.5"/>
+  <object id="59" x="800.75" y="400" width="19.25" height="400"/>
+ </objectgroup>
+ <objectgroup id="16" name="11">
+  <object id="58" x="432.25" y="712.75" width="48.25" height="17.5"/>
  </objectgroup>
  <objectgroup id="10" name="ZonasLetales">
   <object id="44" x="432" y="755" width="368.5" height="12.5"/>
@@ -20065,7 +20069,6 @@
  <objectgroup id="4" name="NPC">
   <object id="56" name="tendero" x="100" y="722" width="24" height="24"/>
   <object id="57" name="nota" x="157.455" y="727.636" width="24" height="24"/>
-  <object id="55" name="bossDoor" x="200" y="658" width="89" height="93.75"/>
  </objectgroup>
  <objectgroup id="7" name="Monedas">
   <object id="15" x="360.5" y="510" width="16" height="16"/>
@@ -20073,5 +20076,8 @@
  </objectgroup>
  <objectgroup id="8" name="Puertas">
   <object id="21" name="salida" x="783" y="352.5" width="18" height="48"/>
+ </objectgroup>
+ <objectgroup id="15" name="6">
+  <object id="57" x="247.5" y="720.25" width="32.5" height="31"/>
  </objectgroup>
 </map>
