@@ -1,0 +1,130 @@
+{
+  "texture": "screenheal.png",
+  "animations":
+  [
+    {
+      "name":"hide",
+      "looped": false,
+      "frames":
+      [
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 0,
+            "width": 480,
+            "height": 270
+          }
+        }
+      ]
+    },
+    {
+      "name":"heal",
+      "looped": false,
+      "frames":
+      [
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 270,
+            "width": 480,
+            "height": 270
+          }
+        },
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 540,
+            "width": 480,
+            "height": 270
+          }
+        },
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 810,
+            "width": 480,
+            "height": 270
+          }
+        },
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 1080,
+            "width": 480,
+            "height": 270
+          }
+        },
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 1350,
+            "width": 480,
+            "height": 270
+          }
+        },
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 1080,
+            "width": 480,
+            "height": 270
+          }
+        },
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 810,
+            "width": 480,
+            "height": 270
+          }
+        },
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 540,
+            "width": 480,
+            "height": 270
+          }
+        },
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 270,
+            "width": 480,
+            "height": 270
+          }
+        },
+        {
+          "duration": 40,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 0,
+            "width": 480,
+            "height": 270
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -10,15 +10,15 @@ private:
 
     //std::vector<sf::RectangleShape*> botones;
 
-    sf::Sprite* fondoIni;
+    sf::RectangleShape* fondoIni;
     sf::Sprite* flecha_selectorR;
     sf::Sprite* flecha_selectorL;
     sf::Text* texto;
     sf::Clock* clock;
 
-    int i ;
+    int arrowMovement;
+    int prevArrowMovement;
     bool dir; 
-    
 public:
     MenuState(std::stack<State*>* states, Player* player);
     ~MenuState();
@@ -26,8 +26,7 @@ public:
     void update();
     void render(float frameProgress);
     void drawText();
-    void drawArrow();
-    void endState();
+    void drawArrow(float frameProgress);
 };
 
 #endif

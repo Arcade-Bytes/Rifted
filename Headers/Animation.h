@@ -22,6 +22,7 @@ private:
     float totalElapsed;
     unsigned int currentFrameIndex;
 
+    bool isMirrored;
     bool isLooped;
     bool isPaused;
     bool isDone;
@@ -41,11 +42,12 @@ public:
 
     void addFrame(Frame& frame);
 
-    void play();
+    void play(bool mirror = false);
     void pause();
     void resume();
     void stop();
     void reset();
+    void skip(); // Skips to last frame
 };
 
 #endif

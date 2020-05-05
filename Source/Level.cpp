@@ -1,18 +1,31 @@
 #include "Level.h"
 
+//Point constants multipliers
+#define CoinPointMultiplyer 500         //Defienes points when picking coins
+#define EnemiesPointMultiplyer 100      // Defines points when killing enemies
+
 Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 {
-    this->levelName = mapName;
+    this->s_levelName = mapName;
 
-    this->b_playerLeaves = false;
+    this->b_playerHasLeft = false;
+    this->b_hasAnimationBeforeNextLevel = false;
+    this->i_bossKeyIndex = -1;
     this->resetNextState();
 
     sf::Vector2i tileSize = {32,32};
     this->map = new Map(mapName, tileSize, entranceIndex);
+    this->s_zone = map->getMetadataValue("zona");
+
+    std::string final = map->getMetadataValue("esFinal");
+    if(final == "true")
+        this->b_isFinalBossRoom = true;
+    else
+        this->b_isFinalBossRoom = false;
 
     // Player init
     this->player = player;
-    this->player->setSize(sf::Vector2f(tileSize.x*2,tileSize.y*2));
+    this->player->setSize(sf::Vector2f(tileSize.x*3,tileSize.y*3));
     this->player->initPosition(
         this->map->getPlayerPosition()
     );
@@ -20,6 +33,13 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 
     this->initObjectData();
     this->initViewLimits();
+
+    //Dialoge box
+    keyToPress.setTexture(ResourceManager::getInstance()->loadTexture("resources/enter-key.png"));
+    infoBox.setTexture(ResourceManager::getInstance()->loadTexture("resources/text_box.png"));
+
+    //For coins picked but not saved
+    pickedCoins = 0;
 }
 
 Level::~Level()
@@ -69,7 +89,11 @@ void Level::initObjectData()
     std::vector<MapObject> objectData = this->map->getEnemyData();
     for(auto data : objectData)
     {
-        Enemy* enemy = EnemyFactory::makeEnemy(this->player, data.size, data.type);
+        float statsScaleFactor = 1.0f;
+        if(this->s_zone == "cementerio") statsScaleFactor *= 2.0f;
+        if(this->s_zone == "torre") statsScaleFactor *= 3.0f;
+
+        Enemy* enemy = EnemyFactory::makeEnemy(this->player, data.size, data.type, statsScaleFactor);
         enemy->initPosition(data.positon);
         enemy->linkWorldProjectiles(this->projectiles);
         this->enemies.push_back(enemy);
@@ -80,9 +104,28 @@ void Level::initObjectData()
     for(auto data : objectData)
     {
         NPC* npc = new NPC(data.name);
-        npc->setSize(data.size);
-        npc->setPosition(data.positon);
-        this->npcs.push_back(npc);
+
+        if(npc->getImKey() && this->player->getKeyUnlocked(npc->getKeyType())=="1")
+        {
+            delete npc;
+        }
+        else
+        {
+            // Final boss door is only active when we have the 3 boss keys
+            if(npc->getImFinalDoor())
+            {
+                bool enabled = true;
+                for(int i=0; i<3; i++)
+                    if(player->getKeyUnlocked(i)=="0")
+                        enabled = false;
+
+                npc->setInteractable(enabled);
+            }
+
+            npc->setSize(data.size);
+            npc->setPosition(data.positon);
+            this->npcs.push_back(npc);
+        }
     }
 
     // Doors init
@@ -110,11 +153,26 @@ void Level::initObjectData()
             if(door->getVinculationId() == data.name)
                 lever->addDoor(door);
 
-        bool active = ftl::GetLeverState(this->levelName, counter);
+        bool active = ftl::GetLeverState(this->s_levelName, counter);
         if(active) lever->interact();
 
         this->levers.push_back(lever);
         counter = this->levers.size();
+    }
+
+    // Exit init
+    objectData = this->map->getExitData();
+    for(auto data : objectData)
+    {
+        int splitter = data.name.find("/");
+        std::string mapFile = data.name.substr(0,splitter);
+        std::string index = data.name.substr(splitter+1);
+        int entrance = atoi(index.c_str());
+        
+        LevelExit* exit = new LevelExit(mapFile, entrance);
+        exit->setSize(data.size);
+        exit->setPosition(data.positon);
+        this->exits.push_back(exit);
     }
 
     // Coin init
@@ -122,7 +180,7 @@ void Level::initObjectData()
     objectData = this->map->getCoinData();
     for(auto data : objectData)
     {
-        bool picked = ftl::GetCoinState(this->levelName, counter);
+        bool picked = ftl::GetCoinState(this->s_levelName, counter);
         Pickable* coin = new Pickable(picked);
         coin->setSize(data.size);
         coin->setPosition(data.positon);
@@ -140,24 +198,8 @@ void Level::initObjectData()
         tool->setPosition(data.positon);
         this->tools.push_back(tool);
     }
-
-    // Exit init
-    objectData = this->map->getExitData();
-    for(auto data : objectData)
-    {
-        int splitter = data.name.find("/");
-        std::string mapFile = data.name.substr(0,splitter);
-        std::string index = data.name.substr(splitter+1);
-        int entrance = atoi(index.c_str());
-        
-        LevelExit* exit = new LevelExit(mapFile, entrance);
-        exit->setSize(data.size);
-        exit->setPosition(data.positon);
-        this->exits.push_back(exit);
-    }
 }
 
-// View related
 void Level::initViewLimits()
 {
     sf::Vector2f mapSize = this->map->getMapTotalPixelSize();
@@ -176,7 +218,6 @@ void Level::initViewLimits()
         limitRightDown.y    = mapSize.y - windowSize.y/2;
     }
 }
-
 void Level::adjustPlayerView(float frameProgress)
 {
     // Read player position and clamp it if necessary
@@ -189,15 +230,13 @@ void Level::adjustPlayerView(float frameProgress)
     Engine::getInstance()->setViewCenter(playerPosition);
 }
 
-// Checks
 void Level::checkLevelExitReached()
 {
     for(unsigned int i=0; i<exits.size(); i++)
     {
         if(exits[i]->checkPlayerCollision(this->player))
         {
-            this->b_playerLeaves = true;
-            this->i_exitIndex = i;
+            this->exitLevel(i);
         }
     }
 }
@@ -216,13 +255,17 @@ bool Level::checkEnemyDeaths()
     {
         auto position = iter - enemies.begin();
 
-        if(enemies[position]->getBounds().intersects(view_rect))
+        if(!b_screened && 
+            enemies[position]->getBounds().intersects(view_rect)
+            && (enemies[position]->getType() == Enemy::EnemyType::BasicMelee
+            || enemies[position]->getType() == Enemy::EnemyType::BasicRanged))
         {
             b_screened = true;
         }
 
         if(enemies[position]->isDead())
         {
+            player->addPoints(enemies[position]->getType()* EnemiesPointMultiplyer);
             delete enemies[position];
             enemies.erase(iter);
             killed++;
@@ -248,10 +291,39 @@ void Level::checkDestroyedBullets()
     }
 }
 
+bool Level::checkRealEnemies()
+{
+    bool thereAre = false;
+    for(unsigned int i=0; i<enemies.size() && !thereAre; i++)
+    {
+        if(enemies[i]->getType() == Enemy::EnemyType::BasicMelee
+            || enemies[i]->getType() == Enemy::EnemyType::BasicRanged)
+        {
+            thereAre = true;
+        }
+    }
+    return thereAre;
+}
+
+std::string Level::getLevelName()
+{
+    return s_levelName;
+}
+
+std::string Level::getLevelZone()
+{
+    return s_zone;
+}
+
+bool Level::gameHasBeenBeaten()
+{
+    return this->b_isFinalBossRoom && (int)enemies.size()<=0;
+}
+
 // Level exit related
 bool Level::didPlayerLeave()
 {
-    return this->b_playerLeaves;
+    return this->b_playerHasLeft;
 }
 
 LevelExit* Level::getActiveExit()
@@ -259,20 +331,44 @@ LevelExit* Level::getActiveExit()
     return this->exits[this->i_exitIndex];
 }
 
+bool Level::getIfAnimationBeforeNextLevel()
+{
+    bool result = this->b_hasAnimationBeforeNextLevel;
+    this->b_hasAnimationBeforeNextLevel = false;
+    return result;
+}
+
+int Level::getBossKeyIndex()
+{
+    return this->i_bossKeyIndex;
+}
+
+void Level::exitLevel(int exitIndex)
+{
+    this->b_playerHasLeft = true;
+    this->pickedCoins = 0;
+    this->i_exitIndex = exitIndex;
+    this->forceInterpolationUpdate();
+}
+
 void Level::saveLevelData()
 {
     // Save lever and coin data
     for(unsigned int i=0; i<levers.size(); i++)
-        ftl::SetLeverState(levelName, i, levers[i]->getIsActive());
+        ftl::SetLeverState(s_levelName, i, levers[i]->getIsActive());
     
     for(unsigned int i=0; i<coins.size(); i++)
-        ftl::SetCoinState(levelName, i, coins[i]->getIsPicked());
+        ftl::SetCoinState(s_levelName, i, coins[i]->getIsPicked());
 }
 
 bool Level::didPlayerDie()
 {
     bool dead = this->player->isDead();
-    if(dead) this->player->revive();
+    if(dead){
+       
+        this->player->revive();
+        this->pickedCoins = 0;
+    }
     return dead;
 }
 
@@ -296,14 +392,19 @@ void Level::forceInterpolationUpdate()
         projectile->updateInterpolationPositions();
 }
 
+void Level::entityUpdate()
+{
+    this->player->update();
+    for(auto enemy: enemies)
+        enemy->update();
+}
+
 void Level::update()
 {
     // Entity updates
     for(auto projectile : projectiles)
         projectile->update();
-    this->player->update();
-    for(auto enemy: enemies)
-        enemy->update();
+    this->entityUpdate();
 
     // Lever testing
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return))
@@ -311,18 +412,40 @@ void Level::update()
         {
             sf::Vector2f diff = lever->getPosition() - this->player->getPosition();
             float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
-            if(distance < lever->getSize().x)
+            if(distance < lever->getSize().x && lever->getToggleTime()>0.5f)
+            {
                 lever->interact();
+                lever->restartToggleTime();
+            }
         }
 
+    //If the lever is hit by a player attack it toggles (and if some time after last toogle has passed)
+    std::vector<Hitbox *> cajas = *Hitbox::getAllHitboxes();
+    for(auto lever: levers){
+        for(auto box: cajas){
+            if(box->getType() == PLAYER_ATTACK && lever->getToggleTime()>0.5f && box->getSize().x > 0){
+                sf::Vector2f diff = lever->getPosition() - box->getPosition();
+                float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
+                if(distance < lever->getSize().x){
+                    lever->interact();
+                    lever->restartToggleTime();
+                }
+            }
+        }
+    }
+
     // Interactables
+    // Coins
     for(auto coin : coins) {
         if(!coin->getIsPicked() && coin->isWithinReach(this->player->getPosition()))
         {
             coin->setIsPicked(true);
             this->player->pickCoin(1);
+            this->player->addPoints(CoinPointMultiplyer); //You get points from coins
+            pickedCoins++; //To substract points if you die without saving the coins
         }
     }
+    // Tools
     for(auto tool : tools) {
         if(!tool->getIsPicked() && tool->isWithinReach(this->player->getPosition()))
         {
@@ -330,17 +453,54 @@ void Level::update()
             this->player->unlockWeapon(tool->getName());
         }
     }
+
+    //If player is near an NPC, it interacts with it
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Return)){
         for(unsigned int i = 0; i< npcs.size(); i++){
-            if((this->npcs[i]->getPosition().x < (this->player->getPosition().x + 100)) && (this->npcs[i]->getPosition().x > (this->player->getPosition().x - 100))
-            && (this->npcs[i]->getPosition().y < (this->player->getPosition().y + 100)) && (this->npcs[i]->getPosition().y > (this->player->getPosition().y - 100))){
-                if(this->npcs[i]->getImShop() == true)
-                    this->nextState = SHOP_STATE;
-                else{
-                    this->player->setNear(npcs[i]->getDialogue());
-                    this->nextState = TEXT_STATE;
+            if(NPCisNear(npcs[i]))
+            {
+                // NPC can be interacted with
+                if(this->npcs[i]->isInteractable())
+                {
+                    // The final room's door NPC
+                    if(this->npcs[i]->getImFinalDoor())
+                    {
+                        // Prepare the exit to go to the boss' room
+                        LevelExit* exit = new LevelExit(FINAL_ROOM_NAME, FINAL_ROOM_DOOR);
+                        exit->setSize(sf::Vector2f(0.0f,0.0f));
+                        this->exits.push_back(exit);
+                        this->exitLevel(this->exits.size()-1);
+                    }
+                    // A Boss Key "NPC"
+                    else if(this->npcs[i]->getImKey())
+                    {
+                        // Assign the boss key
+                        this->i_bossKeyIndex = this->npcs[i]->getKeyType();
+
+                        // Mark that an animation should play
+                        this->b_hasAnimationBeforeNextLevel = true;
+
+                        // Prepare the exit to return to the lobby
+                        LevelExit* exit = new LevelExit(LOBBY_NAME, LOBBY_DOOR);
+                        exit->setSize(sf::Vector2f(0.0f,0.0f));
+                        this->exits.push_back(exit);
+
+                        // Level finished
+                        this->exitLevel(this->exits.size()-1);
+                    }
+                    // A Shop NPC
+                    else if(this->npcs[i]->getImShop())
+                    {
+                        this->nextState = SHOP_STATE;
+                    }
+                    // A regular talking/note NPC
+                    else
+                    {
+                        this->player->setNear(npcs[i]->getDialogue());
+                        this->nextState = TEXT_STATE;
+                    }
+                    this->forceInterpolationUpdate();
                 }
-                this->forceInterpolationUpdate();
             }
         }
     }
@@ -351,7 +511,7 @@ void Level::update()
         ResourceManager::getInstance()->MusicToAction();
     else
         //music must calm down
-        if(this->enemies.empty())
+        if(!this->checkRealEnemies())
         ResourceManager::getInstance()->MusicToMellow();
     
     this->checkDestroyedBullets();
@@ -366,13 +526,32 @@ void Level::render(float frameProgress)
     this->adjustPlayerView(frameProgress);
 
     Engine::getInstance()->setFollowView(true);
-    this->map->render();
+
+    this->map->renderBackground();
 
     for(auto lever: levers)
         lever->render();
         
-    for(auto npc: npcs)
+    for(auto npc: npcs){
         npc->render();
+        if(NPCisNear(npc))
+        {
+            if(npc->isInteractable())
+            {
+                // Set the interact UI button to grey, so it says "Nope you can't interact with me"
+                this->keyToPress.setFillColor(sf::Color(255,255,255,255));
+                this->infoBox.setFillColor(sf::Color(255,255,255,255));
+            }
+            else
+            {
+                // Set the interact UI button to grey, so it says "Nope you can't interact with me"
+                this->keyToPress.setFillColor(sf::Color(100,100,100,255));
+                this->infoBox.setFillColor(sf::Color(100,100,100,255));
+            }
+            //If there is an NPC near we render the dialogue bubble
+            renderDialogueBubble(npc);    
+        }
+    }
 
     for(auto projectile : projectiles)
         projectile->render(frameProgress);
@@ -392,4 +571,37 @@ void Level::render(float frameProgress)
 
     for(auto exit: exits)
         exit->render();
+
+    this->map->renderFront();
+}
+
+//Checks if NPC is near player
+
+bool Level::NPCisNear(NPC* npc){
+
+    bool near = false;
+
+    sf::Vector2f diff = npc->getPosition() - this->player->getPosition();
+    float distance = sqrt(diff.x*diff.x + diff.y*diff.y);
+    if(distance < npc->getSize().x)
+        near = true;
+
+    return near;
+
+}
+
+//Renders the dialogue bubble
+
+void Level:: renderDialogueBubble(NPC* npc){
+
+    Engine* engine = Engine::getInstance();
+
+    keyToPress.setSize(sf::Vector2f(1.5 * npc->getSize().x/4, 1.5 * npc->getSize().y/4));
+    infoBox.setSize(sf::Vector2f(3 * npc->getSize().x/4, 3 * npc->getSize().y/4));
+    keyToPress.setOrigin(keyToPress.getSize().x/2,keyToPress.getSize().y/2);
+    keyToPress.setPosition(npc->getPosition().x, npc->getPosition().y - npc->getSize().y);
+    infoBox.setOrigin(infoBox.getSize().x/2,infoBox.getSize().y/2);
+    infoBox.setPosition(npc->getPosition().x, npc->getPosition().y - npc->getSize().y);
+    engine->renderDrawable(&infoBox);
+    engine->renderDrawable(&keyToPress);
 }

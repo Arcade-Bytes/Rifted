@@ -38,6 +38,7 @@ private:
     std::vector<MapObject> coinData;
     std::vector<MapObject> toolData;
     std::vector<MapObject> exitData;
+    std::map<std::string, std::string> mapMetadata;
 
     std::vector<std::vector<std::vector<sf::Sprite*>>> map;
     sf::RectangleShape* background;
@@ -57,8 +58,11 @@ public:
     std::vector<MapObject> getCoinData();
     std::vector<MapObject> getToolData();
     std::vector<MapObject> getExitData();
+    std::string getMetadataValue(std::string key);
 
     void render();
+    void renderBackground();
+    void renderFront();
 };
 
 #endif

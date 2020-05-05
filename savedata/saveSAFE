@@ -1,7 +1,7 @@
 <player>
-    <maxhealth>100.000000</maxhealth>
     <health>100.000000</health>
     <coin>0</coin>
+    <potions>2</potions>
     <kills>0</kills>
     <score>0</score>
     <deaths>0</deaths>
@@ -9,9 +9,11 @@
         <health>0</health>
     </upgrades>
     <level>
-        <name>Prueba_Beta</name>
-        <door>0</door>
+        <name>Hub_World</name>
+        <door>4</door>
     </level>
+    <progress>
+    </progress>
 </player>
 <weapons>
     <sword>

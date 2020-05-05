@@ -71,6 +71,11 @@ public:
     //music and stuff functions
 
     /**
+     * set everything for the level 0 (tutorial and lobby) music
+     * DO NOT CALL FROM OUTSIDE RESOURCEMANAGER
+     **/
+    void level0music();
+    /**
      * set everything for the level 1 (mine) music
      * DO NOT CALL FROM OUTSIDE RESOURCEMANAGER
      **/

@@ -1,0 +1,58 @@
+{
+  "texture": "snobees.png",
+  "animations":
+  [
+    {
+      "name":"idle",
+      "frames":
+      [
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
+    },
+    {
+      "name":"dead",
+      "frames":
+      [
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "duration": 500,
+          "rect":
+          {
+            "offset_x": 64,
+            "offset_y": 80,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
+    }
+  ]
+}

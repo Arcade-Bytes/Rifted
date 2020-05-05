@@ -9,7 +9,21 @@ NPC::NPC(std::string sheetFile)
     document.ParseStream<0, rapidjson::UTF8<>, rapidjson::FileReadStream>(is);
 
     std::string textureFile = document["textureFile"].GetString();
-    this->b_isShop = document["isShop"].GetBool();
+
+    if(document.HasMember("isShop"))
+        this->b_isShop = document["isShop"].GetBool();
+    else
+        this->b_isShop = false;
+
+    if(document.HasMember("isKey"))
+        this->i_isKey = document["isKey"].GetInt();
+    else
+        this->i_isKey = -1;
+
+    if(document.HasMember("isFinalBossDoor"))
+        this->b_isFinalDoor = document["isFinalBossDoor"].GetBool();
+    else
+        this->b_isFinalDoor = false;
 
     currentQuoteSet = "";
     for(unsigned int i = 0; i < document["quotes"].Size() ; i++)
@@ -29,6 +43,7 @@ NPC::NPC(std::string sheetFile)
     fclose(file);
 
     this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+textureFile));
+    this->b_interactable = true;
 }
 
 NPC::~NPC()
@@ -57,15 +72,40 @@ void NPC::setSize(sf::Vector2f size)
     shape.setOrigin(shape.getSize().x/2.0f, shape.getSize().y/2);
 }
 
+bool NPC::isInteractable()
+{
+    return this->b_interactable;
+}
+
+void NPC::setInteractable(bool interactable)
+{
+    this->b_interactable = interactable;
+}
+
 std::vector<std::string> NPC:: getDialogue()
 {
     return this->quotes[currentQuoteSet];
 }
 
 
-bool NPC:: getImShop()
+bool NPC::getImShop()
 {
     return this->b_isShop;
+}
+
+bool NPC::getImFinalDoor()
+{
+    return this->b_isFinalDoor;
+}
+
+bool NPC::getImKey()
+{
+    return this->i_isKey >= 0;
+}
+
+int NPC::getKeyType()
+{
+    return this->i_isKey;
 }
 
 void NPC:: render(){

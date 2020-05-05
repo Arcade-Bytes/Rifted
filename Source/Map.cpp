@@ -212,6 +212,15 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
                 mapObject.name = std::string(objName);
                 this->doorData.push_back(mapObject);
             }
+            else if(strcmp(name, "Metadata") == 0)
+            {
+                std::string objName = std::string(object->Attribute("name"));
+                int splitter = objName.find("/");
+                std::string key = objName.substr(0,splitter);
+                std::string value = objName.substr(splitter+1);
+
+                this->mapMetadata[key] = value;
+            }
             else
             {
                 MapObject mapObject;
@@ -245,14 +254,15 @@ Map::~Map()
         }
         map[l].clear();
     }
-    map.clear();
+    this->map.clear();
 
     for(auto hitbox : v_mapHitboxes)
     {
         delete hitbox;
         hitbox = NULL;
     }
-    v_mapHitboxes.clear();
+    this->v_mapHitboxes.clear();
+    this->mapMetadata.clear();
 }
 
 sf::Vector2f Map::getMapTotalPixelSize()
@@ -300,21 +310,59 @@ std::vector<MapObject> Map::getExitData()
     return this->exitData;
 }
 
+std::string Map::getMetadataValue(std::string key)
+{
+    if(mapMetadata.find(key) != mapMetadata.end())
+    {
+        return mapMetadata[key];
+    }
+    else
+    {
+        return "";
+    }
+}
+
 void Map::render()
+{
+    // Background and Front
+    this->renderBackground();
+    this->renderFront();
+
+    // Debug Hitbox
+    //for(auto hitbox : v_mapHitboxes)
+    //    hitbox->render();
+}
+
+void Map::renderBackground()
 {
     Engine* engine = Engine::getInstance();
 
     // Background
     if(this->background) engine->renderDrawable(this->background);
 
+    // Layer count
+    unsigned int layersTmp = this->layers;
+    if(this->layers > 1) layersTmp--;
+
     // Tile map
-    for (unsigned int l = 0; l < this->layers; l++)
+    for (unsigned int l = 0; l < layersTmp; l++)
         for (int x = 0; x < this->v_gridSize.x; x++)
             for (int y = 0; y < this->v_gridSize.y; y++)
                 if(this->map[l][x][y])
                     engine->renderDrawable(this->map[l][x][y]);
+}
 
-    // Debug Hitbox
-    //for(auto hitbox : v_mapHitboxes)
-    //    hitbox->render();
+void Map::renderFront()
+{
+    Engine* engine = Engine::getInstance();
+
+    // Layer count
+    if(this->layers > 1)
+    {
+        int l=this->layers-1;
+        for (int x = 0; x < this->v_gridSize.x; x++)
+            for (int y = 0; y < this->v_gridSize.y; y++)
+                if(this->map[l][x][y])
+                    engine->renderDrawable(this->map[l][x][y]);
+    }        
 }

@@ -175,6 +175,11 @@ void Entity::knockback(const float& xforce, const float& yforce)
     this->movement->jump(xforce, yforce);
 }
 
+void Entity::stopSpeed()
+{
+    this->movement->stop();
+}
+
 void Entity::checkCollisions()
 {
     // Status info reset
@@ -278,34 +283,37 @@ bool Entity::checkInteractionCollision(Hitbox* hitbox)
     if(this->checkInteraction(hitbox))
     {
         sf::Vector2f intersection = this->hitbox->checkCollision(hitbox);
-        if(!this->b_isInvulnerable && (intersection.x != 0.0f || intersection.y != 0.0f))
+        if(intersection.x != 0.0f || intersection.y != 0.0f)
         {
-            float damage = hitbox->getDamage();
-            damage *= 1 - this->getResistance(hitbox->getDamageType());
-            float finalDamage = this->getHurt(damage);
-
-            sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
-            sf::Vector2f knockback = hitbox->getKnockback();
-            this->movement->stopY();
-            this->knockback(
-                knockback.x * (diff.x < 0 ? 1 : -1),
-                knockback.y
-            );
-
-            if(finalDamage > 0.0f)
+            if(!this->b_isInvulnerable)
             {
-                if(this->hitbox->getType() == HitboxType::PLAYER)
+                float damage = hitbox->getDamage();
+                damage *= 1 - this->getResistance(hitbox->getDamageType());
+                float finalDamage = this->getHurt(damage);
+
+                sf::Vector2f diff = this->hitbox->getPosition() - hitbox->getPosition();
+                sf::Vector2f knockback = hitbox->getKnockback();
+                this->movement->stopY();
+                this->knockback(
+                    knockback.x * (diff.x < 0 ? 1 : -1),
+                    knockback.y
+                );
+
+                if(finalDamage > 0.0f)
                 {
-                    ResourceManager::getInstance()->playSound("dsnoway");
-                    if(this->f_currentHealth < 0.1*this->f_maxHealth)
+                    if(this->hitbox->getType() == HitboxType::PLAYER)
                     {
-                        ResourceManager::getInstance()->PlayerCritical();
-                        //ResourceManager::getInstance()->playSound("gen_combat_deathsdoor");
-                        //ResourceManager::getInstance()->playSound("heart_beat_eco");
+                        ResourceManager::getInstance()->playSound("dsnoway");
+                        if(this->f_currentHealth < 0.1*this->f_maxHealth)
+                        {
+                            ResourceManager::getInstance()->PlayerCritical();
+                            //ResourceManager::getInstance()->playSound("gen_combat_deathsdoor");
+                            //ResourceManager::getInstance()->playSound("heart_beat_eco");
+                        }
                     }
+                    this->b_isInvulnerable = true;
+                    this->f_invulnerabilityTime = 1.0f;
                 }
-                this->b_isInvulnerable = true;
-                this->f_invulnerabilityTime = 1.0f;
             }
 
             if(hitbox->getType() == LETHAL)
@@ -450,6 +458,15 @@ std::string Entity::getHealth()
     return std::to_string(this->f_currentHealth).c_str();
 }
 
+float Entity::getFloatHealth() 
+{
+    return this->f_currentHealth;
+}
+float Entity::getFloatMaxHealth() 
+{
+    return this->f_maxHealth;
+}
+
 void Entity::setHealth(float f_health)
 {
     this->f_currentHealth = f_health;
@@ -458,5 +475,5 @@ void Entity::setHealth(float f_health)
 void Entity::setMaxHealth(float maxHealth)
 {
     this->f_maxHealth = maxHealth;
-    if(f_currentHealth > f_maxHealth) this->f_currentHealth = f_maxHealth;
+    this->f_currentHealth = this->f_maxHealth;
 }

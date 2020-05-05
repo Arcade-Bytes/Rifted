@@ -1,0 +1,14 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"Avanza un poco mas amigo"},
+			{"text":"JAJAJAJAJA"}
+		]
+		}
+	]
+}

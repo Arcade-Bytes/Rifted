@@ -71,7 +71,9 @@ public:
     float getResistance(DamageType type);
     virtual float getHurt(float& damage);
     virtual float getHealed(float& healing);
+    // Meant to be overrided: What this entity does when its life points reach 0
     virtual void die();
+    // Meant to be overrided: What this entity does when it hits a Lethal Area (Hitbox type / Map area)
     virtual void trulyDie();
     void revive();
 
@@ -81,6 +83,7 @@ public:
     void move(const float& xdir);
     void jump(const float& xnormalized, const float& ynormalized);
     void knockback(const float& xforce, const float& yforce);
+    void stopSpeed();
 
     // Collisions
     Hitbox* getHitbox();
@@ -92,15 +95,17 @@ public:
     virtual bool checkInteraction(Hitbox* hitbox) = 0;
 
     // Updates
-    void updateAnimation();
-    void updateMovement();
+    virtual void updateAnimation();
+    virtual void updateMovement();
     void updateInvulnerability();
     bool updateWeapon(Weapon* weapon);
 
     // Returns the current entity's health
     std::string getHealth();
+    float getFloatHealth();
     // Returns the maximun health the entity can have
     std::string getMaxHealth();
+    float getFloatMaxHealth();
     // Sets the current entity's health
     void setHealth(float f_health);
     // Sets the maximun health the entity can have

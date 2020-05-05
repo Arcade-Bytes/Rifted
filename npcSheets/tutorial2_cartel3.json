@@ -1,0 +1,16 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"Esta puerta esta cerrada, busca su \npalanca y abrela"},
+			{"text":"\"Presiona Enter para interactuar con \npalancas\""},
+			{"text":"\"Tambien puedes golpearla con un \narma para accionarla\""},
+			{"text":"Que Grimaldus guie tu camino"}
+		]
+		}
+	]
+}

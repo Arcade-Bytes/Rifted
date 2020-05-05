@@ -1,107 +1,128 @@
 {
-  "texture": "snobees.png",
+  "texture": "BreakableWall.png",
+  "scale": 15,
   "animations":
   [
     {
-      "name":"idle_left",
+      "name":"idle",
+      "looped": false,
       "frames":
       [
         {
-          "duration": 500,
+          "duration": 50,
           "rect":
           {
-            "offset_x": 64,
-            "offset_y": 80,
-            "width": 16,
-            "height": 16
-          }
-        },
-        {
-          "duration": 500,
-          "rect":
-          {
-            "offset_x": 64,
-            "offset_y": 80,
-            "width": 16,
-            "height": 16
+            "offset_x": 0,
+            "offset_y": 0,
+            "width": 100,
+            "height": 100
           }
         }
       ]
     },
     {
-      "name":"idle_right",
+      "name":"dead",
+      "looped": false,
       "frames":
       [
         {
-          "duration": 500,
+          "duration": 50,
           "rect":
           {
-            "offset_x": 64,
-            "offset_y": 80,
-            "width": 16,
-            "height": 16
+            "offset_x": 0,
+            "offset_y": 0,
+            "width": 100,
+            "height": 100
           }
         },
         {
-          "duration": 500,
+          "duration": 50,
           "rect":
           {
-            "offset_x": 64,
-            "offset_y": 80,
-            "width": 16,
-            "height": 16
-          }
-        }
-      ]
-    },
-    {
-      "name":"walking_left",
-      "frames":
-      [
-        {
-          "duration": 500,
-          "rect":
-          {
-            "offset_x": 64,
-            "offset_y": 80,
-            "width": 16,
-            "height": 16
+            "offset_x": 100,
+            "offset_y": 0,
+            "width": 100,
+            "height": 100
           }
         },
         {
-          "duration": 500,
+          "duration": 50,
           "rect":
           {
-            "offset_x": 64,
-            "offset_y": 80,
-            "width": 16,
-            "height": 16
-          }
-        }
-      ]
-    },
-    {
-      "name":"walking_right",
-      "frames":
-      [
-        {
-          "duration": 500,
-          "rect":
-          {
-            "offset_x": 64,
-            "offset_y": 80,
-            "width": 16,
-            "height": 16
+            "offset_x": 200,
+            "offset_y": 0,
+            "width": 100,
+            "height": 100
           }
         },
         {
-          "duration": 500,
+          "duration": 50,
           "rect":
           {
-            "offset_x": 64,
-            "offset_y": 80,
-            "width": 16,
-            "height": 16
+            "offset_x": 300,
+            "offset_y": 0,
+            "width": 100,
+            "height": 100
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 400,
+            "offset_y": 0,
+            "width": 100,
+            "height": 100
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 0,
+            "offset_y": 100,
+            "width": 100,
+            "height": 100
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 100,
+            "offset_y": 100,
+            "width": 100,
+            "height": 100
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 200,
+            "offset_y": 100,
+            "width": 100,
+            "height": 100
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 300,
+            "offset_y": 100,
+            "width": 100,
+            "height": 100
+          }
+        },
+        {
+          "duration": 50,
+          "rect":
+          {
+            "offset_x": 400,
+            "offset_y": 100,
+            "width": 100,
+            "height": 100
           }
         }
       ]

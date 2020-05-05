@@ -1,22 +1,35 @@
 #include "Player.h"
 #include "FileManager.h"
 
+//Point variables 
+
 Player::Player(const float& maxHealth)
     : Entity(maxHealth)
 {
     this->hitbox = new Hitbox(PLAYER, this->shape.getSize().x,this->shape.getSize().y, this->vf_position.x,this->vf_position.y);
 
     this->i_nchunks = 4;
+    this->i_maxPotions = 2;
 
-    this->sword = new Weapon(0.3f, 0.1f, 0.1f, 50, 60, 30, true, {500.0f, 0.0f}, LIGHT_ATTACK);
-    this->hammer = new Weapon(1.0f, 0.7f, 0.2f, 80, 70, 60, true, {1000.0f, 0.0f}, HEAVY_ATTACK);
+    this->f_regenerationDelta = 0.0f;
+    this->f_regenerationCooldown = 2.0f;
+    this->f_regenerationSpeed = 0.3f;
+    this->f_regenerationAmount = 0.5f;
+    this->b_usedPotionLastFrame = false;
+
+    // Progress key init
+    this->vb_mainKeys[0] = this->vb_mainKeys[1] = this->vb_mainKeys[2] = false;
+
+    this->sword = new Weapon(0.3f, 0.1f, 0.1f, 55, 60, 30, true, {500.0f, 400.0f}, LIGHT_ATTACK);
+    this->hammer = new Weapon(1.5f, 0.7f, 0.2f, 120, 65, 60, true, {1000.0f, 500.0f}, HEAVY_ATTACK);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
-    this->bow = new RangedWeapon(0.6f, 0.1f, 20, true, this->b_facingRight);
+    this->bow = new RangedWeapon(0.6f, 0.1f, 20, -20, true, this->b_facingRight);
 
+    this->movement->setMaxSpeed(sf::Vector2f(600.0f, 800.0f));
     this->setResistances(0.0f, 0.0f, 0.0f);
 
     this->animation = new AnimationComponent(this->shape);
-    this->animation->loadAnimationsFromJSON("animations/pengo.json");
+    this->animation->loadAnimationsFromJSON("animations/player.json");
 }
 
 Player::~Player()
@@ -32,6 +45,10 @@ float Player::getHurt(float& damage)
     damage *= this->shield->DamageBlock();
     float hurtAmount = this->Entity::getHurt(damage);
     f_regenerationDelta = 0.0f;
+
+    if(damage < f_maxHealth)//If it does not get hurt by spikes or instakills (theoretycaly only spikes)
+        this->substractPoints(damage);
+
     return hurtAmount;
 }
 
@@ -50,7 +67,7 @@ void Player::regenerate()
 
     // Get current life chunk
     float chunkSize = f_maxHealth / i_nchunks;
-    int i_currentChunk = ceil(f_maxHealth / chunkSize);
+    int i_currentChunk = ceil(f_currentHealth / chunkSize);
 
     f_regenerationDelta += delta;
     if(f_regenerationDelta >= f_regenerationCooldown && f_currentHealth < i_currentChunk*chunkSize)
@@ -63,6 +80,21 @@ void Player::regenerate()
         if(f_currentHealth >= i_currentChunk * chunkSize)
             f_currentHealth = i_currentChunk * chunkSize;
     }
+}
+
+int Player::getMaxPotions()
+{
+    return this->i_maxPotions;
+}
+
+int Player::getRemainingPotions()
+{
+    return this->i_potions;
+}
+
+bool Player::usedPotionInLastFrame()
+{
+    return this->b_usedPotionLastFrame;
 }
 
 void Player::pickCoin(int value)
@@ -124,7 +156,7 @@ bool Player::getIsWeaponUnlocked(std::string weaponName)
 
 void Player::die()
 {
-    //this->f_score /= 2;
+    this->f_currentHealth = 1;
 }
 
 void Player::trulyDie()
@@ -145,7 +177,6 @@ bool Player::checkObstacle(Hitbox* hitbox)
     switch(type)
     {
         case PLATFORM:
-        case ENEMY:
         result = true; break;
         default: break;
     }
@@ -175,6 +206,42 @@ void Player::resizeItems(sf::Vector2f scaleRatio)
     this->shield->scale(scaleRatio);
 }
 
+void Player::updateMovement()
+{
+    if(this->b_mutexAttack && this->movement->isYStopped()) this->movement->stopX(); // NEW, stop x speed if attacking and in ground only
+
+    Entity::updateMovement();
+}
+
+void Player::updateAnimation()
+{
+    if(this->animation)
+    {
+        this->s_currentAnimation = "idle";
+        
+        if(this->b_mutexAttack)
+        {
+            if(this->sword && this->sword->isAttacking()) this->s_currentAnimation = "attacking_sword";
+            if(this->bow && this->bow->isAttacking()) this->s_currentAnimation = "attacking_bow";
+            if(this->hammer && this->hammer->isAttacking()) this->s_currentAnimation = "attacking_hammer";
+        }
+        else if(this->movement->getSpeed().y < 0)
+        {
+            this->s_currentAnimation = "jumping";
+        }
+        else if(this->movement->getSpeed().y > 280) // NEW, hardcoded little gap so it doesn't get weird when hitting the ground
+        {
+            this->s_currentAnimation = "falling";
+        }
+        else if(abs(this->movement->getSpeed().x) > 0)
+        {
+            this->s_currentAnimation = "walking";
+        }
+
+        this->animation->playAnimation(this->s_currentAnimation, !b_facingRight); // NEW, if I am facing right, don't mirror; else mirror
+    }
+}
+
 void Player::update()
 {
     // Update input
@@ -183,9 +250,11 @@ void Player::update()
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         this->move(-1);
     if((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
-    sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
         this->jump(0,1);
 
+    this->b_usedPotionLastFrame = false; // Potion effect reset
+    bool restingShield = false; // True if we are resting the shield
     if(!b_mutexAttack && getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
     {
         ResourceManager::getInstance()->playSound("cbar_miss1");
@@ -204,7 +273,16 @@ void Player::update()
         this->bow->startAttack();
         this->b_mutexAttack = true;
     }
-    else if(getIsWeaponUnlocked("Shield") && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)))
+    else if(!b_mutexAttack && this->i_potions > 0 &&
+        this->f_currentHealth < this->f_maxHealth &&
+        Engine::getInstance()->getKeyPressed(sf::Keyboard::Num4)
+    )
+    {
+        this->i_potions--;
+        this->getHealed(this->f_maxHealth);
+        this->b_usedPotionLastFrame = true; // Potion effect activate
+    }
+    else if(!b_mutexAttack && getIsWeaponUnlocked("Shield") && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)))
     {
         //ADD SOUND
         this->shield->RiseShield();
@@ -212,13 +290,15 @@ void Player::update()
     else
     {
         this->shield->RestShield();
+        restingShield = true;
     }   
 
     // Update the attacks
     bool endSword = this->updateWeapon(sword);
     bool endHammer = this->updateWeapon(hammer);
     bool endBow = this->updateWeapon(bow);
-    b_mutexAttack = (endSword || endHammer || endBow);
+    bool shieldIsUp = this->shield->isUp() && restingShield;
+    b_mutexAttack = (endSword || endHammer || endBow || shieldIsUp);
 
     // Update life regeneration
     this->regenerate();
@@ -234,16 +314,15 @@ void Player::render(float frameProgress)
     this->shape.setPosition(pos);
 
     // Interpolate weapons and tools position
+    this->shield->setPosition(pos.x, pos.y, this->b_facingRight);
     this->sword->setPosition(pos.x, pos.y, this->b_facingRight);
     this->hammer->setPosition(pos.x, pos.y, this->b_facingRight);
-    this->shield->setPosition(pos.x, pos.y, this->b_facingRight);
 
     // Render
     Engine::getInstance()->renderDrawable(&shape);
-    this->sword->render();
-    this->hammer->render();
     this->shield->render();
-    //this->collisionArea->render();
+    //this->sword->render();
+    //this->hammer->render();
 }
 
 //GET DATA TO SAVE
@@ -272,10 +351,27 @@ std::string Player::getDoor()
     return std::to_string(this->i_door).c_str();
 }
 
-std::string Player::getScore(){
+std::string Player::getPotionsLeft()
+{
+    return std::to_string(this->i_potions).c_str();
+}
 
+std::string Player::getScore()
+{
     return std::to_string(this->i_score).c_str();
+}
 
+std::string Player::getKeyUnlocked(int index)
+{
+    if(index >= 0 && index < 3)
+    {
+        int unlocked = this->vb_mainKeys[index] ? 1 : 0;
+        return std::to_string(unlocked).c_str();
+    }
+    else
+    {
+        return "0";
+    }
 }
 
 std::string Player::getHealthUpg()
@@ -308,6 +404,25 @@ std::vector<std::string> Player::getNear()
     return nearDialogue;
 }
 
+void Player::addPoints(int add){
+
+    this->i_score += add;
+
+}
+
+void Player::substractPoints(int substract){
+
+    if(substract < i_score)
+        this->i_score -= substract;
+    else this->i_score = 0;
+
+}
+
+int Player::getPoints(){
+
+    return this->i_score;
+
+}
 
 //SET DATA SAVED
 void Player::setMony(int i_money)
@@ -328,6 +443,11 @@ void Player::setDeaths(int i_deaths)
 void Player::setHealthUpg(int i_healthupg)
 {
     this->i_healthUpg = i_healthupg;
+
+    // Recalculate max life and chunks
+    float chunkSize = this->f_maxHealth / this->i_nchunks;
+    this->i_nchunks = 4 + this->i_healthUpg*2;
+    this->setMaxHealth(chunkSize * this->i_nchunks);
 }
 
 void Player::setLevel(std::string s_levelName)
@@ -358,6 +478,24 @@ void Player::setShieldLvl(int i_lvl)
 void Player::setBowLvl(int i_lvl)
 {
     this->bow->setUpgradeLvl(i_lvl);
+}
+
+void Player::setRemainingPotions(int i_pot)
+{
+    this->i_potions = i_pot;
+}
+
+void Player::setScore(int i_scr)
+{
+    this->i_score = i_scr;
+}
+
+void Player::setKeyUnlocked(bool unlocked, int keyIndex)
+{
+    if(keyIndex >= 0 && keyIndex < 3)
+    {
+        this->vb_mainKeys[keyIndex] = unlocked;
+    }
 }
 
 void Player::setNear(std::vector<std::string> text)

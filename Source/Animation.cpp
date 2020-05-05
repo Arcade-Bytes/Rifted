@@ -54,7 +54,7 @@ void Animation::addFrame(Frame& frame)
     this->frames.push_back(std::move(frame));
 }
 
-void Animation::play()
+void Animation::play(bool mirror)
 {
     // TODO::
     if(this->isPaused || this->isDone) return;
@@ -86,6 +86,18 @@ void Animation::play()
         }
 
     }
+
+    float scaleX = this->shape.getScale().x;
+    if(mirror)
+    {
+        scaleX = scaleX > 0 ? -scaleX : scaleX;
+    }
+    else
+    {
+        scaleX = scaleX < 0 ? -scaleX : scaleX;
+    }
+    this->shape.setScale(scaleX, this->shape.getScale().y); // NEW
+
     this->shape.setTextureRect(this->frames.at(this->currentFrameIndex).rect);
 }
 
@@ -109,4 +121,11 @@ void Animation::reset()
     this->setDone(false);
     this->setPaused(false);
     this->currentFrameIndex = this->totalElapsed = 0;
+}
+
+void Animation::skip()
+{
+    this->currentFrameIndex = this->frames.size()-1;
+    this->shape.setTextureRect(this->frames.at(this->currentFrameIndex).rect);
+    this->setDone(true);
 }

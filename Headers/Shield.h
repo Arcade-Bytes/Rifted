@@ -26,6 +26,8 @@ public:
     float DamageBlock();
     void Parry(float& damageMultiplier); 
 
+    bool isUp();
+
     void setPosition(const float& xpos, const float& ypos, bool facingRight);
 
     void scale(sf::Vector2f scaleRatio);

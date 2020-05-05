@@ -18,6 +18,8 @@
 #define SFL_COINS "coin"
 #define SFL_DEATHS "deaths"
 #define SFL_KILLS "kills"
+#define SFL_SCORE "score"
+#define SFL_POTIONS "potions"
 #define SFL_UPG "upgrades"
 #define SFL_LVL "level"
 #define SFL_LVLNAME "name"
@@ -27,6 +29,7 @@
 #define SFL_BOW "bow"
 #define SFL_SWD "sword"
 #define SFL_WPN "weapons"
+#define SFL_PROGRESS "progress"
 
 using namespace tinyxml2;   //fuck off long string >:((
     

@@ -4,7 +4,7 @@ Engine* Engine::instance = 0;
 
 Engine::Engine()
 {
-    this->window = new sf::RenderWindow(sf::VideoMode(720, 360), "Rifted Beta version");
+    this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Rifted Beta version");
     baseResolution = {this->window->getSize().x,this->window->getSize().y};
     delta = 0.0f;
 

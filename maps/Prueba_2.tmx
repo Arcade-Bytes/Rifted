@@ -10532,7 +10532,7 @@
   <object id="15" name="1" x="1107.38" y="96.375" width="32.25" height="30.25"/>
  </objectgroup>
  <objectgroup id="8" name="Salidas">
-  <object id="17" name="Prueba_1/1" x="943.75" y="454" width="8" height="58.25"/>
+  <object id="17" name="Hub_World/1" x="943.75" y="454" width="8" height="58.25"/>
   <object id="18" name="Prueba_3/0" x="1224" y="79" width="12" height="49"/>
  </objectgroup>
  <objectgroup id="9" name="ZonasLetales">
