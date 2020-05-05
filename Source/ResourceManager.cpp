@@ -6,9 +6,9 @@ ResourceManager::ResourceManager()
 {
     this->music_menu.openFromFile("resources/still_alive.wav");
     this->music_menu.setVolume(50.f);
-    this->music_level.setVolume(0.f);
-    this->music_level_alt.setVolume(0.f);
-    this->music_transition.setVolume(0.f);
+    this->music_level.setVolume(75.f);
+    this->music_level_alt.setVolume(75.f);
+    this->music_transition.setVolume(75.f);
     this->music_menu.setLoop(true);
     this->music_level_alt.setLoop(true);
     this->music_level.setLoop(true);
