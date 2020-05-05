@@ -301,6 +301,16 @@ bool Entity::checkInteractionCollision(Hitbox* hitbox)
 
                 if(finalDamage > 0.0f)
                 {
+                    if(this->hitbox->getType() == HitboxType::PLAYER)
+                    {
+                        ResourceManager::getInstance()->playSound("dsnoway");
+                        if(this->f_currentHealth < 0.1*this->f_maxHealth)
+                        {
+                            ResourceManager::getInstance()->PlayerCritical();
+                            //ResourceManager::getInstance()->playSound("gen_combat_deathsdoor");
+                            //ResourceManager::getInstance()->playSound("heart_beat_eco");
+                        }
+                    }
                     this->b_isInvulnerable = true;
                     this->f_invulnerabilityTime = 1.0f;
                 }

@@ -12,6 +12,8 @@ private:
     sf::RectangleShape healingEffectShape;
     AnimationComponent* healingEffectManager;
 
+    std::string previousZone = "aaa";
+
     // Level transition helpers
     sf::RectangleShape fadeOutPanel;
     bool b_isTransitioning;

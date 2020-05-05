@@ -54,6 +54,8 @@ float Player::getHurt(float& damage)
 
 float Player::getHealed(float& healing)
 {
+    ResourceManager::getInstance()->playSound("est-drink");
+    ResourceManager::getInstance()->PlayerNotCritical();    //pootis heal to the max, be wary of deflects
     float healAmount = this->Entity::getHealed(healing);
     f_regenerationDelta = 0.0f;
     return healAmount;
@@ -97,6 +99,7 @@ bool Player::usedPotionInLastFrame()
 
 void Player::pickCoin(int value)
 {
+    ResourceManager::getInstance()->playSound("coin");
     this->i_coins += value;
 }
 
@@ -254,16 +257,19 @@ void Player::update()
     bool restingShield = false; // True if we are resting the shield
     if(!b_mutexAttack && getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
     {
+        ResourceManager::getInstance()->playSound("cbar_miss1");
         this->sword->startAttack();
         this->b_mutexAttack = true;
     }
     else if(!b_mutexAttack && getIsWeaponUnlocked("Hammer") && sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
+        ResourceManager::getInstance()->playSound("hammr_swing");
         this->hammer->startAttack();
         this->b_mutexAttack = true;
     }
     else if(!b_mutexAttack && getIsWeaponUnlocked("Bow") && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
     {
+        ResourceManager::getInstance()->playSound("bow_shoot");
         this->bow->startAttack();
         this->b_mutexAttack = true;
     }
@@ -278,6 +284,7 @@ void Player::update()
     }
     else if(!b_mutexAttack && getIsWeaponUnlocked("Shield") && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)))
     {
+        //ADD SOUND
         this->shield->RiseShield();
     }
     else

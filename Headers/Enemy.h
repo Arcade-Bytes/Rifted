@@ -61,6 +61,8 @@ public:
     // Factory setter: Change the hitbox type from Enemy to another one
     void overrideHitboxType(HitboxType type);
 
+    sf::FloatRect getBounds();
+
     void attack();
 
     void updateAI();

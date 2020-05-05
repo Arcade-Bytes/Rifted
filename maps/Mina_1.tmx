@@ -20058,8 +20058,8 @@
   <object id="35" name="1" x="1455" y="1456" width="48" height="48"/>
  </objectgroup>
  <objectgroup id="7" name="Salidas">
-  <object id="29" name="MIna_1/1" x="1661" y="1360.06" width="24.5" height="144.188"/>
-  <object id="31" name="Mina_1/0" x="-97.8182" y="96.1818" width="45.4545" height="63.8125"/>
+  <object id="29" name="Mina_1/1" x="1661" y="1360.06" width="24.5" height="144.188"/>
+  <object id="31" name="Hub_World/3" x="-97.8182" y="96.1818" width="45.4545" height="63.8125"/>
  </objectgroup>
  <objectgroup id="8" name="NPC">
   <object id="55" name="mina1_cartel1" x="128" y="128" width="32" height="32"/>

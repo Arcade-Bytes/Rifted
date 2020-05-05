@@ -241,12 +241,27 @@ void Level::checkLevelExitReached()
     }
 }
 
-void Level::checkEnemyDeaths()
+bool Level::checkEnemyDeaths()
 {
     int killed = 0;
+    bool b_screened = false;    //to check if enemy is in the screen
+    //get the view, then get it's size and center, then calculate a decent floatRect
+    sf::View screen_view=Engine::getInstance()->getView();
+    sf::Vector2i viewCenter(screen_view.getCenter());
+    sf::Vector2i viewSize(screen_view.getSize());
+    sf::FloatRect view_rect(viewCenter.x - viewSize.x / 2,viewCenter.y - viewSize.y / 2,viewSize.x*0.75f,viewSize.y*0.75f);
+
     for(auto iter = enemies.begin() ; iter != enemies.end() ; ++iter)
     {
         auto position = iter - enemies.begin();
+
+        if(!b_screened && 
+            enemies[position]->getBounds().intersects(view_rect)
+            && (enemies[position]->getType() == Enemy::EnemyType::BasicMelee
+            || enemies[position]->getType() == Enemy::EnemyType::BasicRanged))
+        {
+            b_screened = true;
+        }
 
         if(enemies[position]->isDead())
         {
@@ -258,6 +273,7 @@ void Level::checkEnemyDeaths()
         }
     }
     this->player->addKill(killed);
+    return b_screened;
 }
 
 void Level::checkDestroyedBullets()
@@ -273,6 +289,20 @@ void Level::checkDestroyedBullets()
             --iter;
         }
     }
+}
+
+bool Level::checkRealEnemies()
+{
+    bool thereAre = false;
+    for(unsigned int i=0; i<enemies.size() && !thereAre; i++)
+    {
+        if(enemies[i]->getType() == Enemy::EnemyType::BasicMelee
+            || enemies[i]->getType() == Enemy::EnemyType::BasicRanged)
+        {
+            thereAre = true;
+        }
+    }
+    return thereAre;
 }
 
 std::string Level::getLevelName()
@@ -476,7 +506,14 @@ void Level::update()
     }
 
     // Check deaths
-    this->checkEnemyDeaths();
+    if(this->checkEnemyDeaths())
+        //music must go action
+        ResourceManager::getInstance()->MusicToAction();
+    else
+        //music must calm down
+        if(!this->checkRealEnemies())
+        ResourceManager::getInstance()->MusicToMellow();
+    
     this->checkDestroyedBullets();
 
     // Check level exit reached

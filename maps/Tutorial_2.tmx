@@ -60075,7 +60075,7 @@
  </objectgroup>
  <objectgroup id="9" name="Salidas">
   <object id="64" name="Tutorial_1/1" x="-85" y="512" width="49" height="152"/>
-  <object id="67" name="Tutorial_2/1" x="2439.97" y="48.3333" width="23.6969" height="119.667"/>
+  <object id="67" name="Hub_World/0" x="2439.97" y="48.3333" width="23.6969" height="119.667"/>
  </objectgroup>
  <objectgroup id="10" name="Entradas">
   <object id="56" name="0" x="24" y="640" width="24" height="24"/>

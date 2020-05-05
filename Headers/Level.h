@@ -14,8 +14,8 @@
 #include "BreakableDoor.h"
 #include "LevelExit.h"
 
-#define LOBBY_NAME "Prueba_Beta"
-#define LOBBY_DOOR 0
+#define LOBBY_NAME "Hub_World"
+#define LOBBY_DOOR 4
 #define FINAL_ROOM_NAME "Prueba_3"
 #define FINAL_ROOM_DOOR 1
 
@@ -70,9 +70,11 @@ public:
     //Checks if player collides to level exit to change map
     void checkLevelExitReached();
     //Deletes enemies marked as dead
-    void checkEnemyDeaths();
+    bool checkEnemyDeaths();
     //Deletes the bullets tagged as destroyed
     void checkDestroyedBullets();
+    // Returns true if there are REAL enemies in the list (BasicRanged and BasicMelee)
+    bool checkRealEnemies();
 
     // Returns the level name. Level name is the .tmx map name, without extension
     // (example: Test.tmx defines a level named Test)
@@ -104,7 +106,6 @@ public:
     //NPCs interaction 
     bool NPCisNear(NPC* npc);
     void renderDialogueBubble(NPC* npc);
-    
 
     void entityUpdate();
     void update();

@@ -20022,12 +20022,12 @@
   <object id="53" name="1" x="743" y="357" width="36" height="42"/>
  </objectgroup>
  <objectgroup id="13" name="Metadata">
-  <object id="54" name="zona/torre" x="-37.7495" y="123.412"/>
+  <object id="54" name="zona/cementerio" x="-37.7495" y="123.412"/>
   <object id="59" name="esFinal/false" x="-37.7495" y="123.412"/>
  </objectgroup>
  <objectgroup id="11" name="Salidas">
-  <object id="49" name="Hub_World/0" x="802" y="350" width="32" height="51"/>
-  <object id="52" name="Prueba_Beta/0" x="-27" y="321" width="27" height="429"/>
+  <object id="49" name="Hub_World/4" x="802" y="350" width="32" height="51"/>
+  <object id="52" name="Hub_World/4" x="-27" y="321" width="27" height="429"/>
  </objectgroup>
  <objectgroup id="5" name="1">
   <object id="11" x="341" y="487.5" width="40" height="40"/>

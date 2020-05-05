@@ -34,6 +34,7 @@ MainMenuState::MainMenuState(std::stack<State*>* states, Player* player)
 
     alpha = prevAlpha = 0;
     dir = true;
+
 }
 
 MainMenuState::~MainMenuState()
@@ -46,6 +47,8 @@ MainMenuState::~MainMenuState()
 
 void MainMenuState:: update()
 {
+    ResourceManager::getInstance()->playMainMenu();
+    
     Engine* engine = Engine::getInstance();
     if(engine->getKeyPressed(sf::Keyboard::Return)){
         this->changeState(MENU_STATE, false);

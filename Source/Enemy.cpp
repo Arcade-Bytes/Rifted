@@ -149,6 +149,14 @@ void Enemy::updateAIState(const float& distance, const float& yDiff)
 // Death control
 void Enemy::die()
 {
+    if(this->hitbox->getType() == ENEMY)
+    {
+        srand(time(NULL));
+        if(random()%2)
+            ResourceManager::getInstance()->playSound("dsbgdth1");
+        else
+            ResourceManager::getInstance()->playSound("dsbgdth2");
+    }
     this->b_isDying = true;
     this->hitbox->setType(NO_COLLISION);
 }
@@ -328,4 +336,9 @@ void Enemy::render(float frameProgress)
         engine->renderDrawable(&aggroArea);
         engine->renderDrawable(&attackArea);
     }
+}
+
+sf::FloatRect Enemy::getBounds()
+{
+    return this->shape.getGlobalBounds();
 }

@@ -43,17 +43,26 @@ GameState::~GameState()
 
 void GameState::initGame()
 {
+    ResourceManager::getInstance()->stopMainMenu();                             //stop the main menu music
     if(this->level) delete this->level;
     ftl::LoadGame(*this->player);
     this->initLevel();
     this->changePotionShape();
+
 }
 
 void GameState::initLevel()
 {
     this->level = new Level(player, player->getLevel(), atoi(player->getDoor().c_str()));
+    
     this->level->entityUpdate();
     this->level->forceInterpolationUpdate();
+
+    if(this->previousZone != this->level->getLevelZone())
+    {
+        ResourceManager::getInstance()->playLevelMusic(this->level->getLevelZone());//play the main level music
+        this->previousZone = this->level->getLevelZone();
+    }
 }
 
 void GameState::changeLevel()
@@ -156,6 +165,8 @@ void GameState::transitionUpdate()
 
 void GameState::update()
 {
+    ResourceManager::getInstance()->musicUpdate();  //update the music, loops and stuff
+
     if(this->b_reInit)
     {
         this->b_reInit = false;

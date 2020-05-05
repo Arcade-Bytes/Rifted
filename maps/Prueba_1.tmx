@@ -21062,8 +21062,8 @@
   <object id="33" x="568" y="328" width="112" height="15"/>
  </objectgroup>
  <objectgroup id="8" name="Salidas">
-  <object id="6" name="Prueba_Beta/1" x="-40.4545" y="463" width="19.6364" height="33"/>
-  <object id="48" name="Prueba_2/0" x="1224" y="47" width="15" height="33"/>
+  <object id="6" name="Hub_World/4" x="-40.4545" y="463" width="19.6364" height="33"/>
+  <object id="48" name="Hub_World/4" x="1224" y="47" width="15" height="33"/>
  </objectgroup>
  <objectgroup id="9" name="Entradas">
   <object id="50" name="0" x="20" y="479" width="16" height="16"/>
