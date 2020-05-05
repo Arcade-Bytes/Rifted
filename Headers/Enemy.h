@@ -72,6 +72,7 @@ public:
     void trulyDie();
 
     int getType();
+    Enemy::EnemyType getEnemyType();
 
     // Virtual override
     void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray);

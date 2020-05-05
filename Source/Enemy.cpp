@@ -207,6 +207,11 @@ int Enemy::getType(){
 
 }
 
+Enemy::EnemyType Enemy::getEnemyType()
+{
+    return this->type;
+}
+
 void Enemy::resizeItems(sf::Vector2f scaleRatio)
 {
     this->weapon->scale(scaleRatio);
