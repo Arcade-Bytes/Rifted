@@ -74,6 +74,11 @@ void Shield::Parry(float& f_damageMultiplier)
     }
 }
 
+bool Shield::isUp()
+{
+    return this->b_isActive;
+}
+
 void Shield::setPosition(const float& xpos, const float& ypos, bool facingRight)
 {
     this->shape.setPosition(

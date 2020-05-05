@@ -237,7 +237,7 @@ void Enemy::updateAnimation()
     }
     else if(this->type == Enemy::EnemyType::BasicMelee)
     {
-        this->s_currentAnimation = "standup";
+        this->s_currentAnimation = "ready";
 
         if(this->b_isDying)
         {
@@ -253,7 +253,7 @@ void Enemy::updateAnimation()
         }
         else
         {
-            this->s_currentAnimation = "standup";
+            this->s_currentAnimation = "ready";
         }
     }
     else if(this->type == Enemy::EnemyType::BreakableWall)

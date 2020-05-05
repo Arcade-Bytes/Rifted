@@ -1,0 +1,15 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"Es peligroso ir solo, toma esto"},
+			{"text":"\"Presiona R para utizar la espada\""},
+			{"text":"Que Grimaldus guie tu camino"}
+		]
+		}
+	]
+}

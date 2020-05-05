@@ -1,0 +1,17 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"Mucho cuidado en este lugar"},
+			{"text":"Las criaturas que aqui habitan han \nasimilado el poder de las rocas"},
+			{"text":"Y su fuerza y resistencia es mucho mayor"},
+			{"text":"Las armas convencionales no te serviran"},
+			{"text":"Que Grimaldus quie tu camino"}
+		]
+		}
+	]
+}

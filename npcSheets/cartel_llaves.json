@@ -1,0 +1,13 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"A great door with 3 keyholes"}
+		]
+		}
+	]
+}
