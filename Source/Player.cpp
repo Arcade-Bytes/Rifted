@@ -163,6 +163,7 @@ void Player::trulyDie()
 {
     this->die();
     this->b_isDead = true;
+    ResourceManager::getInstance()->PlayerNotCritical();
 }
 
 void Player::linkWorldProjectiles(std::vector<Projectile*>& proyectileArray)

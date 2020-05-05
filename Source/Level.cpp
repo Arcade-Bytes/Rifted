@@ -258,7 +258,8 @@ bool Level::checkEnemyDeaths()
         if(!b_screened && 
             enemies[position]->getBounds().intersects(view_rect)
             && (enemies[position]->getEnemyType() == Enemy::EnemyType::BasicMelee
-            || enemies[position]->getEnemyType() == Enemy::EnemyType::BasicRanged))
+            || enemies[position]->getEnemyType() == Enemy::EnemyType::BasicRanged)
+            && enemies[position]->getType() != 6)   //this last one is temp
         {
             b_screened = true;
         }
@@ -296,8 +297,9 @@ bool Level::checkRealEnemies()
     bool thereAre = false;
     for(unsigned int i=0; i<enemies.size() && !thereAre; i++)
     {
-        if(enemies[i]->getEnemyType() == Enemy::EnemyType::BasicMelee
+        if((enemies[i]->getEnemyType() == Enemy::EnemyType::BasicMelee
             || enemies[i]->getEnemyType() == Enemy::EnemyType::BasicRanged)
+            && enemies[i]->getType() != 6)   //this last one is temp
         {
             thereAre = true;
         }

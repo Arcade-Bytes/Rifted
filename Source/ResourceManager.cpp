@@ -177,18 +177,20 @@ void ResourceManager::playLevelMusic(std::string levelName)
 {
     if(levelName.compare("mina")==0)
         this->level1music();    //also set i_level
-    else if(levelName.compare("cementerio")==0 || levelName.compare("tutorial")==0)
+    else if(levelName.compare("cementerio")==0)
         this->level2music();
     else if(levelName.compare("torre")==0)
         this->level3music();
+    else if(levelName.compare("tutorial")==0)
+        this->level0music();
 }
 /* START OF LEVEL MUSIC SET UPS*/
 void ResourceManager::level0music()
 {
-    this->i_level = 0;
-    this->music_level.openFromFile("resources/burn_in_hell_calm.wav");
-    this->music_level_alt.openFromFile("resources/burn_in_hell_calm.wav");
-    this->music_transition.openFromFile("resources/silence.wav");
+    this->i_level = -1;
+    this->music_level.openFromFile("resources/dust_to_dust.wav");
+    this->music_level_alt.openFromFile("resources/dust_to_dust.wav");
+    this->music_transition.openFromFile("resources/dust_to_dust.wav");
     this->music_level.play();
     this->music_transition.play();
     this->music_transition.pause();
