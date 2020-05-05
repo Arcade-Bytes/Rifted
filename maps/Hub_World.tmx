@@ -20028,7 +20028,7 @@
   <object id="54" name="zona/tutorial" x="-37.7495" y="123.412"/>
  </objectgroup>
  <objectgroup id="11" name="Salidas">
-  <object id="49" name="Prueba_2/0" x="828.727" y="351.818" width="32" height="38.4545"/>
+  <object id="49" name="Torre_1/0" x="828.727" y="351.818" width="32" height="38.4545"/>
   <object id="62" name="Mina_1/0" x="827.849" y="718.663" width="23.25" height="32.9886"/>
   <object id="63" name="Tutorial_2/1" x="-61.1515" y="320.417" width="32" height="64.5"/>
   <object id="66" name="Cementerio_1/0" x="-32.0606" y="687.447" width="32" height="64.5"/>

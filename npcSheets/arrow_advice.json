@@ -1,0 +1,16 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{
+			"state":"instructions",
+			"quotes":
+			[
+				{"text":"Your body might not reach but..."},
+				{"text":"you may be able to interact with that lever\nin some way..."},
+				{"text":"\"(at least from a distance).\""}
+			]
+		}
+	]
+}
