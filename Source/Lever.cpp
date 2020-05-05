@@ -57,7 +57,14 @@ bool Lever::getIsActive()
 
 void Lever::interact()
 {
+    ResourceManager::getInstance()->playSound("lever_pull");
     b_isActive = !b_isActive;
+    if(b_isActive)
+        ResourceManager::getInstance()->playSound("door_action");
+    else
+        ResourceManager::getInstance()->playSound("door_action_deep");
+    
+    
     for(auto door : v_doorPointers)
     {
         door->toggleOpenState();

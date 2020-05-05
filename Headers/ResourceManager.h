@@ -3,6 +3,7 @@
 
 #include "Engine.h"
 #include <unordered_map>
+#include <queue>
 
 class ResourceManager
 {
@@ -17,6 +18,7 @@ private:
     std::unordered_map<std::string, sf::Texture*> textures;
     std::unordered_map<std::string, sf::SoundBuffer*> sounds;
     std::unordered_map<std::string, sf::Font*> fonts;
+    std::queue<sf::Sound*> soundstoplay;
 
     const std::string workspace = "./";
 
@@ -25,6 +27,7 @@ private:
     sf::Music music_transition; //transition music: build-ups or disengages to play while switching main level music.
     sf::Music music_level_alt;
     sf::Music music_menu;
+    sf::Sound snd_critical_health;
     int i_level;                //tells the level so we can manage music, set on playLevelMusic()
     enum MusicStatus{act,amb};
     MusicStatus mstatus;
@@ -42,11 +45,10 @@ public:
     sf::SoundBuffer* getSound(const std::string& filepath);
     void freeSound(const std::string& filepath);
     /**
-     * Theorically speaking the sound will play before we destroy the
-     * variable sf::Sound, the buffer is never destroyed so it should play
-     * just fine.
+     * Plays and stores the (buffer) sound given the filename of 
+     * the file, no extension, just the name.
      **/
-    void playSound(const std::string& filepath);    //play the sound
+    void playSound(const std::string& filename);    //play the sound
 
     // Cargar Texto
     sf::Font* loadFont(const std::string& filepath);
@@ -100,6 +102,18 @@ public:
      * kick the music in
      **/
     void MusicToAction();
+    /**
+     * update the sound queue
+     **/
+    void soundUpdate();
+    /**
+     * And now the true test... hold fast, or expire?
+     **/
+    void PlayerCritical();
+    /**
+     * Many fall in the face of chaos, but not this one, not today
+     **/
+    void PlayerNotCritical();
 };
 
 #endif

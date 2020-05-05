@@ -6,10 +6,15 @@ ResourceManager::ResourceManager()
 {
     this->music_menu.openFromFile("resources/still_alive.wav");
     this->music_menu.setVolume(50.f);
+    this->music_level.setVolume(0.f);
+    this->music_level_alt.setVolume(0.f);
+    this->music_transition.setVolume(0.f);
     this->music_menu.setLoop(true);
     this->music_level_alt.setLoop(true);
     this->music_level.setLoop(true);
     this->mstatus = ResourceManager::MusicStatus::amb;
+    this->snd_critical_health.setBuffer(*this->loadSound("resources/sounds/heartbeat_long_eco.wav"));
+    this->snd_critical_health.setLoop(true);
 }
 
 // Singleton
@@ -130,14 +135,16 @@ void ResourceManager::freeFont(const std::string& filepath)
 }
 //play sound and music
 
-void ResourceManager::playSound(const std::string& filepath)
+void ResourceManager::playSound(const std::string& filename)
 {
-    sf::SoundBuffer* sndb_toPlay = this->getSound(filepath);
+    sf::SoundBuffer* sndb_toPlay = this->loadSound("resources/sounds/"+filename+".wav");
     if(sndb_toPlay != NULL)
-    {
-        sf::Sound snd_play;
-        snd_play.setBuffer(*sndb_toPlay);
-        snd_play.play();
+    {        
+        sf::Sound* snd_play= new sf::Sound();
+        snd_play->setBuffer(*sndb_toPlay);
+        
+        this->soundstoplay.push(snd_play);  
+        this->soundstoplay.back()->play();     
     }
 
 }
@@ -156,10 +163,6 @@ void ResourceManager::playMainMenu()
     {
         this->music_menu.play();
     }
-    
-    
-    
-
 }
 void ResourceManager::stopMainMenu()
 {
@@ -211,6 +214,20 @@ void ResourceManager::level3music()
     this->music_transition.pause();
 }
 /*END OF LEVEL MUSIC SET UPS*/
+
+/* SOUND UPDATE */
+void ResourceManager::soundUpdate()
+{
+    //std::cout << this->soundstoplay.size() << "\n";
+    if(!this->soundstoplay.empty())
+    {
+        if(this->soundstoplay.front()->getStatus() != sf::Music::Playing)
+        {
+            this->soundstoplay.pop();
+        }
+    }
+}
+/* END OF SOUND UPDATE */
 
 /*START OF MUSIC UPDATE*/
 
@@ -295,6 +312,24 @@ void ResourceManager::MusicToMellow()
     
 }
 /*END OF MUSIC UPDATE*/
+
+/*PLAYER CRIT*/
+void ResourceManager::PlayerCritical()
+{
+    if(this->snd_critical_health.getStatus() != sf::Sound::Playing)
+    {
+    this->playSound("gen_combat_deathsdoor");
+    this->snd_critical_health.play();
+    
+    }
+}
+
+void ResourceManager::PlayerNotCritical()
+{
+    if(this->snd_critical_health.getStatus() == sf::Sound::Playing)
+        this->snd_critical_health.stop();
+}
+/*END OF PLAYER CRIT*/
 /* Hard Code Café */
 void ResourceManager::level1Update()
 {

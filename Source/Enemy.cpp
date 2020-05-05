@@ -122,6 +122,11 @@ void Enemy::updateAIState(const float& distance, const float& yDiff)
 
 void Enemy::die()
 {
+    srand(time(NULL));
+    if(random()%2)
+        ResourceManager::getInstance()->playSound("dsbgdth1");
+    else
+        ResourceManager::getInstance()->playSound("dsbgdth2");
     this->b_isDead = true;
 }
 

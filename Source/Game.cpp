@@ -70,6 +70,7 @@ void Game::run()
 		    this->updateDelta();
             this->updateSFMLEvents();
             this->update();
+            ResourceManager::getInstance()->soundUpdate();
             updateStartTime = engine->getUpdateTime();
         }
         float frameProgress = (engine->getUpdateTime() - updateStartTime) / (UPDATE_TIME);
