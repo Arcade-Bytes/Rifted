@@ -97,7 +97,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type, floa
             enemy->setWeapon(0.1f, 0.0f, 0.1f, 0, 0, 0);
             enemy->setEnemyType( Enemy::EnemyType::BreakableWall );
             enemy->setAnimation("breakableWall.json");
-            enemy->setMaxSpeed(0.0f, 800.0f);
+            enemy->setMaxSpeed(0.0f, 0.0f);
             enemy->setAIDistances(0, 0);
             enemy->setRangedMode(false);
             enemy->setMaxHealth(1.0f);

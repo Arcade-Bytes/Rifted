@@ -21,7 +21,7 @@ Player::Player(const float& maxHealth)
     this->vb_mainKeys[0] = this->vb_mainKeys[1] = this->vb_mainKeys[2] = false;
 
     this->sword = new Weapon(0.3f, 0.1f, 0.1f, 55, 60, 30, true, {500.0f, 400.0f}, LIGHT_ATTACK);
-    this->hammer = new Weapon(1.5f, 0.7f, 0.2f, 120, 65, 60, true, {1000.0f, 500.0f}, HEAVY_ATTACK);
+    this->hammer = new Weapon(1.5f, 0.7f, 0.2f, 120, 70, 60, true, {1000.0f, 500.0f}, HEAVY_ATTACK);
     this->shield = new Shield(0.2f, 0.2f, 0.05f, 0.02f);
     this->bow = new RangedWeapon(0.6f, 0.1f, 20, -20, true, this->b_facingRight);
 
