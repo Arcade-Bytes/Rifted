@@ -111,7 +111,7 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type, floa
             enemy->setEnemyType( Enemy::EnemyType::Platform );
             enemy->setAnimation("platform.json");
             enemy->setMaxSpeed(800.0f, 0.0f);
-            enemy->setAIDistances(50*1.1, 0);
+            enemy->setAIDistances(50*2, 0);
             enemy->setRangedMode(true);
             enemy->setMaxHealth(1000);
             enemy->setResistances(1.0f, 1.0f, 1.0f);

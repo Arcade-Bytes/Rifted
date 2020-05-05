@@ -24,7 +24,7 @@ public:
 
     void addDoor(Door* door);
     bool getIsActive();
-    void interact();
+    void interact(bool playSound = true);
 
     void update();
     void render();

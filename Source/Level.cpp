@@ -154,7 +154,7 @@ void Level::initObjectData()
                 lever->addDoor(door);
 
         bool active = ftl::GetLeverState(this->s_levelName, counter);
-        if(active) lever->interact();
+        if(active) lever->interact(false);
 
         this->levers.push_back(lever);
         counter = this->levers.size();

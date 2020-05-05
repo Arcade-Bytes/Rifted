@@ -65,6 +65,12 @@ void Weapon::updateAttack()
         this->attack();
     }
 
+    if(f_attackDelta >= f_attackTime+f_attackWindow)
+    {
+        b_alreadyAttacked = true;
+        this->hitbox->setSize(0.0f, 0.0f);
+    }
+
     // If the attack finished
     if(f_attackDelta >= f_attackCooldown)
     {
