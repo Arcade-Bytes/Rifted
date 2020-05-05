@@ -1,0 +1,19 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"Hemos atrancado las puertas, pero no \npodremos detenerlos por mucho tiempo."},
+			{"text":"El suelo tiembla"},
+			{"text":"Tambores, tambores en lo profundo"},
+			{"text":"No podemos salir"},
+			{"text":"Una sombra se mueve en la oscuridad"},
+			{"text":"No podemos salir...."},
+			{"text":"... Ya vienen.... "}
+		]
+		}
+	]
+}

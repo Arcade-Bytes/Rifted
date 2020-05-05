@@ -1,0 +1,20 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"Has elegido el camino de la redencion"},
+			{"text":"Expia tus pecados y recorre la grieta"},
+			{"text":"Si eres digno podras salir de aqui"},
+			{"text":"\"Presiona Enter para interactuar con \npersonas, notas y palancas\""},
+			{"text":"\"Presiona las flechas izquierda y \nderecha para moverte\""},
+			{"text":"\"Presiona Espacio o la flecha de arriba \npara saltar\""},
+			{"text":"\"Presiona P o Esc para abrir el \nmenu de pausa\""},
+			{"text":"Que Grimaldus guie tu camino"}
+		]
+		}
+	]
+}
