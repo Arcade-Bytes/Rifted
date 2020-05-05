@@ -1,0 +1,18 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"En la grieta viven multiples criaturas \n y practicamente ninguna es amistosa"},
+			{"text":"Utiliza tu espada para enfrentarte a \nellas"},
+			{"text":"Si estas herido bebe de tu frasco, a todos\n los condenados les dan uno"},
+			{"text":"\"Presiona 4 para beber del frasco se \nrecargara cada vez que cambies de sala\""},
+			{"text":"Si quieres salir de aqui no puedes dejar \nque te derroten"},
+			{"text":"Que Grimaldus guie tu camino"}
+		]
+		}
+	]
+}
