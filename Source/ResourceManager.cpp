@@ -7,6 +7,9 @@ ResourceManager::ResourceManager()
     this->music_menu.openFromFile("resources/still_alive.wav");
     this->music_menu.setVolume(50.f);
     this->music_menu.setLoop(true);
+    this->music_level_alt.setLoop(true);
+    this->music_level.setLoop(true);
+    this->mstatus = ResourceManager::MusicStatus::amb;
 }
 
 // Singleton
@@ -169,16 +172,47 @@ void ResourceManager::stopMainMenu()
 
 void ResourceManager::playLevelMusic(std::string levelName)
 {
-    if(levelName.compare("Prueba_Beta")==0)
+    if(levelName.compare("Prueba_Bet")==0)
         this->level1music();    //also set i_level
+    else if(levelName.compare("Prueba_Beta")==0)
+        this->level2music();
+    else if(levelName.compare("Prueba_Bet")==0)
+        this->level3music();
 }
-
+/* START OF LEVEL MUSIC SET UPS*/
 void ResourceManager::level1music()
 {
     this->i_level = 0;
-    this->music_level.openFromFile("resources/Burn_in_Hell.flac");
+    this->music_level.openFromFile("resources/burn_in_hell_calm.wav");
+    this->music_level_alt.openFromFile("resources/burn_in_hell_act_loop.wav");
+    this->music_transition.openFromFile("resources/silence.wav");
     this->music_level.play();
+    this->music_transition.play();
+    this->music_transition.pause();
 }
+void ResourceManager::level2music()
+{
+    this->i_level = 1;
+    this->music_level.openFromFile("resources/graveyard_amb_tension_hideous.wav");                //calm track
+    this->music_transition.openFromFile("resources/graveyard_act_loop_intro.wav");      //transition to action
+    this->music_level_alt.openFromFile("resources/graveyard_act_loop.wav");
+    this->music_level.play();
+    this->music_transition.play();
+    this->music_transition.pause();
+}
+void ResourceManager::level3music()
+{
+    this->i_level = 2;
+    this->music_level.openFromFile("resources/6_Mellow_loop.wav");                //calm track
+    this->music_transition.openFromFile("resources/3_Pre_action_track.wav");      //transition to action
+    this->music_level_alt.openFromFile("resources/4_action_loop_1.wav");
+    this->music_level.play();
+    this->music_transition.play();
+    this->music_transition.pause();
+}
+/*END OF LEVEL MUSIC SET UPS*/
+
+/*START OF MUSIC UPDATE*/
 
 void ResourceManager::musicUpdate()
 {
@@ -187,20 +221,91 @@ void ResourceManager::musicUpdate()
     case 0: //level 1 (mine)
         this->level1Update();
         break;
+    case 1:
+        switch (this->mstatus)
+        {
+            case ResourceManager::MusicStatus::amb:
+                if(this->music_level.getStatus()==sf::Music::Stopped)
+                {
+                    this->music_level.setVolume(0.f);
+                    this->music_level.play();
+                    
+                }
+                if(this->music_transition.getStatus() == sf::Music::Playing)
+                {
+                    this->music_level.setVolume(this->music_transition.getPlayingOffset().asSeconds()*100/23.f);
+                }
+                else
+                {
+                    this->music_transition.openFromFile("resources/graveyard_act_loop_intro.wav");
+                }
+                
+                break;
+            case ResourceManager::MusicStatus::act:
+                if(this->music_transition.getStatus()==sf::Music::Stopped && this->music_level_alt.getStatus()==sf::Music::Stopped)
+                {
+                    this->music_level.stop();
+                    this->music_level_alt.play();
+                    this->music_transition.openFromFile("resources/graveyard_act_loop ending.wav");
+                }
+                break;
+        }
+        break;
+    case 2:
+        switch (this->mstatus)
+        {
+            case ResourceManager::MusicStatus::amb:
+                if(this->music_transition.getStatus()==sf::Music::Stopped && this->music_level.getStatus()==sf::Music::Stopped)
+                {
+                    this->music_level.play();
+                    this->music_transition.openFromFile("resources/3_Pre_action_track.wav");
+                }
+                break;
+            case ResourceManager::MusicStatus::act:
+                if(this->music_transition.getStatus()==sf::Music::Stopped && this->music_level_alt.getStatus()==sf::Music::Stopped)
+                {
+                    this->music_level.stop();
+                    this->music_level_alt.play();
+                    this->music_transition.openFromFile("resources/5_action_to_mellow.wav");
+                }
+                break;
+        }
+        break;
     
     default:
         break;
     }
 
 }
+void ResourceManager::MusicToAction()
+{
+    this->mstatus = ResourceManager::MusicStatus::act;
+    if(this->music_transition.getStatus() != sf::Music::Playing && this->music_level_alt.getStatus() != sf::Music::Playing && this->i_level != 0)
+        this->music_transition.play();
+
+}
+void ResourceManager::MusicToMellow()
+{
+    this->mstatus = ResourceManager::MusicStatus::amb;
+    if(this->music_transition.getStatus() != sf::Music::Playing && this->music_level.getStatus() != sf::Music::Playing && this->i_level != 0)
+    {
+        this->music_transition.play();
+        this->music_level_alt.stop();
+    }
+    
+}
+/*END OF MUSIC UPDATE*/
 /* Hard Code Café */
 void ResourceManager::level1Update()
 {
-    if(this->music_level.getPlayingOffset().asMicroseconds()-215290000.f>=0)
+    if(this->mstatus == ResourceManager::MusicStatus::act)
     {
-        //this->music_level.setPlayingOffset(sf::Time(sf::seconds(0.f)));
-        this->music_level.setPlayingOffset(sf::Time(sf::seconds(21.09f)));
-        //this->music_level.play();
+        this->music_level.setLoop(false);
     }
+    if(this->music_level.getStatus() == sf::Music::Stopped && this->music_level_alt.getStatus() == !sf::Music::Playing)
+    {
+        this->music_level_alt.play();
+    }
+    
 }
 

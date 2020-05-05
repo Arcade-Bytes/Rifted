@@ -50,7 +50,7 @@ public:
 
     // Event checks
     void checkLevelExitReached();
-    void checkEnemyDeaths();
+    bool checkEnemyDeaths();
     void checkDestroyedBullets();
 
     // Level exit related

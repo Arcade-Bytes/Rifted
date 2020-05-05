@@ -210,3 +210,8 @@ void Enemy::render(float frameProgress)
         engine->renderDrawable(&attackArea);
     }
 }
+
+sf::FloatRect Enemy::getBounds()
+{
+    return this->shape.getGlobalBounds();
+}

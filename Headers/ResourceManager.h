@@ -26,6 +26,8 @@ private:
     sf::Music music_level_alt;
     sf::Music music_menu;
     int i_level;                //tells the level so we can manage music, set on playLevelMusic()
+    enum MusicStatus{act,amb};
+    MusicStatus mstatus;
     
 public:
     static ResourceManager* getInstance();
@@ -72,6 +74,16 @@ public:
      **/
     void level1music();
     /**
+     * set everything for the level 2 (graveyard) music
+     * DO NOT CALL FROM OUTSIDE RESOURCEMANAGER
+     **/
+    void level2music();
+    /**
+     * set everything for the level 3 (tower) music
+     * DO NOT CALL FROM OUTSIDE RESOURCEMANAGER
+     **/
+    void level3music();
+    /**
      * manages level music
      **/
     void musicUpdate();
@@ -80,6 +92,14 @@ public:
      * DO NOT CALL FROM OUTSIDE RESOURCEMANAGER
      **/
     void level1Update();
+    /**
+     * slow down the music
+     **/
+    void MusicToMellow();
+    /**
+     * kick the music in
+     **/
+    void MusicToAction();
 };
 
 #endif

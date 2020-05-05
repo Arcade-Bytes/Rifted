@@ -39,6 +39,7 @@ public:
     sf::Vector2u getWindowSize();
     sf::Vector2u getBaseResolution();
     const float& getDelta();
+    sf::View getView();
 
     // Views
     void setViewCenter(sf::Vector2f center);

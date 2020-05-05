@@ -37,6 +37,8 @@ public:
     void setDoPatrol(bool patrol);
     void overrideHitboxType(HitboxType type);
 
+    sf::FloatRect getBounds();
+
     void attack();
 
     void updateAI();

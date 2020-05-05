@@ -154,6 +154,11 @@ void Engine::windowDisplay()
     this->window->display();
 }
 
+sf::View Engine::getView()
+{
+    return this->view;
+}
+
 Engine* Engine::getInstance()
 {
     if(!instance) instance = new Engine;
