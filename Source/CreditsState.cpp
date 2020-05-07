@@ -80,7 +80,7 @@ void CreditsState::update()
     if(this->b_reInit) this->initState();
 
     this->f_timeCounter += Engine::getInstance()->getDelta();
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         this->f_timeCounter += Engine::getInstance()->getDelta()*2;
 
     float progress = this->f_timeCounter / this->f_creditsTime;

@@ -203,7 +203,7 @@ void Level::initObjectData()
 void Level::initViewLimits()
 {
     sf::Vector2f mapSize = this->map->getMapTotalPixelSize();
-    sf::Vector2u windowSize = Engine::getInstance()->getBaseResolution();
+    sf::Vector2u windowSize = Engine::getInstance()->getReferenceResolution();
 
     this->limitLeftUp.x = this->limitRightDown.x = mapSize.x / 2;
     this->limitLeftUp.y = this->limitRightDown.y = mapSize.y / 2;
@@ -319,7 +319,7 @@ std::string Level::getLevelZone()
 
 bool Level::gameHasBeenBeaten()
 {
-    return this->b_isFinalBossRoom && (int)enemies.size()<=0;
+    return this->b_isFinalBossRoom && !this->checkRealEnemies();
 }
 
 // Level exit related

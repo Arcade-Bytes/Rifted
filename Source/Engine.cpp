@@ -4,8 +4,9 @@ Engine* Engine::instance = 0;
 
 Engine::Engine()
 {
-    this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Rifted Beta version");
+    this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Rifted by Arcade Bytes");
     baseResolution = {this->window->getSize().x,this->window->getSize().y};
+    referenceResolution = {1920, 1080};
     delta = 0.0f;
 
     this->view.setViewport(sf::FloatRect(0.0f,0.0f,1.0f,1.0f));
@@ -13,6 +14,9 @@ Engine::Engine()
     this->uiView = this->window->getDefaultView();
     this->uiView.setViewport(sf::FloatRect(0.0f,0.0f,1.0f,1.0f));
     this->uiView.setSize(this->window->getSize().x, this->window->getSize().y);
+
+    // Zoom correction
+    this->view.zoom((float)referenceResolution.x/(float)baseResolution.x);
 }
 
 Engine::~Engine()
@@ -39,6 +43,11 @@ sf::Vector2u Engine::getWindowSize()
 sf::Vector2u Engine::getBaseResolution()
 {
     return this->baseResolution;
+}
+
+sf::Vector2u Engine::getReferenceResolution()
+{
+    return this->referenceResolution;
 }
 
 const float& Engine::getDelta()

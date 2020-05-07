@@ -15,14 +15,16 @@ MenuState::MenuState(std::stack<State*>* states, Player* player)
     this->fondoIni->setTexture(resources->loadTexture("resources/TheRift.jpg"));
     this->fondoIni->setSize(baseResolution);
 
-    flecha_selectorR = new sf::Sprite(*resources->loadTexture("resources/pixel-arrow-png-18.png"));
-    flecha_selectorR->setScale(0.4,0.4);
-    flecha_selectorR->setOrigin(flecha_selectorR->getLocalBounds().width/2.0f, flecha_selectorR->getLocalBounds().height/2.0f);
+    flecha_selectorR = new sf::RectangleShape();
+    flecha_selectorR->setTexture(resources->loadTexture("resources/pixel-arrow-png-18.png"));
+    flecha_selectorR->setSize(sf::Vector2f(baseResolution.x*0.041666f,baseResolution.y*0.074f)); // 80x80 sobre 1920x1080
+    flecha_selectorR->setOrigin(flecha_selectorR->getSize()/2.0f);
 
-    flecha_selectorL = new sf::Sprite(*resources->loadTexture("resources/pixel-arrow-png-18.png"));
-    flecha_selectorL->setScale(0.4,0.4);
-    flecha_selectorL->setOrigin(flecha_selectorL->getLocalBounds().width/2.0f, flecha_selectorL->getLocalBounds().height/2.0f);
+    flecha_selectorL = new sf::RectangleShape();
+    flecha_selectorL->setTexture(resources->loadTexture("resources/pixel-arrow-png-18.png"));
     flecha_selectorL->rotate(180);
+    flecha_selectorL->setSize(sf::Vector2f(baseResolution.x*0.041666f,baseResolution.y*0.074f)); // 80x80 sobre 1920x1080
+    flecha_selectorL->setOrigin(flecha_selectorL->getSize()/2.0f);
 
     texto = new sf::Text();
 
@@ -80,20 +82,21 @@ void MenuState:: update(){
         this->changeState(MAINMENU_STATE, true);
     }
 
+    // Arrow movement
     if(clock->getElapsedTime().asMilliseconds()>(0.004f)){  //0.00004
         int steps = clock->getElapsedTime().asSeconds() / 0.004f;
         prevArrowMovement = arrowMovement;
         if(dir==true)
-            arrowMovement+=steps;
+            arrowMovement+=(steps/30.0f);
         else 
-            arrowMovement-=steps;
+            arrowMovement-=(steps/30.0f);
 
-        if(arrowMovement>30)arrowMovement=30;
-        if(arrowMovement<-30)arrowMovement=-30;
+        if(arrowMovement>1.0f)arrowMovement=1.0f;
+        if(arrowMovement<-1.0f)arrowMovement=-1.0f;
         
         clock->restart();
 
-        if(arrowMovement>=30) dir=false; else if(arrowMovement<=-30) dir = true;
+        if(arrowMovement>=1.0f) dir=false; else if(arrowMovement<=-1.0f) dir = true;
     }
 }
 
@@ -113,27 +116,25 @@ void MenuState:: drawText(){
 
     engine->renderDrawable(fondoIni);
 
+    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
+
     texto->setString("Nueva Partida");
     texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2);
-    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Continuar Partida");
     texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.1);
-    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Ajustes");
     texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.2);
-    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Salir");
     texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.3);
-    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
@@ -153,33 +154,37 @@ void MenuState:: drawText(){
 void MenuState:: drawArrow(float frameProgress){
 
     Engine* engine = Engine::getInstance();
+    sf::Vector2f baseRes = sf::Vector2f(engine->getBaseResolution().x,engine->getBaseResolution().y);
 
-        switch(seleccion){
-            case 1:
-                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 300 ,engine->getBaseResolution().y/2+ 10);
-                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 300 ,engine->getBaseResolution().y/2+ 10);
-                break;
+    float centerX = baseRes.x/2.0f;
+    float centerY = baseRes.y/2.0f;
+    switch(seleccion){
+        case 1:
+            flecha_selectorR->setPosition(centerX + baseRes.x*(220/1080.0f) ,centerY+ baseRes.y*(10/1080.0f));      // 1260, 550
+            flecha_selectorL->setPosition(centerX - baseRes.x*(220/1080.0f) ,centerY+ baseRes.y*(10/1080.0f));      // 660, 550
+            break;
 
-            case 2:
-                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 380 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.1+10);
-                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 380 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.1+10);
-                break;
+        case 2:
+            flecha_selectorR->setPosition(centerX + baseRes.x*(250/1080.0f) ,centerY + baseRes.y*(118/1080.0f));    // 1340, 118
+            flecha_selectorL->setPosition(centerX - baseRes.x*(250/1080.0f) ,centerY + baseRes.y*(118/1080.0f));    // 580, 118
+            break;
 
-            case 3:
-                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 200 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.2+10);
-                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 200 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.2+10);
-                break;
+        case 3:
+            flecha_selectorR->setPosition(centerX + baseRes.x*(160/1080.0f) ,centerY + baseRes.y*(226/1080.0f));    // 1160, 226
+            flecha_selectorL->setPosition(centerX - baseRes.x*(160/1080.0f) ,centerY + baseRes.y*(226/1080.0f));    // 760, 226
+            break;
 
-            case 4:
-                flecha_selectorR->setPosition(engine->getBaseResolution().x/2 + 170 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.3+10);
-                flecha_selectorL->setPosition(engine->getBaseResolution().x/2 - 170 ,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.3+10);
-                break;
-        }
+        case 4:
+            flecha_selectorR->setPosition(centerX + baseRes.x*(130/1080.0f) ,centerY + baseRes.y*(334/1080.0f));    // 1130, 334
+            flecha_selectorL->setPosition(centerX - baseRes.x*(130/1080.0f) ,centerY + baseRes.y*(334/1080.0f));    // 790, 334
+            break;
+    }
 
-        int finalMove = this->prevArrowMovement + (this->arrowMovement - this->prevArrowMovement) * frameProgress;
-        flecha_selectorL->move(finalMove,0);
-        flecha_selectorR->move(-finalMove,0);
+    float finalMove = this->prevArrowMovement + (this->arrowMovement - this->prevArrowMovement) * frameProgress;
+    finalMove *= engine->getBaseResolution().x * 0.015625f;
+    flecha_selectorL->move(finalMove,0);
+    flecha_selectorR->move(-finalMove,0);
 
-        engine->renderDrawable(flecha_selectorR);
-        engine->renderDrawable(flecha_selectorL);
+    engine->renderDrawable(flecha_selectorR);
+    engine->renderDrawable(flecha_selectorL);
 }

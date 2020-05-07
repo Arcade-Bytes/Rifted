@@ -7,17 +7,18 @@ TextState::TextState(std::stack<State*>* states, Player* player)
     this->Iam = TEXT_STATE;
 
     Engine* engine = Engine::getInstance();
+    sf::Vector2f baseRes = sf::Vector2f(engine->getBaseResolution().x,engine->getBaseResolution().y);
 
-    text_box = new sf::Sprite(*ResourceManager::getInstance()->loadTexture("resources/text_box.png"));
-    text_box->setOrigin(text_box->getLocalBounds().width/2.0f, text_box->getLocalBounds().height/2.0f);
-    text_box->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/7);
-    text_box->setScale(3,1.5);
+    text_box = new sf::RectangleShape();
+    text_box->setTexture(ResourceManager::getInstance()->loadTexture("resources/text_box.png"));
+    text_box->setSize(sf::Vector2f(baseRes.x*0.8125f, baseRes.y*0.27777777f)); //1560 x 300 sobre 1920 x 1080
+    text_box->setOrigin(baseRes.x*0.8125f/2.0f, 0);
+    text_box->setPosition(baseRes.x/2.0f,baseRes.y*0.02f);
 
     dialogue.setColor(sf::Color::White);
-    dialogue.setOrigin(dialogue.getLocalBounds().width/2.0f, dialogue.getLocalBounds().height/2.0f);
     dialogue.setFont(*ResourceManager::getInstance()->loadFont("resources/XOX.ttf"));
-    dialogue.setCharacterSize(54);
-    dialogue.setPosition(text_box->getOrigin().x,text_box->getOrigin().y);
+    dialogue.setCharacterSize(baseRes.x * 0.028125f);
+    dialogue.setPosition(baseRes.x * 0.15f,baseRes.y*0.1f);
 }
 
 TextState::~TextState(){

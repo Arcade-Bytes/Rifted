@@ -9,15 +9,15 @@ class PauseState : public State {
 private:
     sf::RectangleShape* filtro; // Filtro para "apagar" el color del fondo
     sf::Text* texto; // Variable para contener el texto
-    sf::Sprite* flecha_selector;// Flecha que indica la opcion seleccionada
-    sf::Sprite* heart_upgrade;// Indica las mejoras de vida actuales
-    sf::Sprite* sword_upgrade;// Indica las mejoras de espada actuales
-    sf::Sprite* coin_purse;// Indica las monedas actuales
-    sf::Sprite* kill_count;// Indica las kills actuales
+    sf::RectangleShape* flecha_selector;// Flecha que indica la opcion seleccionada
+    sf::RectangleShape* heart_upgrade;// Indica las mejoras de vida actuales
+    sf::RectangleShape* sword_upgrade;// Indica las mejoras de espada actuales
+    sf::RectangleShape* coin_purse;// Indica las monedas actuales
+    sf::RectangleShape* kill_count;// Indica las kills actuales
     sf::RectangleShape* parchment;// Fondo para los datos del jugador
-    sf::Sprite* shield_upgrade;// Indica el nivel de escudo
-    sf::Sprite* bow_upgrade;// Indica el nivel de bow
-    sf::Sprite* hammer_upgrade;// Indica el nivel de hammer
+    sf::RectangleShape* shield_upgrade;// Indica el nivel de escudo
+    sf::RectangleShape* bow_upgrade;// Indica el nivel de bow
+    sf::RectangleShape* hammer_upgrade;// Indica el nivel de hammer
 
     sf::RectangleShape* mineKey; // The key icon that shows if you have the mine key
     sf::RectangleShape* cementeryKey; // The key icon that shows if you have the cementery key
@@ -34,7 +34,8 @@ private:
     int i_score;
     int i_kills;
     bool dir; //Direccion de la animacion de la flecha
-    int i; //COntrol para animacion de la flecha
+    float arrowMove; //Control para animacion de la flecha
+    float prevArrowMove; // Para interpolar el render
     
 public:
     PauseState(std::stack<State*>* states, Player* player);
@@ -47,7 +48,7 @@ public:
     void render(float frameProgress);
 
     void drawText();
-    void drawArrow();
+    void drawArrow(float frameProgress);
     void drawPlayerData();
     void drawParchment();
 
