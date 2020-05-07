@@ -8,13 +8,13 @@ class ShopState : public State {
 private:
     sf::RectangleShape* parchment;// Fondo para los datos del jugador
     sf::Text* texto; // Variable para contener el texto
-    sf::Sprite* flecha_selector;// Flecha que indica la opcion seleccionada
-    sf::Sprite* heart_upgrade;// Indica las mejoras de vida actuales
-    sf::Sprite* sword_upgrade;// Indica las mejoras de espada actuales
-    sf::Sprite* coin_purse;// Indica las monedas actuales
-    sf::Sprite* hammer_upgrade;// Indica las mejoras de hammer actuales
-    sf::Sprite* bow_upgrade;// Indica las mejoras de bow actuales
-    sf::Sprite* shield_upgrade;// Indica las mejoras de shield actuales
+    sf::RectangleShape* flecha_selector;// Flecha que indica la opcion seleccionada
+    sf::RectangleShape* heart_upgrade;// Indica las mejoras de vida actuales
+    sf::RectangleShape* sword_upgrade;// Indica las mejoras de espada actuales
+    sf::RectangleShape* coin_purse;// Indica las monedas actuales
+    sf::RectangleShape* hammer_upgrade;// Indica las mejoras de hammer actuales
+    sf::RectangleShape* bow_upgrade;// Indica las mejoras de bow actuales
+    sf::RectangleShape* shield_upgrade;// Indica las mejoras de shield actuales
     sf::RectangleShape* npc_cleric;// Indica el sprite del tendero actuales
     sf::RectangleShape* text_box;// Indica el sprite de la caja de texto
     sf::Clock* clock;
@@ -34,8 +34,8 @@ private:
     int i_shield;
     int i_bow;
     bool dir; //Direccion de la animacion de la flecha
-    int arrowMove; //Control para animacion de la flecha
-    int prevArrowMove; //Control para animacion de la flecha interpolado
+    float arrowMove; //Control para animacion de la flecha
+    float prevArrowMove; //Control para animacion de la flecha interpolado
     int max_seleccion;
     
 public:

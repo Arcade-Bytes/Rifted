@@ -7,7 +7,7 @@
 class TextState : public State {
 private:
     sf::Text dialogue;
-    sf::Sprite* text_box;
+    sf::RectangleShape* text_box;
     std::vector<std::string> quotes;
     int currentQuote;
 public:

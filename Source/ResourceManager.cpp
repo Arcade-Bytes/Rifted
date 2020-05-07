@@ -32,6 +32,12 @@ ResourceManager::~ResourceManager()
     for (auto iter = textures.begin(); iter != textures.end(); iter++) delete iter->second;
     for (auto iter = sounds.begin(); iter != sounds.end(); iter++) delete iter->second;
     for (auto iter = fonts.begin(); iter != fonts.end(); iter++) delete iter->second;
+
+    while(!soundstoplay.empty())
+    {
+        delete soundstoplay.front();
+        soundstoplay.pop();
+    }
 }
 
 // Carga de texturas

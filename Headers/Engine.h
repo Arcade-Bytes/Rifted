@@ -15,6 +15,7 @@ private:
     ~Engine();
 
     sf::Vector2u baseResolution;
+    sf::Vector2u referenceResolution;
 
     // SFML Properties
     sf::RenderWindow* window;
@@ -38,6 +39,7 @@ public:
     bool isWindowOpen();
     sf::Vector2u getWindowSize();
     sf::Vector2u getBaseResolution();
+    sf::Vector2u getReferenceResolution();
     const float& getDelta();
     sf::View getView();
 

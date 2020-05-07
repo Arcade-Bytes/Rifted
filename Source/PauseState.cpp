@@ -14,7 +14,7 @@ PauseState::PauseState(std::stack<State*>* states, Player* player)
     clock = new sf::Clock();
     //Paramentros para la animacion de la flecha
     dir = true;
-    i = 0;
+    arrowMove = prevArrowMove = 0;
 
     loadAssets();
 
@@ -58,10 +58,11 @@ void PauseState::loadAssets()
     texto->setColor(sf::Color::White);
 
     //Cargamos la flecha
-    flecha_selector = new sf::Sprite(*resources->loadTexture("resources/pixel-arrow-png-18.png"));
+    flecha_selector = new sf::RectangleShape();
+    flecha_selector->setTexture(resources->loadTexture("resources/pixel-arrow-png-18.png"));
     flecha_selector->rotate(180);
-    flecha_selector->setScale(0.4,0.4);
-    flecha_selector->setOrigin(flecha_selector->getLocalBounds().width/2.0f, flecha_selector->getLocalBounds().height/2.0f);
+    flecha_selector->setSize(sf::Vector2f(baseRes.x*0.041666f,baseRes.y*0.074f)); // 80x80 sobre 1920x1080
+    flecha_selector->setOrigin(flecha_selector->getSize()/2.0f);
 
     //Cargamos el pergamino
     parchment = new sf::RectangleShape();
@@ -71,32 +72,60 @@ void PauseState::loadAssets()
     parchment->rotate(90);
 
     //Cargamos las mejoras de vida
-    heart_upgrade = new sf::Sprite(*resources->loadTexture("resources/health_upgrade.png"));
-    heart_upgrade->setOrigin(heart_upgrade->getLocalBounds().width/2.0f, heart_upgrade->getLocalBounds().height/2.0f);
+    heart_upgrade = new sf::RectangleShape();
+    heart_upgrade->setTexture(resources->loadTexture("resources/health_upgrade.png"));
+    heart_upgrade->setSize(sf::Vector2f(baseRes.x*0.0625f,baseRes.y*0.1111111f)); // 120x120 sobre 1920x1080
+    heart_upgrade->setOrigin(heart_upgrade->getSize()/2.0f);
+    heart_upgrade->setPosition(baseRes.x/2*1.15,baseRes.y/5 + baseRes.y*(410.0f/1080.0f));
+    //heart_upgrade->setScale(0.1,0.1);
 
     //Cargamos las mejoras de espada
-    sword_upgrade = new sf::Sprite(*resources->loadTexture("resources/sword_upgrade.png"));
-    sword_upgrade->setOrigin(sword_upgrade->getLocalBounds().width/2.0f, sword_upgrade->getLocalBounds().height/2.0f);
+    sword_upgrade = new sf::RectangleShape();
+    sword_upgrade->setTexture(resources->loadTexture("resources/sword_upgrade.png"));
+    sword_upgrade->setSize(sf::Vector2f(baseRes.x*0.0469f,baseRes.y*0.08333f)); // 90x90 sobre 1920x1080
+    sword_upgrade->setOrigin(sword_upgrade->getSize()/2.0f);
+    sword_upgrade->setPosition(baseRes.x/2*1.4,baseRes.y/5 + baseRes.y*(400.0f/1080.0f));
+    //sword_upgrade->setScale(0.13,0.13);
 
     //Cargamos las monedas
-    coin_purse = new sf::Sprite(*resources->loadTexture("resources/coin.png"));
-    coin_purse->setOrigin(coin_purse->getLocalBounds().width/2.0f, coin_purse->getLocalBounds().height/2.0f);
+    coin_purse = new sf::RectangleShape();
+    coin_purse->setTexture(resources->loadTexture("resources/coin.png"));
+    coin_purse->setSize(sf::Vector2f(baseRes.x*0.03125f,baseRes.y*0.05555555f)); // 60x60 sobre 1920x1080
+    coin_purse->setOrigin(sword_upgrade->getSize()/2.0f);
+    coin_purse->setPosition(baseRes.x/2*1.12,baseRes.y/5 + baseRes.y*(120.0f/1080.0f));
+    //coin_purse->setScale(0.1,0.1);
 
     //Cargamos las kills
-    kill_count = new sf::Sprite(*resources->loadTexture("resources/skull.png"));
-    kill_count->setOrigin(kill_count->getLocalBounds().width/2.0f, kill_count->getLocalBounds().height/2.0f);
+    kill_count = new sf::RectangleShape();
+    kill_count->setTexture(resources->loadTexture("resources/skull.png"));
+    kill_count->setSize(sf::Vector2f(baseRes.x*0.03125f,baseRes.y*0.05555555f)); // 60x60 sobre 1920x1080
+    kill_count->setOrigin(sword_upgrade->getSize()/2.0f);
+    kill_count->setPosition(baseRes.x/2*1.12,baseRes.y/5 + baseRes.y*(220.0f/1080.0f));
+    //kill_count->setScale(0.1,0.1);
 
     //Cargamos el escudo
-    shield_upgrade = new sf::Sprite(*resources->loadTexture("resources/shield.png"));
-    shield_upgrade->setOrigin(shield_upgrade->getLocalBounds().width/2.0f, shield_upgrade->getLocalBounds().height/2.0f);
+    shield_upgrade = new sf::RectangleShape();
+    shield_upgrade->setTexture(resources->loadTexture("resources/shield.png"));
+    shield_upgrade->setSize(sf::Vector2f(baseRes.x*0.0469f,baseRes.y*0.08333f)); // 90x90 sobre 1920x1080
+    shield_upgrade->setOrigin(shield_upgrade->getSize()/2.0f);
+    shield_upgrade->setPosition(baseRes.x/2*1.65,baseRes.y/5 + baseRes.y*(400.0f/1080.0f));
+    //shield_upgrade->setScale(0.3,0.3);
 
     //Cargamos el martillo
-    hammer_upgrade = new sf::Sprite(*resources->loadTexture("resources/hammer.png"));
-    hammer_upgrade->setOrigin(hammer_upgrade->getLocalBounds().width/2.0f, hammer_upgrade->getLocalBounds().height/2.0f);
+    hammer_upgrade = new sf::RectangleShape();
+    hammer_upgrade->setTexture(resources->loadTexture("resources/hammer.png"));
+    hammer_upgrade->setSize(sf::Vector2f(baseRes.x*0.0469f,baseRes.y*0.08333f)); // 90x90 sobre 1920x1080
+    hammer_upgrade->setOrigin(hammer_upgrade->getSize()/2.0f);
+    hammer_upgrade->setPosition(baseRes.x/2*1.28,baseRes.y/5 + baseRes.y*(550.0f/1080.0f));
+    //hammer_upgrade->setScale(0.3,0.3);
 
     //Cargamos el arco
-    bow_upgrade = new sf::Sprite(*resources->loadTexture("resources/bow.png"));
-    bow_upgrade->setOrigin(bow_upgrade->getLocalBounds().width/2.0f, bow_upgrade->getLocalBounds().height/2.0f);
+    bow_upgrade = new sf::RectangleShape();
+    bow_upgrade->setTexture(resources->loadTexture("resources/bow.png"));
+    bow_upgrade->setSize(sf::Vector2f(baseRes.x*0.0625f,baseRes.y*0.1111111f)); // 120x120 sobre 1920x1080
+    bow_upgrade->setOrigin(bow_upgrade->getSize()/2.0f);
+    bow_upgrade->setPosition(baseRes.x/2*1.53,baseRes.y/5 + baseRes.y*(550.0f/1080.0f));
+    //bow_upgrade->setScale(0.3,0.3);
 
     // Boss Key Icons
     sf::Vector2f size = {baseRes.x*0.05f,baseRes.x*0.05f};
@@ -188,6 +217,23 @@ void PauseState:: update()
         }
         this->b_reInit = true;
     }
+
+    // Arrow movement
+    if(clock->getElapsedTime().asMilliseconds()>(0.004f)){  //0.00004
+        int steps = clock->getElapsedTime().asSeconds() / 0.004f;
+        prevArrowMove = arrowMove;
+        if(dir==true)
+            arrowMove+=(steps/30.0f);
+        else 
+            arrowMove-=(steps/30.0f);
+
+        if(arrowMove>1.0f)arrowMove=1.0f;
+        if(arrowMove<-1.0f)arrowMove=-1.0f;
+        
+        clock->restart();
+
+        if(arrowMove>=1.0f) dir=false; else if(arrowMove<=-1.0f) dir = true;
+    }
 }
 
 void PauseState:: render(float frameProgress){
@@ -201,7 +247,7 @@ void PauseState:: render(float frameProgress){
     //Dibujamos las opciones del menu
     drawText();
     //Dibujamos las flechas selectoras
-    drawArrow();
+    drawArrow(frameProgress);
     //Dibujamos el pergamino
     drawParchment();
     //Dibujamos los datos SOBRE el pergamino
@@ -226,13 +272,13 @@ void PauseState::drawText(){
     engine->renderDrawable(texto);
 
     texto->setString("Atras");
-    texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y/4 + 150);
+    texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y*0.38888888f);
     texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     texto->setString("Menu");
-    texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y/4 + 300);
+    texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y*0.52777777f);
     texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
@@ -240,76 +286,63 @@ void PauseState::drawText(){
 
 }
 
-void PauseState:: drawArrow(){
+void PauseState:: drawArrow(float frameProgress){
 
-     Engine* engine = Engine::getInstance();
+    Engine* engine = Engine::getInstance();
 
-        switch(seleccion){
-            case 1:
-                flecha_selector->setPosition(engine->getBaseResolution().x/4 - 180 ,engine->getBaseResolution().y/4+ 10);                     
-                break;
+    float baseHeight = engine->getBaseResolution().y * 0.25926f;    // 280 sobre 1080
+    float separationY = engine->getBaseResolution().y * 0.1388888f; // 150 sobre 1080
+    switch(seleccion){
+        case 1:
+            flecha_selector->setPosition(engine->getBaseResolution().x*0.15625f, baseHeight);                     
+            break;
 
-            case 2:
-                flecha_selector->setPosition(engine->getBaseResolution().x/4 - 180 ,engine->getBaseResolution().y/4+ 160);
-                break;
+        case 2:
+            flecha_selector->setPosition(engine->getBaseResolution().x*0.15625f, baseHeight + separationY);
+            break;
 
-            case 3:
-                flecha_selector->setPosition(engine->getBaseResolution().x/4 - 180 ,engine->getBaseResolution().y/4+ 310);
-                break;
-        }
+        case 3:
+            flecha_selector->setPosition(engine->getBaseResolution().x*0.15625f, baseHeight + separationY*2);
+            break;
+    }
 
-       if(clock->getElapsedTime().asSeconds()>(0.00004)){
+    float finalMove = this->prevArrowMove + (this->arrowMove - this->prevArrowMove) * frameProgress;
+    finalMove *= engine->getBaseResolution().x * 0.015625f;
+    flecha_selector->move(finalMove,0);
 
-            if(dir==true)
-                i++;
-            
-            else i--;
-
-            flecha_selector->move(i,0);
-            
-            clock->restart();
-
-            if(i==30) dir=false; else if(i==-30) dir = true;
-
-        }
-
-        engine->renderDrawable(flecha_selector);
+    engine->renderDrawable(flecha_selector);
 
 }
 
 void PauseState:: drawPlayerData(){
 
     Engine* engine = Engine::getInstance();
+    sf::Vector2f baseRes = sf::Vector2f(engine->getBaseResolution().x,engine->getBaseResolution().y);
 
     texto->setColor(sf::Color::Black);
 
     //Score
     texto->setString("Score : " + std::to_string(i_score));
-    texto->setPosition(engine->getBaseResolution().x/2*1.08,engine->getBaseResolution().y/5);
-    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
+    texto->setPosition(baseRes.x/2*1.08,baseRes.y/5);
+    texto->setCharacterSize(baseRes.x*0.028125f);
     texto->setOrigin(0,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
-
     //Money
-    coin_purse->setPosition(engine->getBaseResolution().x/2*1.1,engine->getBaseResolution().y/5 + 110);
-    coin_purse->setScale(0.1,0.1);
     engine->renderDrawable(coin_purse);
 
     texto->setString(" : " + std::to_string(i_money));
-    texto->setPosition(engine->getBaseResolution().x/2*1.12,engine->getBaseResolution().y/5 + 90);
-    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
+    texto->setPosition(baseRes.x/2*1.12,baseRes.y/5 + baseRes.y*(90.0f/1080.0f));
+    texto->setCharacterSize(baseRes.x*0.028125f);
     texto->setOrigin(0,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     //Kills
-    kill_count->setPosition(engine->getBaseResolution().x/2*1.1,engine->getBaseResolution().y/5 + 210);
-    kill_count->setScale(0.1,0.1);
     engine->renderDrawable(kill_count);
 
     texto->setString(" : " + std::to_string(i_kills));
-    texto->setPosition(engine->getBaseResolution().x/2*1.16,engine->getBaseResolution().y/5 + 190);
-    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
+    texto->setPosition(baseRes.x/2*1.16,baseRes.y/5 + baseRes.y*(190.0f/1080.0f));
+    texto->setCharacterSize(baseRes.x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
@@ -317,57 +350,49 @@ void PauseState:: drawPlayerData(){
     //Texto "Estadisticas"
     texto->setString(" Mejoras Actuales ");
     texto->setStyle(sf::Text::Underlined |sf::Text::Bold );
-    texto->setPosition(engine->getBaseResolution().x/2*1.4,engine->getBaseResolution().y/5 + 290);
-    texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
+    texto->setPosition(baseRes.x/2*1.4,baseRes.y/5 + baseRes.y*(290.0f/1080.0f));
+    texto->setCharacterSize(baseRes.x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
     texto->setStyle(sf::Text::Regular);
 
     //Life
-    heart_upgrade->setPosition(engine->getBaseResolution().x/2*1.15,engine->getBaseResolution().y/5 + 410);
-    heart_upgrade->setScale(0.1,0.1);
     engine->renderDrawable(heart_upgrade);
 
     texto->setString("Lv " + (i_life >= maxLvImprovement ? "Max" : std::to_string(i_life)));
-    texto->setPosition(engine->getBaseResolution().x/4*2*1.15,engine->getBaseResolution().y/5 + 450);
-    texto->setCharacterSize(engine->getBaseResolution().x*0.02604f);
+    texto->setPosition(baseRes.x/4*2*1.15,baseRes.y/5 + baseRes.y*(450.0f/1080.0f));
+    texto->setCharacterSize(baseRes.x*0.02604f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
     //Sword
     if(i_damage != -1){
-        sword_upgrade->setPosition(engine->getBaseResolution().x/2*1.4,engine->getBaseResolution().y/5 + 410);
-        sword_upgrade->setScale(0.13,0.13);
         engine->renderDrawable(sword_upgrade);
 
         texto->setString("Lv " + (i_damage >= maxLvImprovement ? "Max" : std::to_string(i_damage)));
-        texto->setPosition(engine->getBaseResolution().x/2*1.4,engine->getBaseResolution().y/5 + 450);
-        texto->setCharacterSize(engine->getBaseResolution().x*0.02604f);
+        texto->setPosition(baseRes.x/2*1.4,baseRes.y/5 + baseRes.y*(450.0f/1080.0f));
+        texto->setCharacterSize(baseRes.x*0.02604f);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
     }
     if(i_shield != -1){
 
         //Shield
-        shield_upgrade->setPosition(engine->getBaseResolution().x/2*1.65,engine->getBaseResolution().y/5 + 400);
-        shield_upgrade->setScale(0.3,0.3);
         engine->renderDrawable(shield_upgrade);
 
         texto->setString("Lv Max");
-        texto->setPosition(engine->getBaseResolution().x/2*1.65,engine->getBaseResolution().y/5 + 450);
-        texto->setCharacterSize(engine->getBaseResolution().x*0.02604f);
+        texto->setPosition(baseRes.x/2*1.65,baseRes.y/5 + baseRes.y*(450.0f/1080.0f));
+        texto->setCharacterSize(baseRes.x*0.02604f);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
     }
     if(i_hammer != -1){
         //Hammer
-        hammer_upgrade->setPosition(engine->getBaseResolution().x/2*1.28,engine->getBaseResolution().y/5 + 550);
-        hammer_upgrade->setScale(0.3,0.3);
         engine->renderDrawable(hammer_upgrade);
 
         texto->setString("Lv " + (i_hammer >= maxLvImprovement ? "Max" : std::to_string(i_hammer)));
-        texto->setPosition(engine->getBaseResolution().x/2*1.28,engine->getBaseResolution().y/5 + 600);
-        texto->setCharacterSize(engine->getBaseResolution().x*0.02604f);
+        texto->setPosition(baseRes.x/2*1.28,baseRes.y/5 + baseRes.y*(600.0f/1080.0f));
+        texto->setCharacterSize(baseRes.x*0.02604f);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
     
@@ -375,17 +400,14 @@ void PauseState:: drawPlayerData(){
 
     if(i_bow != -1){
         //Bow
-        bow_upgrade->setPosition(engine->getBaseResolution().x/2*1.53,engine->getBaseResolution().y/5 + 550);
-        bow_upgrade->setScale(0.3,0.3);
         engine->renderDrawable(bow_upgrade);
 
         texto->setString("Lv " + (i_bow >= maxLvImprovement ? "Max" : std::to_string(i_bow)));
-        texto->setPosition(engine->getBaseResolution().x/2*1.53,engine->getBaseResolution().y/5 + 600);
-        texto->setCharacterSize(engine->getBaseResolution().x*0.02604f);
+        texto->setPosition(baseRes.x/2*1.53,baseRes.y/5 + baseRes.y*(600.0f/1080.0f));
+        texto->setCharacterSize(baseRes.x*0.02604f);
         texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
         engine->renderDrawable(texto);
     }
-
 }
 
 void PauseState:: drawParchment()
