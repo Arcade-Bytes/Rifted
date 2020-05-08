@@ -211,6 +211,17 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
                 mapObject.positon = position;
                 mapObject.size = size;
                 mapObject.name = std::string(objName);
+                mapObject.type = 0;
+                this->doorData.push_back(mapObject);
+            }
+            else if(strcmp(name, "PuertasH") == 0)
+            {
+                const char* objName = object->Attribute("name");
+                MapObject mapObject;
+                mapObject.positon = position;
+                mapObject.size = size;
+                mapObject.name = std::string(objName);
+                mapObject.type = 1;
                 this->doorData.push_back(mapObject);
             }
             else if(strcmp(name, "Metadata") == 0)

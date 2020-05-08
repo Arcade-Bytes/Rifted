@@ -130,7 +130,8 @@ void Level::initObjectData()
     objectData = this->map->getDoorData();
     for(auto data : objectData)
     {
-        Door* door = new Door();
+        bool isHorizontal = data.type > 0;
+        Door* door = new Door(isHorizontal);
         door->setSize(data.size);
         door->setPosition(data.positon);
         door->setVinculationId(data.name);
