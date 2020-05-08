@@ -241,11 +241,16 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
     // Scrolling background data
     if(this->getMetadataValue("bgScroll") != "")
     {
-        this->b_scrollingBackground = true;
-        this->f_bgScrollScale = 1.5f;
         sf::Vector2f baseRes = {(float)Engine::getInstance()->getReferenceResolution().x,(float)Engine::getInstance()->getReferenceResolution().y};
+        float scale = v_totalPixelSize.x/baseRes.x;
 
-        this->background->setSize(baseRes * f_bgScrollScale);
+        if(scale > 1.0f)
+        {
+            this->b_scrollingBackground = true;
+            this->f_bgScrollScale = scale > 1.5f ? 1.5f : 1.0f;
+
+            this->background->setSize(baseRes * f_bgScrollScale);
+        }
     }
 }
 
