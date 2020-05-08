@@ -17,11 +17,9 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
     this->map = new Map(mapName, tileSize, entranceIndex);
     this->s_zone = map->getMetadataValue("zona");
 
+    // Final room check
     std::string final = map->getMetadataValue("esFinal");
-    if(final == "true")
-        this->b_isFinalBossRoom = true;
-    else
-        this->b_isFinalBossRoom = false;
+    this->b_isFinalBossRoom = (final != "");
 
     // Player init
     this->player = player;
@@ -132,7 +130,8 @@ void Level::initObjectData()
     objectData = this->map->getDoorData();
     for(auto data : objectData)
     {
-        Door* door = new Door();
+        bool isHorizontal = data.type > 0;
+        Door* door = new Door(isHorizontal);
         door->setSize(data.size);
         door->setPosition(data.positon);
         door->setVinculationId(data.name);
@@ -529,7 +528,8 @@ void Level::render(float frameProgress)
 
     Engine::getInstance()->setFollowView(true);
 
-    this->map->renderBackground();
+    this->map->renderBackground(this->player->getInterpolatedPosition(frameProgress));
+    this->map->renderBack();
 
     for(auto lever: levers)
         lever->render();
