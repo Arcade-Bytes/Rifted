@@ -20043,6 +20043,7 @@
  </objectgroup>
  <objectgroup id="4" name="Metadata">
   <object id="38" name="zona/mina" x="1400" y="-25" width="0.5"/>
+  <object id="69" name="bgScroll/true" x="10.33" y="10.12" width="186.667" height="57.8791"/>
  </objectgroup>
  <objectgroup id="12" name="11">
   <object id="51" x="338.545" y="1504.01" width="80" height="31.9881"/>

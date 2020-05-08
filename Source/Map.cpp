@@ -25,6 +25,7 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
         this->v_tileSize.x * (float)this->v_gridSize.x,
         this->v_tileSize.y * (float)this->v_gridSize.y
     };
+    this->b_scrollingBackground = false;
 
     // Layer count
     this->layers = 0;
@@ -236,6 +237,16 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
         // Next group
         group = group->NextSiblingElement("objectgroup");
     }
+
+    // Scrolling background data
+    if(this->getMetadataValue("bgScroll") != "")
+    {
+        this->b_scrollingBackground = true;
+        this->f_bgScrollScale = 1.5f;
+        sf::Vector2f baseRes = {(float)Engine::getInstance()->getReferenceResolution().x,(float)Engine::getInstance()->getReferenceResolution().y};
+
+        this->background->setSize(baseRes * f_bgScrollScale);
+    }
 }
 
 Map::~Map()
@@ -326,6 +337,7 @@ void Map::render()
 {
     // Background and Front
     this->renderBackground();
+    this->renderBack();
     this->renderFront();
 
     // Debug Hitbox
@@ -333,12 +345,35 @@ void Map::render()
     //    hitbox->render();
 }
 
-void Map::renderBackground()
+void Map::renderBackground(sf::Vector2f playerPos)
 {
     Engine* engine = Engine::getInstance();
 
+    // Move the background if we're scrolling
+    if(this->b_scrollingBackground)
+    {
+        float screenSizeX = engine->getReferenceResolution().x;
+        float progressX = (playerPos.x - screenSizeX/2.0f) / (this->v_totalPixelSize.x - screenSizeX);
+        if(progressX < 0.0f) progressX = 0.0f;
+        if(progressX > 1.0f) progressX = 1.0f;
+        float xPoint = progressX * (this->v_totalPixelSize.x - screenSizeX*f_bgScrollScale);
+
+        float screenSizeY = engine->getReferenceResolution().y;
+        float progressY = (playerPos.y - screenSizeY/2.0f) / (this->v_totalPixelSize.y - screenSizeY);
+        if(progressY < 0.0f) progressY = 0.0f;
+        if(progressY > 1.0f) progressY = 1.0f;
+        float yPoint = progressY * (this->v_totalPixelSize.y - screenSizeY*f_bgScrollScale);
+
+        this->background->setPosition(xPoint, yPoint);
+    }
+
     // Background
     if(this->background) engine->renderDrawable(this->background);
+}
+
+void Map::renderBack()
+{
+    Engine* engine = Engine::getInstance();
 
     // Layer count
     unsigned int layersTmp = this->layers;

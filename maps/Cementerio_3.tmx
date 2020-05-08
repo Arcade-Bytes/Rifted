@@ -21640,5 +21640,6 @@
  </objectgroup>
  <objectgroup id="10" name="Metadata">
   <object id="15" name="zona/cementerio" x="2336" y="640" width="192" height="128"/>
+  <object id="23" name="bgScroll/true" x="10.33" y="10.12" width="186.667" height="57.8791"/>
  </objectgroup>
 </map>

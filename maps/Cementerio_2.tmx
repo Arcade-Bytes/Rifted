@@ -64072,6 +64072,7 @@
  </objectgroup>
  <objectgroup name="Metadata">
   <object id="58" name="zona/cementerio" x="608" y="2624" width="160" height="64"/>
+  <object id="23" name="bgScroll/true" x="10.33" y="10.12" width="186.667" height="57.8791"/>
  </objectgroup>
  <objectgroup name="Monedas">
   <object id="63" name="moneda_1" x="3488" y="1728" width="64" height="64"/>

@@ -35902,7 +35902,8 @@
   <object id="12" name="moneda_2" x="3040" y="608" width="64" height="64"/>
  </objectgroup>
  <objectgroup name="Metadata">
-  <object id="13" name="zona/cementerio" x="2897.33" y="1884.12" width="186.667" height="57.8791"/>
+  <object id="13" name="zona/cementerio" x="10.33" y="10.12" width="186.667" height="57.8791"/>
+  <object id="23" name="bgScroll/true" x="10.33" y="10.12" width="186.667" height="57.8791"/>
  </objectgroup>
  <objectgroup name="Entradas">
   <object id="18" name="0" x="128" y="1344" width="128" height="128"/>

@@ -22,12 +22,14 @@ private:
     sf::Vector2i v_tilesetTileSize;
     sf::Vector2f v_totalPixelSize;
     int i_tilesetLinearSize;
+    bool b_scrollingBackground;
 
     // Map Sizes
     unsigned int layers;
     sf::Vector2i v_gridSize;
     sf::Vector2i v_tileSize;
     sf::Vector2f scaleFactor;
+    float f_bgScrollScale;
 
     // Starting positions
     sf::Vector2f playerStartingPosition;
@@ -61,7 +63,8 @@ public:
     std::string getMetadataValue(std::string key);
 
     void render();
-    void renderBackground();
+    void renderBackground(sf::Vector2f playerPos = {0.0f,0.0f});
+    void renderBack();
     void renderFront();
 };
 
