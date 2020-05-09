@@ -10,7 +10,6 @@ Level::Level(Player* player, std::string mapName, const int& entranceIndex)
 
     this->b_playerHasLeft = false;
     this->b_hasAnimationBeforeNextLevel = false;
-    this->i_bossKeyIndex = -1;
     this->resetNextState();
 
     sf::Vector2i tileSize = {32,32};
@@ -339,11 +338,6 @@ bool Level::getIfAnimationBeforeNextLevel()
     return result;
 }
 
-int Level::getBossKeyIndex()
-{
-    return this->i_bossKeyIndex;
-}
-
 void Level::exitLevel(int exitIndex)
 {
     this->b_playerHasLeft = true;
@@ -476,7 +470,10 @@ void Level::update()
                     else if(this->npcs[i]->getImKey())
                     {
                         // Assign the boss key
-                        this->i_bossKeyIndex = this->npcs[i]->getKeyType();
+                        int bossKey = this->npcs[i]->getKeyType();
+                        this->player->setRecoveredKey(bossKey);
+                        this->player->setAnimationFilename("recoveredKey");
+                        this->player->setKeyUnlocked(true, bossKey);
 
                         // Mark that an animation should play
                         this->b_hasAnimationBeforeNextLevel = true;

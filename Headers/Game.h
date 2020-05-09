@@ -10,6 +10,7 @@
 #include "MenuState.h"
 #include "TextState.h"
 #include "PauseState.h"
+#include "AnimationState.h"
 #include "SummaryState.h"
 #include "CreditsState.h"
 

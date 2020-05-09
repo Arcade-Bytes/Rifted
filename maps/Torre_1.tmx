@@ -45129,7 +45129,7 @@
  </objectgroup>
  <objectgroup id="13" name="Salidas">
   <object id="164" name="Torre_2/0" x="1230.33" y="30.6667" width="49" height="97.3333"/>
-  <object id="165" name="Hub_World/3" x="-83.6667" y="127.333" width="37.6667" height="65.6667"/>
+  <object id="165" name="Hub_World/1" x="-83.6667" y="127.333" width="37.6667" height="65.6667"/>
  </objectgroup>
  <objectgroup id="5" name="Monedas">
   <object id="117" x="39.6667" y="472.333" width="16" height="16"/>

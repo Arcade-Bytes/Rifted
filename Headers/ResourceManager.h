@@ -91,6 +91,11 @@ public:
      **/
     void level3music();
     /**
+     * Just plays the "recovered" key music
+     * DO NOT CALL FROM OUTSIDE RESOURCEMANAGER
+     **/
+    void bossKeyAnimationMusic();
+    /**
      * manages level music
      **/
     void musicUpdate();

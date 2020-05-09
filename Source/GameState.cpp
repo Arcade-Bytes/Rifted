@@ -84,10 +84,6 @@ void GameState::changeLevel()
     this->player->setDoor(entranceIndex);
     this->player->stopSpeed();
 
-        // If a boss Key was received
-    int bossKey = this->level->getBossKeyIndex();
-    if(bossKey >= 0) this->player->setKeyUnlocked(true, bossKey);
-
     ftl::SaveGame(*this->player);
     this->level->saveLevelData();
 
@@ -102,9 +98,7 @@ void GameState::changeLevel()
     // Level will be initialized on this state's reinit later when we come back
     else
     {
-        // Temporary, may add something here
-        delete this->level;
-        this->initLevel();
+        this->changeState(ANIMATION_STATE, true);
     }
 }
 
