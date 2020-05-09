@@ -214,7 +214,7 @@
         },
         {
         "animationFileCondition": "bossKeyIndex",
-        "animationFile": ["player","platform","archer"],
+        "animationFile": ["activeMineKey","activeCemeteryKey","activeTowerKey"],
         "startX": 5000,
         "startY": 5200,
         "size": 0,
@@ -225,7 +225,7 @@
             "moveX": 5000,
             "moveY": 5200,
             "size": 0,
-            "animation": "walk",
+            "animation": "idle",
             "mirror": false
             },
             {
@@ -233,7 +233,7 @@
             "moveX": 3000,
             "moveY": 5000,
             "size": 500,
-            "animation": "walk",
+            "animation": "idle",
             "mirror": false
             },
             {
@@ -241,7 +241,7 @@
             "moveX": 5000,
             "moveY": 5200,
             "size": 1000,
-            "animation": "walk",
+            "animation": "idle",
             "mirror": false
             },
             {
@@ -249,7 +249,7 @@
             "moveX": 7000,
             "moveY": 5000,
             "size": 500,
-            "animation": "walk",
+            "animation": "idle",
             "mirror": false
             },
             {
@@ -257,7 +257,7 @@
             "moveX": 5000,
             "moveY": 4800,
             "size": 0,
-            "animation": "walk",
+            "animation": "idle",
             "mirror": false
             },
             {
@@ -265,7 +265,7 @@
             "moveX": 3000,
             "moveY": 5000,
             "size": 500,
-            "animation": "walk",
+            "animation": "idle",
             "mirror": false
             },
             {
@@ -273,7 +273,7 @@
             "moveX": 5000,
             "moveY": 5200,
             "size": 1000,
-            "animation": "walk",
+            "animation": "idle",
             "mirror": false
             },
             {
@@ -281,7 +281,7 @@
             "moveX": 7000,
             "moveY": 5000,
             "size": 500,
-            "animation": "walk",
+            "animation": "idle",
             "mirror": false
             },
             {
@@ -289,7 +289,7 @@
             "moveX": 5000,
             "moveY": 4800,
             "size": 0,
-            "animation": "walk",
+            "animation": "idle",
             "mirror": false
             },
             {
@@ -305,7 +305,7 @@
             "moveX": 5000,
             "moveY": 5000,
             "size": 2000,
-            "animation": "idle",
+            "animation": "darkened",
             "mirror": false
             },
             {
@@ -313,7 +313,7 @@
             "moveX": 5000,
             "moveY": 5000,
             "size": 2000,
-            "animation": "attack",
+            "animation": "darkened",
             "mirror": false
             },
             {
@@ -321,7 +321,7 @@
             "moveX": 5000,
             "moveY": 5000,
             "size": 1800,
-            "animation": "attack",
+            "animation": "blink",
             "mirror": false
             },
             {
@@ -329,7 +329,7 @@
             "moveX": 5000,
             "moveY": 5000,
             "size": 0,
-            "animation": "attack",
+            "animation": "idle",
             "mirror": false
             }
         ]
