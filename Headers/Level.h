@@ -16,8 +16,8 @@
 
 #define LOBBY_NAME "Hub_World"
 #define LOBBY_DOOR 4
-#define FINAL_ROOM_NAME "Prueba_3"
-#define FINAL_ROOM_DOOR 1
+#define FINAL_ROOM_NAME "Boss"
+#define FINAL_ROOM_DOOR 0
 
 class Level {
 private:

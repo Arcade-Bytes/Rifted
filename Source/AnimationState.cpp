@@ -14,6 +14,11 @@ AnimationState::AnimationState(std::stack<State*>* states, Player* player)
 AnimationState::~AnimationState()
 {
     delete this->bgShape;
+    this->clearState();
+}
+
+void AnimationState::clearState()
+{
     for(auto ent : v_entities)
     {
         delete ent;
@@ -25,8 +30,11 @@ AnimationState::~AnimationState()
 void AnimationState::initState()
 {
     this->b_reInit = false;
-    this->baseResolution = sf::Vector2f(Engine::getInstance()->getBaseResolution().x,Engine::getInstance()->getBaseResolution().y);
+    this->clearState();
     float floatPrecision = 100.0f;
+
+    this->f_timeCounter = 0.0f;
+    this->f_animationDuration = 10.0f;
 
     // Recover animation data file
     std::string filename = this->player->getAnimationFilename();
@@ -45,6 +53,10 @@ void AnimationState::initState()
     if(document.HasMember("background"))
         backgroundFile = document["background"].GetString();
     this->bgShape->setTexture(ResourceManager::getInstance()->loadTexture("resources/"+backgroundFile));
+
+    // Recover the animation time
+    if(document.HasMember("animationTime"))
+        this->f_animationDuration = document["animationTime"].GetInt() / floatPrecision;
 
     // Load animated enitity data
     rapidjson::Value& entityData = document["entities"];
@@ -67,10 +79,13 @@ void AnimationState::initState()
             entityData[i]["startX"].GetInt() / floatPrecision,
             entityData[i]["startY"].GetInt() / floatPrecision
         };
-        sf::Vector2f size = {
-            entityData[i]["sizeX"].GetInt() / floatPrecision,
-            entityData[i]["sizeY"].GetInt() / floatPrecision
-        };
+        start /= 100.0f;
+        start.x *= baseResolution.x;
+        start.y *= baseResolution.y;
+        float percSize = entityData[i]["size"].GetInt() / floatPrecision;
+        percSize /= 100.0f;
+        percSize *= baseResolution.x;
+        sf::Vector2f size = {percSize, percSize};
 
         // Add the new entity
         AnimatedEntity* newEntity = new AnimatedEntity(start, size, animationJson);
@@ -82,12 +97,22 @@ void AnimationState::initState()
             float duration = actions[j]["duration"].GetInt() / 1000.0f; // ms to s
             float nextX = actions[j]["moveX"].GetInt() / floatPrecision;
             float nextY = actions[j]["moveY"].GetInt() / floatPrecision;
+            float percSize = actions[j]["size"].GetInt() / floatPrecision;
             std::string animationName = actions[j]["animation"].GetString();
             bool mirrored = actions[j]["mirror"].GetBool();
 
+            // Adjust data
+            nextX /= 100.0f;
+            nextY /= 100.0f;
+            nextX *= baseResolution.x;
+            nextY *= baseResolution.y;
+            percSize /= 100.0f;
+            percSize *= baseResolution.x;
+            sf::Vector2f size = {percSize, percSize};
+
             // Add the new action
             newEntity->addAction(
-                duration, sf::Vector2f(nextX, nextY),
+                duration, sf::Vector2f(nextX, nextY), size,
                 animationName, mirrored
             );
         }
@@ -124,7 +149,13 @@ void AnimationState::update()
     for(auto entity : v_entities)
         entity->update();
 
+    // End update
+    this->f_timeCounter += Engine::getInstance()->getDelta();
     if(Engine::getInstance()->getKeyPressed(sf::Keyboard::Escape) || Engine::getInstance()->getKeyPressed(sf::Keyboard::Return))
+    {
+        this->f_timeCounter = this->f_animationDuration;
+    }
+    if(this->f_timeCounter >= this->f_animationDuration)
     {
         this->changeState(GAME_STATE, true);
     }

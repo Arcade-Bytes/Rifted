@@ -1,42 +1,339 @@
 {
-    "background": "TheRift.jpg",
+    "background": "GrayScale.png",
+    "animationTime": 2100,
     "entities":
     [
         {
         "animationFile":"player",
-        "startX": 1500,
-        "startY": 0,
-        "sizeX": 500,
-        "sizeY": 500,
+        "startX": 5000,
+        "startY": -2000,
+        "size": 700,
         "actions":
         [
             {
-            "duration": 100,
-            "moveX": 3000,
-            "moveY": 7500,
-            "animation": "walk",
+            "duration": 1800,
+            "moveX": 5000,
+            "moveY": 5000,
+            "size": 700,
+            "animation": "falling",
             "mirror": false
+            },
+            {
+            "duration": 400,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": true
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": true
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": true
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5500,
+            "size": 700,
+            "animation": "falling",
+            "mirror": true
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4900,
+            "size": 700,
+            "animation": "falling",
+            "mirror": true
+            },
+            {
+            "duration": 1000,
+            "moveX": 5000,
+            "moveY": 6000,
+            "size": 700,
+            "animation": "falling",
+            "mirror": true
+            },
+            {
+            "duration": 450,
+            "moveX": 5000,
+            "moveY": 15000,
+            "size": 700,
+            "animation": "falling",
+            "mirror": true
             }
         ]
         },
         {
-            "animationFileCondition": "bossKeyIndex",
-            "animationFile": ["player","archer","platform"],
-            "startX": 5000,
-            "startY": 0,
-            "sizeX": 500,
-            "sizeY": 500,
-            "actions":
-            [
-                {
-                "duration": 3000,
-                "moveX": 5000,
-                "moveY": 5000,
-                "animation": "idle",
-                "mirror": false
-                }
-            ]
-            }       
+        "animationFileCondition": "bossKeyIndex",
+        "animationFile": ["player","platform","archer"],
+        "startX": 5000,
+        "startY": 5200,
+        "size": 0,
+        "actions":
+        [
+            {
+            "duration": 2600,
+            "moveX": 5000,
+            "moveY": 5200,
+            "size": 0,
+            "animation": "walk",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 3000,
+            "moveY": 5000,
+            "size": 500,
+            "animation": "walk",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5200,
+            "size": 1000,
+            "animation": "walk",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 7000,
+            "moveY": 5000,
+            "size": 500,
+            "animation": "walk",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4800,
+            "size": 0,
+            "animation": "walk",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 3000,
+            "moveY": 5000,
+            "size": 500,
+            "animation": "walk",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 5200,
+            "size": 1000,
+            "animation": "walk",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 7000,
+            "moveY": 5000,
+            "size": 500,
+            "animation": "walk",
+            "mirror": false
+            },
+            {
+            "duration": 800,
+            "moveX": 5000,
+            "moveY": 4800,
+            "size": 0,
+            "animation": "walk",
+            "mirror": false
+            },
+            {
+            "duration": 1500,
+            "moveX": 5000,
+            "moveY": 5000,
+            "size": 0,
+            "animation": "idle",
+            "mirror": false
+            },
+            {
+            "duration": 2500,
+            "moveX": 5000,
+            "moveY": 5000,
+            "size": 2000,
+            "animation": "idle",
+            "mirror": false
+            },
+            {
+            "duration": 2500,
+            "moveX": 5000,
+            "moveY": 5000,
+            "size": 2000,
+            "animation": "attack",
+            "mirror": false
+            },
+            {
+            "duration": 1000,
+            "moveX": 5000,
+            "moveY": 5000,
+            "size": 1800,
+            "animation": "attack",
+            "mirror": false
+            },
+            {
+            "duration": 200,
+            "moveX": 5000,
+            "moveY": 5000,
+            "size": 0,
+            "animation": "attack",
+            "mirror": false
+            }
+        ]
+        }       
     ]
 }
   

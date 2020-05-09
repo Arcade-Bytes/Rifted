@@ -12,6 +12,7 @@ private:
     struct Action {
         float duration;
         sf::Vector2f nextPosition;
+        sf::Vector2f size;
         std::string animation;
         bool mirrored;
     };
@@ -19,6 +20,10 @@ private:
     sf::Vector2f vf_position;
     sf::Vector2f vf_prevPos;
     sf::Vector2f vf_nextPos;
+
+    sf::Vector2f vf_size;
+    sf::Vector2f vf_prevSize;
+    sf::Vector2f vf_nextSize;
 
     sf::RectangleShape* shape;
     AnimationComponent* animator;
@@ -32,14 +37,10 @@ public:
     AnimatedEntity(sf::Vector2f startingPosition, sf::Vector2f size, std::string animationFile);
     ~AnimatedEntity();
 
-    // Add an action to the RC Entity. Indicate animation to play, position to move and time it takes to perform this action
-    // An empty animation string means: "Leave previous animation"
-    // A NAN value on X or Y axis means: "Stay there!". (NAN,50) means stay where you are in X, but move to 50 in Y
-    void addAction(const float& time, sf::Vector2f nextPosition, std::string animation, bool mirrored);
-    void adjustActionData();
-    void skipToEnd();
-
-    void forceInterpolation();
+    // Add an action to action queue of this entity, indicating duration of the action, position it moves to, size it changes to, animation to play, and if it's mirrored
+    void addAction(const float& time, sf::Vector2f nextPosition, sf::Vector2f size, std::string animation, bool mirrored);
+    // Assigns the next interpolated position to the previous one to synchronize them
+    void updateInterpolation();
 
     void update();
     void render(float frameProgress);
