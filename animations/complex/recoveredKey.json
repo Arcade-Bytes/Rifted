@@ -1,5 +1,6 @@
 {
     "background": "GrayScale.png",
+    "music": "bossKeyAnimation",
     "animationTime": 2100,
     "entities":
     [

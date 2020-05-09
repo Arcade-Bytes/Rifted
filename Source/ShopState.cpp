@@ -408,8 +408,6 @@ void ShopState:: drawPlayerData(){
     coin_purse->setPosition(baseRes.x/8 *5.5,baseRes.y/8);
     engine->renderDrawable(coin_purse);
 
-    printf("Coin's position is %f, %f\n", coin_purse->getPosition().x, coin_purse->getPosition().y);
-
     texto->setString(" " + std::to_string(i_money));
     texto->setPosition(baseRes.x*0.802f,baseRes.y*0.1065f);
     texto->setCharacterSize(baseRes.x*0.0375);

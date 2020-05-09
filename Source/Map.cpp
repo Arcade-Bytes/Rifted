@@ -145,6 +145,7 @@ Map::Map(std::string filename, sf::Vector2i overrideTileSize, const int& entranc
             // The player
             if(strcmp(name, "Entradas") == 0)
             {
+                if(entranceCounter==0) this->playerStartingPosition = position;
                 if(entranceCounter == entranceIndex)
                 {
                     this->playerStartingPosition = position;

@@ -54,6 +54,11 @@ void AnimationState::initState()
         backgroundFile = document["background"].GetString();
     this->bgShape->setTexture(ResourceManager::getInstance()->loadTexture("resources/"+backgroundFile));
 
+    // Recover the music data
+    std::string musicFile = "";
+    if(document.HasMember("music"))
+        musicFile = document["music"].GetString();
+
     // Recover the animation time
     if(document.HasMember("animationTime"))
         this->f_animationDuration = document["animationTime"].GetInt() / floatPrecision;
@@ -122,6 +127,10 @@ void AnimationState::initState()
     }
 
     fclose(filecontent);
+
+    // Music start
+    if(musicFile != "")
+        ResourceManager::getInstance()->playLevelMusic(musicFile);
 }
 
 int AnimationState::getGameValue(std::string property, int nCandidates)

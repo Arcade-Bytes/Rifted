@@ -189,6 +189,8 @@ void ResourceManager::playLevelMusic(std::string levelName)
         this->level3music();
     else if(levelName.compare("tutorial")==0)
         this->level0music();
+    else if(levelName.compare("bossKeyAnimation")==0)
+        this->bossKeyAnimationMusic();
 }
 /* START OF LEVEL MUSIC SET UPS*/
 void ResourceManager::level0music()
@@ -230,6 +232,11 @@ void ResourceManager::level3music()
     this->music_level.play();
     this->music_transition.play();
     this->music_transition.pause();
+}
+void ResourceManager::bossKeyAnimationMusic()
+{
+    this->music_level.openFromFile("resources/6_Mellow_loop.wav");
+    this->music_level.play();
 }
 /*END OF LEVEL MUSIC SET UPS*/
 
