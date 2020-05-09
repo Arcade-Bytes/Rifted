@@ -24,7 +24,6 @@ private:
     bool b_playerHasLeft;
     int i_exitIndex;
     bool b_hasAnimationBeforeNextLevel;
-    int i_bossKeyIndex;
 
     StateType nextState;
 
@@ -91,8 +90,6 @@ public:
     // Returns if next level must have a animation before it changes
     // Also it resets this value to false to avoid the need to clean it manually
     bool getIfAnimationBeforeNextLevel();
-    // Returns a key index if the player reached a boss key. If they didn't reach a key, this will return -1
-    int getBossKeyIndex();
     // Sets the reached exit index and sets up everything for GameState to finish the level
     void exitLevel(int exitIndex);
     void saveLevelData();

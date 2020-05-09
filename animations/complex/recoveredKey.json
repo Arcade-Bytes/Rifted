@@ -1,0 +1,42 @@
+{
+    "background": "TheRift.jpg",
+    "entities":
+    [
+        {
+        "animationFile":"player",
+        "startX": 1500,
+        "startY": 0,
+        "sizeX": 500,
+        "sizeY": 500,
+        "actions":
+        [
+            {
+            "duration": 100,
+            "moveX": 3000,
+            "moveY": 7500,
+            "animation": "walk",
+            "mirror": false
+            }
+        ]
+        },
+        {
+            "animationFileCondition": "bossKeyIndex",
+            "animationFile": ["player","archer","platform"],
+            "startX": 5000,
+            "startY": 0,
+            "sizeX": 500,
+            "sizeY": 500,
+            "actions":
+            [
+                {
+                "duration": 3000,
+                "moveX": 5000,
+                "moveY": 5000,
+                "animation": "idle",
+                "mirror": false
+                }
+            ]
+            }       
+    ]
+}
+  

@@ -20062,7 +20062,7 @@
  </objectgroup>
  <objectgroup id="4" name="NPC">
   <object id="56" name="tendero" x="440.666" y="729.25" width="24" height="24"/>
-  <object id="57" name="cartel_llaves" x="343.538" y="519.553" width="24" height="24"/>
+  <object id="57" name="towerKey" x="343.538" y="519.553" width="24" height="24"/>
   <object id="84" name="bossDoor" x="374" y="408.125" width="128" height="135.25"/>
  </objectgroup>
  <objectgroup id="8" name="Puertas" opacity="0.7">

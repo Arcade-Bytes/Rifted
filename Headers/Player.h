@@ -27,11 +27,16 @@ private:
     int i_healthUpg;                // Current health level, multiplier?
     int i_score;                    // Score
     std::string s_levelName;        // Current level name
-    std::vector<std::string> nearDialogue;
     bool b_usedPotionLastFrame;
 
     // Game progress
     bool vb_mainKeys[3];
+
+    // Data transfer between states
+    std::vector<std::string> vs_nearDialogue; // The text the NPC we interacted with has to say. Sent from GameState to TextState
+    std::string s_animationFile; // The animation file name we must read in the next animation. Sent from GameState to AnimationState
+    int i_newKeyIndex; // The index (int) of the new achieved key. Sent from GameState to AnimationState
+
 
     Weapon* sword;
     Weapon* hammer;
@@ -74,6 +79,16 @@ public:
     void setNear(std::vector<std::string> text);
     // Returns the text of the nearest NPC. This data is used to be showed on TextState (Conversation state)
     std::vector<std::string> getNear();
+
+    // Sets the animation json file name we must read in the next animation (AnimationState)
+    void setAnimationFilename(std::string filename);
+    // Returns the animation json file name we must read in the next animation (AnimationState)
+    std::string getAnimationFilename();
+
+    // Sets the key index of the key we recovered in this level.
+    void setRecoveredKey(int key);
+    // Returns the key index of the key we recovered in this level. If we didn't get the key this returns -1
+    int getRecoveredKey();
 
     // Virtual override: Sets the world's projectile array to its ranged weapon, if it has. The weapon will use this to add projectiles to the world
     void linkWorldProjectiles(std::vector<Projectile*>& proyectileArray);

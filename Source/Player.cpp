@@ -1,8 +1,6 @@
 #include "Player.h"
 #include "FileManager.h"
 
-//Point variables 
-
 Player::Player(const float& maxHealth)
     : Entity(maxHealth)
 {
@@ -402,7 +400,27 @@ std::string Player::getBowLvl()
 
 std::vector<std::string> Player::getNear()
 {
-    return nearDialogue;
+    return vs_nearDialogue;
+}
+
+void Player::setAnimationFilename(std::string filename)
+{
+    this->s_animationFile = filename;
+}
+
+std::string Player::getAnimationFilename()
+{
+    return this->s_animationFile;
+}
+
+void Player::setRecoveredKey(int key)
+{
+    this->i_newKeyIndex = key;
+}
+
+int Player::getRecoveredKey()
+{
+    return this->i_newKeyIndex;
 }
 
 void Player::addPoints(int add){
@@ -501,5 +519,5 @@ void Player::setKeyUnlocked(bool unlocked, int keyIndex)
 
 void Player::setNear(std::vector<std::string> text)
 {
-    this->nearDialogue = text;
+    this->vs_nearDialogue = text;
 }
