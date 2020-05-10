@@ -104,25 +104,25 @@ void Level::initObjectData()
 
         if(npc->getImKey() && this->player->getKeyUnlocked(npc->getKeyType())=="1")
         {
-            delete npc;
+            // Change sprite to sleepy Key
+            npc->setNewTexture("bosskeySleepyNap.png");
+            npc->setOpacity(0.5f);
         }
-        else
+
+        // Final boss door is only active when we have the 3 boss keys
+        if(npc->getImFinalDoor())
         {
-            // Final boss door is only active when we have the 3 boss keys
-            if(npc->getImFinalDoor())
-            {
-                bool enabled = true;
-                for(int i=0; i<3; i++)
-                    if(player->getKeyUnlocked(i)=="0")
-                        enabled = false;
+            bool enabled = true;
+            for(int i=0; i<3; i++)
+                if(player->getKeyUnlocked(i)=="0")
+                    enabled = false;
 
-                npc->setInteractable(enabled);
-            }
-
-            npc->setSize(data.size);
-            npc->setPosition(data.positon);
-            this->npcs.push_back(npc);
+            npc->setInteractable(enabled);
         }
+
+        npc->setSize(data.size);
+        npc->setPosition(data.positon);
+        this->npcs.push_back(npc);
     }
 
     // Doors init

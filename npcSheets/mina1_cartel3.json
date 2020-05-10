@@ -1,0 +1,14 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"Para utilizar la plataforma camina \nhacia delante"},
+			{"text":"Que Grimaldus quie tu camino"}
+		]
+		}
+	]
+}

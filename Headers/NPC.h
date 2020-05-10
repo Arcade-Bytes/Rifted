@@ -54,6 +54,11 @@ public:
     // Returns the key type if it is a key. Otherwise returns -1
     int getKeyType();
 
+    // Changes the texture / Sprite of this NPC
+    void setNewTexture(std::string filename);
+    // Changes the opacity of this npc
+    void setOpacity(float newAlpha);
+
     void render();
 };
 

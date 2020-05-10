@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="147" height="58" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="28">
- <tileset firstgid="1" name="tiles_cementerio" tilewidth="32" tileheight="32" tilecount="10000" columns="100">
-  <image source="tiles_cementerio.png" width="3200" height="3200"/>
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="147" height="58" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="28">
+ <tileset firstgid="1" name="tiles_cementerio" tilewidth="16" tileheight="16" tilecount="10000" columns="100">
+  <image source="tiles_cementerio.png" width="1600" height="1600"/>
  </tileset>
  <tileset firstgid="10001" name="bg_cementerio" tilewidth="32" tileheight="32" tilecount="1372" columns="49">
   <image source="bg_cementerio.png" width="1596" height="912"/>
@@ -35887,40 +35887,40 @@
   </data>
  </layer>
  <objectgroup id="4" name="Hitboxes">
-  <object id="2" name="hitbox_1" x="-132" y="1472" width="2436" height="384"/>
-  <object id="3" name="hitbox_2" x="1280" y="1216" width="768" height="256"/>
-  <object id="4" name="hitbox_3" x="1664" y="960" width="384" height="256"/>
-  <object id="5" name="hitbox_4" x="2560" y="960" width="384" height="32"/>
-  <object id="7" name="hitbox_5" x="3200" y="736" width="384" height="32"/>
-  <object id="8" name="hitbox_6" x="3712" y="1472" width="1116" height="384"/>
+  <object id="2" name="hitbox_1" x="-53.1012" y="735.824" width="1205.09" height="189.145"/>
+  <object id="3" name="hitbox_2" x="639.933" y="607.796" width="382.865" height="127.893"/>
+  <object id="4" name="hitbox_3" x="832.183" y="479.98" width="191.797" height="129.521"/>
+  <object id="5" name="hitbox_4" x="1279.96" y="480.04" width="191.826" height="15.7734"/>
+  <object id="7" name="hitbox_5" x="1599.73" y="368.051" width="192.281" height="15.7734"/>
+  <object id="8" name="hitbox_6" x="1855.99" y="736" width="535.787" height="188.969"/>
  </objectgroup>
  <objectgroup id="5" name="ZonasLetales">
-  <object id="9" name="caida_libre" x="-4" y="1972" width="4704" height="108"/>
+  <object id="9" name="caida_libre" x="9.99254" y="982.148" width="2318.7" height="53.2354"/>
  </objectgroup>
  <objectgroup id="6" name="Monedas">
-  <object id="11" name="moneda_1" x="2144" y="1376" width="64" height="64"/>
-  <object id="12" name="moneda_2" x="3040" y="608" width="64" height="64"/>
-  <object id="24" name="moneda_1" x="1344" y="1144" width="64" height="64"/>
-  <object id="25" name="moneda_1" x="1450" y="1144" width="64" height="64"/>
-  <object id="26" name="moneda_1" x="1450" y="1144" width="64" height="64"/>
-  <object id="27" name="moneda_1" x="1450" y="1144" width="64" height="64"/>
+  <object id="11" name="moneda_1" x="1068.78" y="688.368" width="31.5469" height="31.5469"/>
+  <object id="12" name="moneda_2" x="1510.44" y="309.805" width="31.5469" height="31.5469"/>
+  <object id="24" name="moneda_1" x="674.449" y="574.011" width="31.5469" height="31.5469"/>
+  <object id="25" name="moneda_1" x="726.698" y="574.011" width="31.5469" height="31.5469"/>
+  <object id="26" name="moneda_1" x="726.698" y="574.011" width="31.5469" height="31.5469"/>
+  <object id="27" name="moneda_1" x="726.698" y="574.011" width="31.5469" height="31.5469"/>
  </objectgroup>
  <objectgroup id="7" name="Metadata">
-  <object id="13" name="zona/cementerio" x="10.33" y="10.12" width="186.667" height="57.8791"/>
-  <object id="23" name="bgScroll/true" x="10.33" y="10.12" width="186.667" height="57.8791"/>
+  <object id="13" name="zona/cementerio" x="17.0561" y="15.0984" width="92.0119" height="28.5298"/>
+  <object id="23" name="bgScroll/true" x="17.0561" y="15.0984" width="92.0119" height="28.5298"/>
  </objectgroup>
  <objectgroup id="8" name="Entradas">
-  <object id="18" name="0" x="128" y="1344" width="128" height="128"/>
-  <object id="19" name="1" x="4448" y="1344" width="128" height="128"/>
+  <object id="18" name="0" x="75.058" y="672.595" width="63.0938" height="63.0938"/>
+  <object id="19" name="1" x="2208.23" y="671.868" width="64" height="64"/>
  </objectgroup>
  <objectgroup id="9" name="Salidas">
-  <object id="15" name="Hub_World/2" x="-264" y="-8" width="132" height="1864"/>
-  <object id="17" name="Cementerio_2/0" x="4830" y="-8" width="132" height="1864"/>
+  <object id="15" name="Hub_World/2" x="-118.167" y="6.16667" width="65.0654" height="918.803"/>
+  <object id="17" name="Cementerio_2/0" x="2392.77" y="6.16667" width="65.0654" height="918.803"/>
  </objectgroup>
  <objectgroup id="10" name="2">
-  <object id="20" name="enemigo_arquero_1" x="2656" y="800" width="160" height="160"/>
-  <object id="21" name="enemigo_arquero_2" x="3296" y="576" width="160" height="160"/>
-  <object id="22" name="enemigo_arquero_3" x="3808" y="1312" width="160" height="160"/>
+  <object id="20" name="enemigo_arquero_1" x="1311.72" y="399.912" width="80" height="80"/>
+  <object id="21" name="enemigo_arquero_2" x="1647.54" y="288.214" width="80" height="80"/>
+  <object id="22" name="enemigo_arquero_3" x="1888" y="655.363" width="80" height="80"/>
  </objectgroup>
  <objectgroup id="11" name="NPC"/>
  <objectgroup id="12" name="Puertas"/>

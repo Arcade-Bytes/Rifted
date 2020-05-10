@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="63">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="64">
  <tileset firstgid="1" name="minetiles" tilewidth="16" tileheight="16" tilecount="88" columns="8">
   <image source="minetiles.png" width="128" height="180"/>
  </tileset>
@@ -20061,6 +20061,7 @@
  <objectgroup id="8" name="NPC">
   <object id="55" name="mina1_cartel1" x="128" y="128" width="32" height="32"/>
   <object id="56" name="mina1_cartel2" x="160" y="560" width="32" height="32"/>
+  <object id="63" name="mina1_cartel3" x="207.964" y="1472.01" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="10" name="6">
   <object id="47" x="240" y="752" width="64" height="64"/>

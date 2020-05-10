@@ -108,6 +108,16 @@ int NPC::getKeyType()
     return this->i_isKey;
 }
 
-void NPC:: render(){
+void NPC::setNewTexture(std::string filename)
+{
+    this->shape.setTexture(ResourceManager::getInstance()->loadTexture("resources/"+filename));
+}
+
+void NPC::setOpacity(float newAlpha)
+{
+    this->shape.setFillColor(sf::Color(255,255,255,newAlpha*255));
+}
+
+void NPC::render(){
     Engine::getInstance()->renderDrawable(&shape);
 }
