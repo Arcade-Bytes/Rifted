@@ -33,6 +33,9 @@ public:
     Animation(sf::RectangleShape& shape, std::vector<Frame*> frames, bool looped = false);
     ~Animation();
 
+    /**
+     * Setter and getters of special states of animation
+    **/
     bool getLooped();
     bool getPaused();
     bool getDone();
@@ -40,8 +43,14 @@ public:
     void setPaused(bool paused);
     void setDone(bool done);
 
+    /**
+     * Fills and adds a frame stucture to the animation
+     **/
     void addFrame(Frame& frame);
 
+    /**
+     * Calls the getters and setters, and manager animation stuff
+     **/
     void play(bool mirror = false);
     void pause();
     void resume();

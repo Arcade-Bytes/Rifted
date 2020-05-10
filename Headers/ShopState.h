@@ -44,19 +44,34 @@ public:
 
     void update();
     void render(float frameProgress);
-
+    /**
+     * Data initializor 
+     **/
     void initPlayerData();
 
+    /**
+     * Controls if items are shopable, if they are unlocked
+    **/
     bool getIsUnlocked(int index);
+
+    /**
+     * Selector control 
+     **/
     void selectionDown();
     void selectionUp();
 
+    /**
+     * Draws Text, Selector Arrow, Player Data, Background, Prices and Icons
+     **/
     void drawText();
     void drawArrow(float frameProgress);
     void drawPlayerData();
     void drawParchment();
     void drawPrices();
 
+    /**
+     * Loads dialogue and Assets
+     **/
     void loadDialogue();
     void loadAssets();
 };

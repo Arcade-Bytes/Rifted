@@ -15,13 +15,16 @@ private:
     sf::Vector2f vf_previousPosition;
     sf::Vector2f vf_nextPosition;
     sf::Vector2f vf_position;
-    sf::Vector2f vf_direction; // valores normalizados, entre -1 y 1
+    sf::Vector2f vf_direction; // Valores normalizados, entre -1 y 1
     float f_speed;
     
 public:
     Projectile(sf::Vector2f position, sf::Vector2f direction, float speed, float damage, bool isPlayer, sf::Vector2f knockback={0.0f,0.0f});
     ~Projectile();
 
+    /**
+     *  Movement controles
+     **/
     void move();
     void updateMovement();
     void checkCollisions();

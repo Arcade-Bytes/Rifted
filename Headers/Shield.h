@@ -21,19 +21,28 @@ public:
     Shield(const float& activationTime, const float& recoveryTime, const float& parryWindow, const float& parryHeal);
     ~Shield();
 
+    /**
+     * Shield State and damage control
+     **/
     void RiseShield();
     void RestShield();
     float DamageBlock();
+
+    /**
+     * Parry mechanic
+     **/
     void Parry(float& damageMultiplier); 
 
+
+    /**
+     * Getters and setters
+     **/
     bool isUp();
-
     void setPosition(const float& xpos, const float& ypos, bool facingRight);
-
-    void scale(sf::Vector2f scaleRatio);
-    
     int getUpgradeLvl();
     void setUpgradeLvl(int i_lvl);
+
+    void scale(sf::Vector2f scaleRatio);
 
     void render();
 };

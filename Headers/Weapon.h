@@ -28,19 +28,23 @@ public:
         float damage, bool isPlayer, sf::Vector2f knockback = {0.0f,0.0f}, DamageType dmgType = LIGHT_ATTACK);
     virtual ~Weapon();
 
+    /**
+     * Attack control 
+     **/
     bool isAttacking();
-
-    void setPosition(const float& xpos, const float& ypos, bool facingRight);
-    sf::Vector2f getPosition();
-
     virtual void attack();
     void startAttack();
     void updateAttack();
 
-    virtual void scale(sf::Vector2f scaleRatio);
-
+    /**
+     * Setters and getters 
+     **/
     int getUpgradeLvl();
     void setUpgradeLvl(int i_lvl);
+    void setPosition(const float& xpos, const float& ypos, bool facingRight);
+    sf::Vector2f getPosition();
+
+    virtual void scale(sf::Vector2f scaleRatio);
 
     void update();
     void render();

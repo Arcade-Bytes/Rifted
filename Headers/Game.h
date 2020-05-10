@@ -22,10 +22,16 @@ private:
 public:
     Game();
     ~Game();
-
+    /**
+     * Main game loop
+     **/
     void run();
+    /**
+     * Special updates
+    **/
     void updateDelta();
     void updateSFMLEvents();
+    
     void update();
     void render(float frameProgress);
 };
