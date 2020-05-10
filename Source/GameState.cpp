@@ -114,6 +114,9 @@ void GameState::checkBeatTheGame()
 {
     if(this->level->gameHasBeenBeaten())
     {
+        // Force interpolation
+        this->level->forceInterpolationUpdate();
+
         // Mark the game as beaten
         this->b_gameBeaten = true;
 
@@ -142,6 +145,7 @@ void GameState::transitionUpdate()
         {
             this->beatTheGame();
             this->b_isLeaving = false;
+            this->b_gameBeaten = false;
         }
         // Player is leaving the level
         else if(this->b_isLeaving)

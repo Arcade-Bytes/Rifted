@@ -1,0 +1,17 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{"state":"instructions",
+		"quotes":
+		[
+			{"text":"Tan solo dos personas han llegado \nhasta aqui"},
+			{"text":"Tu determinacion es admirable"},
+			{"text":"Pero aun te queda un ultimo desafio"},
+			{"text":"Este sera el final de tu camino de una \nforma u otra"},
+			{"text":"Que Grimaldus guie tu camino"}
+		]
+		}
+	]
+}

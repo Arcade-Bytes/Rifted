@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="71">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="73">
  <tileset firstgid="1" name="minetiles" tilewidth="16" tileheight="16" tilecount="88" columns="8">
   <image source="minetiles.png" width="128" height="180"/>
  </tileset>
@@ -30031,7 +30031,7 @@
   <object id="40" x="320.75" y="224" width="207.313" height="111.75"/>
   <object id="42" x="2192.17" y="207.826" width="79.3333" height="96.1742"/>
   <object id="44" x="1417.08" y="464" width="191.591" height="160.136"/>
-  <object id="58" x="320.021" y="464.02" width="207.813" height="111.75"/>
+  <object id="58" x="320.021" y="464" width="207.813" height="111.75"/>
  </objectgroup>
  <objectgroup id="6" name="Entradas">
   <object id="46" name="0" x="32" y="416" width="48" height="48"/>
@@ -30054,11 +30054,11 @@
   <object id="55" x="1856" y="992" width="96" height="96"/>
  </objectgroup>
  <objectgroup id="3" name="Hitboxes">
-  <object id="1" x="0.333333" y="0" width="320" height="336"/>
+  <object id="1" x="-61" y="0" width="381.333" height="336"/>
   <object id="2" x="320" y="0" width="1823.58" height="96"/>
   <object id="3" x="2144" y="0" width="256" height="207.333"/>
   <object id="4" x="528" y="224" width="1104.07" height="112"/>
-  <object id="5" x="-0.041667" y="464.021" width="320.033" height="1138.64"/>
+  <object id="5" x="-60.0417" y="464" width="380.033" height="1138.64"/>
   <object id="8" x="320" y="1392" width="752.033" height="208.5"/>
   <object id="9" x="1599.98" y="1392.08" width="192.017" height="207.591"/>
   <object id="10" x="1792.12" y="1117.2" width="223.871" height="482.258"/>
@@ -30068,7 +30068,7 @@
   <object id="16" x="1445.91" y="1104" width="820.932" height="15.9249"/>
   <object id="17" x="1328.89" y="1215.97" width="190.296" height="15.8125"/>
   <object id="18" x="1331.99" y="1231.83" width="182.948" height="15.8125"/>
-  <object id="19" x="528.011" y="463.934" width="479.932" height="336.112"/>
+  <object id="19" x="528.011" y="464" width="479.932" height="336.112"/>
   <object id="20" x="528" y="799.943" width="768.152" height="431.973"/>
   <object id="21" x="1296.36" y="800" width="31.5795" height="143.636"/>
   <object id="23" x="1744.35" y="496.164" width="190.296" height="15.8125"/>
@@ -30078,8 +30078,6 @@
   <object id="29" x="1648.83" y="255.688" width="110.347" height="16.125"/>
   <object id="30" x="1653.89" y="271.938" width="100.784" height="16.125"/>
   <object id="43" x="1391.95" y="335.915" width="240.123" height="128.012"/>
-  <object id="49" x="-117" y="293.667" width="117.323" height="42.3542"/>
-  <object id="50" x="-113.455" y="464.03" width="113.448" height="40.6667"/>
   <object id="59" x="2271.89" y="463.984" width="112.227" height="31.2813"/>
   <object id="60" x="2383.99" y="303.952" width="16" height="191.25"/>
   <object id="61" x="2144" y="303.983" width="128" height="320"/>
@@ -30088,6 +30086,8 @@
   <object id="65" x="2368" y="944" width="32.25" height="287.875"/>
   <object id="68" x="1042.25" y="1598.25" width="30.25" height="100.25"/>
   <object id="70" x="1600.5" y="1599.75" width="31.5" height="98.25"/>
+  <object id="71" x="2287.75" y="432" width="32" height="32"/>
+  <object id="72" x="1306" y="1005.33" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="13" name="ZonasLetales">
   <object id="67" x="1072.33" y="1647.33" width="533" height="50.6667"/>

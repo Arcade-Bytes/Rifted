@@ -9,23 +9,23 @@
         <health>0</health>
     </upgrades>
     <level>
-        <name>Torre_3</name>
-        <door>1</door>
+        <name>Tutorial_1</name>
+        <door>0</door>
     </level>
     <progress>
     </progress>
 </player>
 <weapons>
     <sword>
-        <upgrades>0</upgrades>
+        <upgrades>-1</upgrades>
     </sword>
     <hammr>
-        <upgrades>0</upgrades>
+        <upgrades>-1</upgrades>
     </hammr>
     <shield>
-        <upgrades>0</upgrades>
+        <upgrades>-1</upgrades>
     </shield>
     <bow>
-        <upgrades>0</upgrades>
+        <upgrades>-1</upgrades>
     </bow>
 </weapons>

@@ -118,6 +118,17 @@ Enemy* EnemyFactory::makeEnemy(Player* player, sf::Vector2f size, int type, floa
             enemy->setDoPatrol(true);
             enemy->overrideHitboxType(PLATFORM);
             break;
+        case 12: // Boss
+            enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 30*statsScaleFactor, {3000.0f,1500.0f}, HEAVY_ATTACK);
+            enemy->setAttackCooldown(2.5f);
+            enemy->setEnemyType( Enemy::EnemyType::BasicMelee );
+            enemy->setAnimation("melee_enemy.json");
+            enemy->setMaxSpeed(3000.0f, 190.0f);
+            enemy->setAIDistances(150, 50);
+            enemy->setRangedMode(false);
+            enemy->setMaxHealth(2000*statsScaleFactor);
+            enemy->setResistances(0.0f, 0.0f, 0.0f);
+            break;
         default: 
             enemy->setWeapon(0.6f, 0.1f, 0.1f, 40, 60, 15*statsScaleFactor, {1500.0f,500.0f}, LIGHT_ATTACK);
             enemy->setAttackCooldown(2.5f);

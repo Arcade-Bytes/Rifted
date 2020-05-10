@@ -1,0 +1,18 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{
+			"state":"instructions",
+			"quotes":
+			[
+				{"text":"Si estas leyendo esto es que te hayas\n en mi tumba"},
+				{"text":"Y lo mas seguro es que me haya convertido \nen una de esas cosas"},
+				{"text":"Te permito utilizar mi arco"},
+				{"text":"\"Presiona D para lanzar una flecha\""},
+				{"text":"Espero que te sirva a ti mas a ti de lo \nque me sirvio a mi"}
+			]
+		}
+	]
+}

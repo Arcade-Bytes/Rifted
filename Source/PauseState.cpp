@@ -204,15 +204,16 @@ void PauseState:: update()
 
     if(engine->getKeyPressed(sf::Keyboard::Return)){
         switch(seleccion){
-            case 1: //Aqui ira el hipotético ajustes
-            break;
-
-            case 2: //Volvemos a la partida
+            case 1: //Volvemos a la partida
                 this->changeState(GAME_STATE, false);
                 break;
 
-            case 3:  //Volvemos al menu principal
+            case 2:  //Volvemos al menu principal
                 this->changeState(MAINMENU_STATE, true);
+                break;
+
+            case 3:  // Reiniciamos el nivel
+                this->changeState(GAME_STATE, true);
                 break;
         }
         this->b_reInit = true;
@@ -265,19 +266,19 @@ void PauseState::drawText(){
 
     texto->setColor(sf::Color::White);
 
-    texto->setString("Ajustes");
+    texto->setString("Atras");
     texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y/4);
     texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
-    texto->setString("Atras");
+    texto->setString("Menu");
     texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y*0.38888888f);
     texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
-    texto->setString("Menu");
+    texto->setString("Cargar");
     texto->setPosition(engine->getBaseResolution().x/4,engine->getBaseResolution().y*0.52777777f);
     texto->setCharacterSize(engine->getBaseResolution().x*0.028125f);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);

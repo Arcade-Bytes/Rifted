@@ -254,19 +254,19 @@ void Player::update()
 
     this->b_usedPotionLastFrame = false; // Potion effect reset
     bool restingShield = false; // True if we are resting the shield
-    if(!b_mutexAttack && getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+    if(!b_mutexAttack && getIsWeaponUnlocked("Sword") && sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
         ResourceManager::getInstance()->playSound("cbar_miss1");
         this->sword->startAttack();
         this->b_mutexAttack = true;
     }
-    else if(!b_mutexAttack && getIsWeaponUnlocked("Hammer") && sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    else if(!b_mutexAttack && getIsWeaponUnlocked("Hammer") && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         ResourceManager::getInstance()->playSound("hammr_swing");
         this->hammer->startAttack();
         this->b_mutexAttack = true;
     }
-    else if(!b_mutexAttack && getIsWeaponUnlocked("Bow") && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+    else if(!b_mutexAttack && getIsWeaponUnlocked("Bow") && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
         ResourceManager::getInstance()->playSound("bow_shoot");
         this->bow->startAttack();
@@ -274,7 +274,7 @@ void Player::update()
     }
     else if(!b_mutexAttack && this->i_potions > 0 &&
         this->f_currentHealth < this->f_maxHealth &&
-        Engine::getInstance()->getKeyPressed(sf::Keyboard::Num4)
+        Engine::getInstance()->getKeyPressed(sf::Keyboard::E)
     )
     {
         this->i_potions--;
