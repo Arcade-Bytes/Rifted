@@ -63,16 +63,18 @@ void MenuState:: update(){
     if(engine->getKeyPressed(sf::Keyboard::Return))
     {
         switch(seleccion){
-            case 1: //Opcion Partida Nueva
+            case 1: // Partida Nueva
                 ftl::ResetSaveFile();
                 ftl::LoadGame(*this->player);
                 this->changeState(GAME_STATE, true);
                 break;   
-            case 2: //Futuro Cargar Partida
+            case 2: // Cargar Partida
                 ftl::LoadGame(*this->player);
                 this->changeState(GAME_STATE, true);
                 break;
-            case 3: break; //Futuro Ajustes
+            case 3: // Ver los créditos
+                this->changeState(CREDITS_STATE, true);
+                break;
             case 4: engine->windowClose(); break;//Opcion Exit
         }
     }
@@ -128,7 +130,7 @@ void MenuState:: drawText(){
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);
 
-    texto->setString("Ajustes");
+    texto->setString("Creditos");
     texto->setPosition(engine->getBaseResolution().x/2,engine->getBaseResolution().y/2 + engine->getBaseResolution().y*0.2);
     texto->setOrigin(texto->getLocalBounds().width/2.0f,texto->getLocalBounds().height/2.0f);
     engine->renderDrawable(texto);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="150" height="150" tilewidth="8" tileheight="8" infinite="0" nextlayerid="16" nextobjectid="468">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="150" height="150" tilewidth="8" tileheight="8" infinite="0" nextlayerid="16" nextobjectid="468">
  <tileset firstgid="1" name="Assets" tilewidth="8" tileheight="8" tilecount="1288" columns="46">
   <image source="Assets.png" width="368" height="224"/>
  </tileset>
@@ -45130,9 +45130,7 @@
   <object id="371" x="143.333" y="112.667" width="16" height="16"/>
   <object id="372" x="117.333" y="428" width="16" height="16"/>
   <object id="373" x="150.667" y="428" width="16" height="16"/>
-  <object id="374" x="735.333" y="200" width="16" height="16"/>
   <object id="375" x="831.333" y="200" width="16" height="16"/>
-  <object id="376" x="927.333" y="199.667" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="4" name="ZonasLetales">
   <object id="377" x="248" y="1072.33" width="7.66667" height="47.3333"/>
