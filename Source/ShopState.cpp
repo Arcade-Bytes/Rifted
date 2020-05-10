@@ -47,44 +47,44 @@ void ShopState:: loadDialogue(){
     //Preparamos textos de la tienda
     pointer.setCharacterSize(Engine::getInstance()->getBaseResolution().x*0.018229f);
         //Opciones de bienvenida
-    pointer.setString(" Welcome again ");
+    pointer.setString(" Vuelve cuando puedas ");
     textoTienda_v1.push_back(pointer);
-    pointer.setString(" Fancy something ? ");
+    pointer.setString(" Algo que te guste? ");
     textoTienda_v1.push_back(pointer);
-    pointer.setString(" You better have money ");
+    pointer.setString(" Espero que traigas monedas ");
     textoTienda_v1.push_back(pointer);
-    pointer.setString(" Something new ? ");
+    pointer.setString(" Que hay? ");
     textoTienda_v1.push_back(pointer);
         //Opciones para compra ok
-    pointer.setString(" Enjoy it ");
+    pointer.setString(" Disfrutalo ");
     textoTienda_v2.push_back(pointer);
-    pointer.setString(" Make good use of it ");
+    pointer.setString(" Usalo bien ");
     textoTienda_v2.push_back(pointer);
-    pointer.setString(" Something else ? ");
+    pointer.setString(" Alguna cosa mas? ");
     textoTienda_v2.push_back(pointer);
 
         //Opciones para compra mal
-    pointer.setString(" Don't think so ");
+    pointer.setString(" No lo creo ");
     textoTienda_v3.push_back(pointer);
-    pointer.setString(" I don't give freebies ");
+    pointer.setString(" No es gratis ");
     textoTienda_v3.push_back(pointer);
-    pointer.setString(" Maybe later ");
+    pointer.setString(" Quiza mas adelante ");
     textoTienda_v3.push_back(pointer);
 
        //Opciones objeto al máximo
-    pointer.setString(" Don't have more ");
+    pointer.setString(" Ya esta al maximo ");
     textoTienda_v4.push_back(pointer);
-    pointer.setString(" It's enought ");
+    pointer.setString(" No puede mejorar mas ");
     textoTienda_v4.push_back(pointer);
-    pointer.setString(" You are at your limit ");
+    pointer.setString(" Esta lo mejor posible ");
     textoTienda_v4.push_back(pointer); 
 
         //Opciones de despedida
-    pointer.setString(" See you ");
+    pointer.setString(" Hasta luego ");
     textoTienda_v5.push_back(pointer);
-    pointer.setString(" Don't get killed ");
+    pointer.setString(" Que no te maten ");
     textoTienda_v5.push_back(pointer);
-    pointer.setString(" Bring money next time ");
+    pointer.setString(" Trae mas monedas la proxima vez ");
     textoTienda_v5.push_back(pointer);
 
     texto_render=textoTienda_v1[random()%textoTienda_v1.size()];

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="16" nextobjectid="92">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="17" nextobjectid="97">
  <tileset firstgid="1" name="Assets" tilewidth="8" tileheight="8" tilecount="1288" columns="46">
   <image source="Assets.png" width="368" height="224"/>
  </tileset>
@@ -20015,7 +20015,7 @@
   </data>
  </layer>
  <objectgroup id="14" name="10">
-  <object id="56" x="129.333" y="688" width="22.6667" height="62.7879"/>
+  <object id="56" x="129.333" y="688" width="22.6667" height="63.8788"/>
  </objectgroup>
  <objectgroup id="4" name="Entradas">
   <object id="1" name="0" x="18.1667" y="365.015" width="47" height="18.8182"/>
@@ -20034,24 +20034,24 @@
   <object id="66" name="Cementerio_1/0" x="-32.0606" y="687.447" width="32" height="64.5"/>
  </objectgroup>
  <objectgroup id="9" name="Hitboxes">
-  <object id="23" x="-31.1364" y="751.5" width="882.913" height="8"/>
-  <object id="34" x="655.833" y="391" width="203.636" height="15.5"/>
+  <object id="23" x="-31.1364" y="751.938" width="882.913" height="7.5625"/>
+  <object id="34" x="655.924" y="392" width="203.636" height="14.9545"/>
   <object id="37" x="752" y="344" width="107.318" height="7"/>
   <object id="38" x="752" y="328" width="15" height="14"/>
   <object id="41" x="720" y="312.5" width="31" height="22"/>
   <object id="42" x="-59" y="288.25" width="442" height="31.75"/>
-  <object id="58" x="152.5" y="432.5" width="70.7045" height="236.5"/>
+  <object id="58" x="152.136" y="432.011" width="71.9328" height="239.045"/>
   <object id="60" x="222.682" y="480.205" width="73.1136" height="157.75"/>
-  <object id="61" x="-28.6818" y="384.834" width="181.182" height="302.333"/>
-  <object id="67" x="655.25" y="423.167" width="112" height="15.5"/>
-  <object id="70" x="337" y="544.333" width="190.333" height="47.3333"/>
-  <object id="72" x="353" y="591.667" width="158.333" height="16.3333"/>
-  <object id="74" x="601" y="560.5" width="199.5" height="142"/>
+  <object id="61" x="-29.0568" y="383.959" width="181.182" height="303.969"/>
+  <object id="67" x="656.068" y="423.985" width="111.909" height="15.2273"/>
+  <object id="70" x="336.125" y="543.833" width="191.583" height="48.0833"/>
+  <object id="72" x="351.875" y="591.292" width="159.833" height="16.3333"/>
+  <object id="74" x="600.091" y="560.136" width="200.409" height="142.364"/>
   <object id="75" x="584.364" y="432.727" width="31.4545" height="30.9091"/>
-  <object id="76" x="768.545" y="407.273" width="31.6364" height="153.272"/>
-  <object id="78" x="544.091" y="624.545" width="31.4545" height="30.9091"/>
+  <object id="76" x="768.17" y="407.273" width="32.0114" height="153.272"/>
+  <object id="78" x="544.091" y="623.951" width="31.9545" height="31.0028"/>
   <object id="80" x="672" y="702.625" width="128.125" height="8.125"/>
-  <object id="81" x="688.375" y="710.688" width="162.841" height="8.125"/>
+  <object id="81" x="688.102" y="710.688" width="162.841" height="8.125"/>
   <object id="86" x="496.5" y="288" width="223.75" height="30"/>
   <object id="87" x="370" y="-77.5" width="13.5" height="366"/>
   <object id="88" x="495.5" y="-77.5" width="13.5" height="366"/>
@@ -20061,9 +20061,14 @@
   <object id="15" name="Salida_Torre" x="748.349" y="407.242" width="17.6667" height="17"/>
  </objectgroup>
  <objectgroup id="4" name="NPC">
-  <object id="56" name="tendero" x="440.666" y="729.25" width="24" height="24"/>
+  <object id="56" name="tendero" x="439.97" y="727.989" width="24" height="24"/>
   <object id="57" name="cartel_llaves" x="343.538" y="519.553" width="24" height="24"/>
   <object id="84" name="bossDoor" x="374" y="408.125" width="128" height="135.25"/>
+ </objectgroup>
+ <objectgroup id="16" name="Monedas">
+  <object id="94" x="432" y="176" width="16" height="16"/>
+  <object id="95" x="432" y="216" width="16" height="16"/>
+  <object id="96" x="432" y="248" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="8" name="Puertas" opacity="0.7">
   <object id="21" name="Salida_Torre" x="702" y="311.5" width="18" height="87.6667"/>

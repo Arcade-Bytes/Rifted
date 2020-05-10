@@ -1,0 +1,18 @@
+{
+	"textureFile": "sign.png",
+	"isShop": false,
+	"quotes":
+	[
+		{
+			"state":"instructions",
+			"quotes":
+			[
+				{"text":"Hay lugares a los que el cuerpo \nno puede llegar"},
+				{"text":"Para lograr llegar a esos lugares"},
+				{"text":"Los humanos creraron diversas \nherramientas"},
+				{"text":"Quizas tengas algo que pueda ayudarte"},
+				{"text":"Que Grimaldus guie tu camino"}
+			]
+		}
+	]
+}
