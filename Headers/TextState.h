@@ -13,9 +13,17 @@ private:
 public:
     TextState(std::stack<State*>* states, Player* player);
     ~TextState();
-
+    /**
+     * Takes the dialogue from the Nearest NPC
+     **/
     void initConversation();
+    /**
+     * Set dialogue to text 
+     **/
     void setText(std::string text);
+    /**
+     * Sets dialogue to the next line of quotes
+     **/
     bool nextQuote();
 
     void update();

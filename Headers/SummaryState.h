@@ -14,6 +14,10 @@ public:
     SummaryState(std::stack<State*>* states, Player* player);
     ~SummaryState();
 
+    /**
+     * Initialize state 
+    **/
+
     void initState();
 
     void update();
