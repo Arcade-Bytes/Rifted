@@ -25,9 +25,13 @@ private:
 public:
     AnimationComponent(sf::RectangleShape& shape);
     ~AnimationComponent();
-
+    /**
+     * Loads json document and fills frames with it 
+     **/
     void loadAnimationsFromJSON(const std::string& filepath);
-
+    /**
+     * Interacts with the animations
+     **/
     void addAnimation(std::string key, std::vector<Frame*> frames, bool looped = false);
     void playAnimation(const std::string key, bool mirror = false);
     void stopCurrentAnimation();

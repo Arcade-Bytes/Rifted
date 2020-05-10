@@ -25,13 +25,27 @@ public:
     State(std::stack<State*>* statesRef, Player* playerRef);
     ~State();
 
+    /**
+     * Get top State 
+    **/
     StateType getIam();
+
+    /**
+     * Get selection 
+    **/
     int getSeleccion();
 
+    /**
+     *  Asigns access to the State pile to a Player
+     **/
     void setPlayer(Player* player);
 
     virtual void update() = 0;
     virtual void render(float frameProgress) = 0;
+
+    /**
+     * Changes top state of the pile to target 
+     **/
     void changeState(StateType target, bool reInit);
 };
 

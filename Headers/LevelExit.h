@@ -20,9 +20,14 @@ public:
     void setPosition(sf::Vector2f pos);
     void setSize(sf::Vector2f size);
 
+    /**
+    *   Changing level stuff
+    **/
     std::string getDestination();
     int getEntranceIndex();
-
+    /**
+     * Checks player collision with LevelExit
+     **/
     bool checkPlayerCollision(Player* player);
 
     void render();

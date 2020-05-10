@@ -25,7 +25,13 @@ public:
 
     void update();
     void render(float frameProgress);
+    /**
+     * Draws text for the Menu 
+     **/
     void drawText();
+    /**
+     * Draws selector arrow 
+     **/
     void drawArrow(float frameProgress);
 };
 

@@ -21,17 +21,19 @@ public:
     void setPosition(sf::Vector2f pos);
     sf::Vector2f getSize();
     void setSize(sf::Vector2f size);
-
-    void addDoor(Door* door);
     bool getIsActive();
-    void interact(bool playSound = true);
+
+    /**
+     * Binding door to lever 
+     **/
+    void addDoor(Door* door);
 
     void update();
     void render();
 
     //Toggle control
-
     float getToggleTime();
+    void interact(bool playSound = true);
     void restartToggleTime();
 };
 

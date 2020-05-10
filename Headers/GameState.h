@@ -30,9 +30,9 @@ public:
     // Initializes the new level using player's data (level name and door)
     void initLevel();
 
-    //cambia el efecto en pantalla al recibir danyo
+    //Cambia el efecto en pantalla al recibir danyo
     void changeDamageEffects(); 
-    //cambia la textura de las pociones segun las que te queden
+    //Cambia la textura de las pociones segun las que te queden
     void changePotionShape(); 
 
     // Gets level exit data from Level and performs the level change, deleting and reinitialazing the level
