@@ -174,6 +174,7 @@ namespace ftl{
         OpenSaveFile(xml_doc);
         //coins
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_COINS)->SetText(player.getMony().c_str());
+        xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_TOTALCOINS)->SetText(player.getTotalCoins().c_str());
         //health
         xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_HEALTH)->SetText(player.getHealth().c_str());
         //remaining potions
@@ -224,6 +225,7 @@ namespace ftl{
         OpenSaveFile(xml_doc);
         //coins
         player.setMony(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_COINS)->GetText()));
+        player.setTotalCoins(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_TOTALCOINS)->GetText()));
         //health
         player.setHealth(std::stof(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_HEALTH)->GetText()));
         //remaining potions

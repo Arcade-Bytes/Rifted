@@ -104,7 +104,7 @@ void SummaryState::initState()
     // Data gathering
     int points = this->player->getPoints();
     int kills = atoi(this->player->getKills().c_str());
-    int coins = atoi(this->player->getMony().c_str());
+    int coins = atoi(this->player->getTotalCoins().c_str());
     int maxCoins = 96; // 24 every tool max upgrade * 4 upgradable tools
 
     int upgradableEquipment = 4;

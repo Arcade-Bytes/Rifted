@@ -20,6 +20,7 @@ private:
     int i_maxPotions;
     int i_potions;
 
+    int i_totalCoins;
     int i_coins;                    // Amount of coins
     int i_deaths;                   // Amount of player deaths... does it even die?
     int i_kills;                    // Amount of kills
@@ -107,6 +108,7 @@ public:
     int getPoints();
 
     // Save data getters and setters
+    std::string getTotalCoins();
     std::string getMony();
     std::string getKills();
     std::string getDeaths();
@@ -120,6 +122,7 @@ public:
     std::string getPotionsLeft();
     std::string getScore();
     std::string getKeyUnlocked(int index);
+    void setTotalCoins(int i_money);
     void setMony(int i_money);
     void setKills(int i_kills);
     void setDeaths(int i_deaths);

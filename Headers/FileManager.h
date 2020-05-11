@@ -15,6 +15,7 @@
 #define SFL_PLAYER "player"
 #define SFL_HEALTH "health"
 #define SFL_MAXHEALTH "maxhealth"
+#define SFL_TOTALCOINS "totalcoins"
 #define SFL_COINS "coin"
 #define SFL_DEATHS "deaths"
 #define SFL_KILLS "kills"

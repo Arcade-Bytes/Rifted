@@ -15,6 +15,8 @@ Player::Player(const float& maxHealth)
     this->f_regenerationAmount = 0.5f;
     this->b_usedPotionLastFrame = false;
 
+    this->i_totalCoins = 0;
+
     // Progress key init
     this->vb_mainKeys[0] = this->vb_mainKeys[1] = this->vb_mainKeys[2] = false;
 
@@ -99,6 +101,7 @@ void Player::pickCoin(int value)
 {
     ResourceManager::getInstance()->playSound("coin");
     this->i_coins += value;
+    this->i_totalCoins += value;
 }
 
 void Player::addKill(int amount)
@@ -335,6 +338,11 @@ std::string Player::getKills()
     return std::to_string(this->i_kills).c_str();
 }
 
+std::string Player::getTotalCoins()
+{
+    return std::to_string(this->i_totalCoins).c_str();
+}
+
 std::string Player::getMony()
 {
     return std::to_string(this->i_coins).c_str();
@@ -444,6 +452,11 @@ int Player::getPoints(){
 }
 
 //SET DATA SAVED
+void Player::setTotalCoins(int i_money)
+{
+    this->i_totalCoins = i_money;
+}
+
 void Player::setMony(int i_money)
 {
     this->i_coins = i_money;
