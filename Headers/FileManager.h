@@ -110,11 +110,11 @@ namespace ftl{
      * 
      * 
      **/
-    void LoadGame(Player &player);
+    bool LoadGame(Player &player);
     /**
      * Opens a XMLDocument 
      **/ 
-    void OpenSaveFile(XMLDocument &xml_doc);
+    bool OpenSaveFile(XMLDocument &xml_doc);
     /**
      * Closes/Saves a XMLDocument 
      **/ 

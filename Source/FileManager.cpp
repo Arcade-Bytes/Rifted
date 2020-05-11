@@ -219,10 +219,11 @@ namespace ftl{
         CloseSaveFile(xml_doc);
     }
 
-    void LoadGame(Player &player)
+    bool LoadGame(Player &player)
     {
         XMLDocument xml_doc;
-        OpenSaveFile(xml_doc);
+        bool ok = OpenSaveFile(xml_doc);
+        if(!ok) return false;
         //coins
         player.setMony(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_COINS)->GetText()));
         player.setTotalCoins(std::stoi(xml_doc.FirstChildElement(SFL_PLAYER)->FirstChildElement(SFL_TOTALCOINS)->GetText()));
@@ -267,11 +268,12 @@ namespace ftl{
             player.setKeyUnlocked(keyUnlocked=="0"?0:1, i);
         }
 
-        CloseSaveFile(xml_doc);   
+        CloseSaveFile(xml_doc);  
+        return true; 
     }
 
 
-    void OpenSaveFile(XMLDocument& xml_saveFile){
+    bool OpenSaveFile(XMLDocument& xml_saveFile){
         char cwd[PATH_MAX];
         if (getcwd(cwd, sizeof(cwd)) != NULL) {
         //printf("Current working dir: %s\n", cwd);
@@ -280,11 +282,13 @@ namespace ftl{
         
         if( i_error != 0)
         {
+            return false;
+            /*
             std::cerr<< "error opening save file\n";
             xml_saveFile.PrintError();
-            exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);*/
         }
-
+        return true;
     }
     
     void CloseSaveFile(XMLDocument& xml_saveFile){

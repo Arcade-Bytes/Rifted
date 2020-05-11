@@ -62,6 +62,7 @@ void MenuState:: update(){
 
     if(engine->getKeyPressed(sf::Keyboard::Return))
     {
+        bool loaded;
         switch(seleccion){
             case 1: // Partida Nueva
                 ftl::ResetSaveFile();
@@ -69,7 +70,12 @@ void MenuState:: update(){
                 this->changeState(GAME_STATE, true);
                 break;   
             case 2: // Cargar Partida
-                ftl::LoadGame(*this->player);
+                loaded = ftl::LoadGame(*this->player);
+                if(!loaded)
+                {
+                    ftl::ResetSaveFile();
+                    ftl::LoadGame(*this->player);
+                }
                 this->changeState(GAME_STATE, true);
                 break;
             case 3: // Ver los créditos

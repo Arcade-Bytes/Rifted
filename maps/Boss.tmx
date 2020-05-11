@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="100" height="130" tilewidth="8" tileheight="8" infinite="0" nextlayerid="14" nextobjectid="49">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="130" tilewidth="8" tileheight="8" infinite="0" nextlayerid="14" nextobjectid="49">
  <tileset firstgid="1" name="Assets" tilewidth="8" tileheight="8" tilecount="1288" columns="46">
   <image source="Assets.png" width="368" height="224"/>
  </tileset>
@@ -26042,7 +26042,7 @@
   <object id="35" x="-32.4545" y="216" width="32.3636" height="15.6364"/>
  </objectgroup>
  <objectgroup id="11" name="Salidas">
-  <object id="36" name="Hub_World/3" x="-42.25" y="167.125" width="11.5" height="48.875"/>
+  <object id="36" name="Hub_World/4" x="-42.25" y="167.125" width="11.5" height="48.875"/>
  </objectgroup>
  <objectgroup id="5" name="NPC">
   <object id="37" name="boss1_cartel1" x="138" y="200" width="16" height="16"/>
